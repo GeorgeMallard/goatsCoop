@@ -11,7 +11,7 @@ public class GUI {
 	public static void main(String[] args) {
 
 		State.setDefaultSize(20);
-		Community.setDefaultSize(6);
+		Community.setDefaultSize(10);
 		//Community.setDefaultResources(0.0);
 
 
@@ -28,6 +28,11 @@ public class GUI {
 		//ste1.communities[0].agentReport();
 		
 		
-	}	
+	}
+
+	public static void mainMenu() {
+		
+	}
+
 	
 }
