@@ -1,5 +1,19 @@
-// TO DO
-// main menu
+// TODO
+// fix iteration count bug
+// change from weighting to contribution
+// agent settings
+// --starting values
+// --mutable mutability
+// --crazy mutations
+// group class
+// group settings
+// --average or absolute
+// cty settings
+// --size
+// ste settings
+// --size
+// wld settings
+// --size
 
 
 public class GUI {
