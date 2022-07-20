@@ -4,8 +4,16 @@
 
 public class GUI {
 	
-	private static final String SELECT_OPTION = "Please select an option: ";
+	private static final String SELECT_OPTION = "Select an option: ";
+	private static final String RUN_SIMULATION = "Run simulation";
+	private static final String QUIT = "Quit";
 	private static final String GOODBYE_MSG = "Goodbye";
+
+
+	private static int stateSize = 20;
+	private static int communitySize = 10;
+	private static int iterationsPerRound = 10000;
+	private static int rounds = 1;
 	public static void main(String[] args) {
 		mainMenu();	
 	}
@@ -16,36 +24,27 @@ public class GUI {
 		while (cont) {
 			value = Menu.create(
 				SELECT_OPTION, 
-				"do this", 
-				"do that", 
-				"Quit"
+				RUN_SIMULATION,
+				QUIT
 			);
 			switch (value) {
 				case 1:
-					System.out.println("doing this");
-					break;
-				case 2:
-					System.out.println("doing that");
+					runSimulation();
 					break;
 				case 0:
 					System.out.println(GOODBYE_MSG);
 					cont = false;
 					break;
-			}
-
-			
+			}	
 		}
 	}
 
 	public static void runSimulation() {
-		State.setDefaultSize(20);
-		Community.setDefaultSize(10);
+		State.setDefaultSize(stateSize);
+		Community.setDefaultSize(communitySize);
 		
 		//*Community.setDefaultResources(0.0);
-		
-		final int iterationsPerRound = 10000;
-		final int rounds = 1;
-		
+				
 		State ste1 = new State();
 		
 		//*ste1.displayCommunitiesInfo();
