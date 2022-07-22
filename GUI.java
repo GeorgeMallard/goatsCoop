@@ -2,9 +2,11 @@
 // fix iteration count bug
 // change from weighting to contribution
 // agent settings
+// --variable group numbers
 // --starting values
 // --mutable mutability
 // --crazy mutations
+// allow agent negative values
 // group class
 // group settings
 // --average or absolute
@@ -18,16 +20,31 @@
 
 public class GUI {
 	
+	// STRINGS FOR MENUS
+	// =================
 	private static final String SELECT_OPTION = "Select an option: ";
 	private static final String RUN_SIMULATION = "Run simulation";
 	private static final String QUIT = "Quit";
 	private static final String GOODBYE_MSG = "Goodbye";
 
+	// AGENTS SETTINGS
+	// ===============
+	private static int defaultAgentWeighting = 100;
+	private static int defaultCommunityWeighting = 100;
+	private static int defaultStateWeighting = 100;
+	private static int defaultWorldWeighting = 100;
 
+	// GROUPS SETTINGS
+	// ===============
+	private static int groupDepth = 2;
 	private static int stateSize = 20;
 	private static int communitySize = 10;
+
+	// SIMULATION SETTINGS
+	// ===================
 	private static int iterationsPerRound = 10000;
 	private static int rounds = 1;
+
 	public static void main(String[] args) {
 		mainMenu();	
 	}
