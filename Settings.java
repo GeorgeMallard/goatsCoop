@@ -27,6 +27,7 @@ public class Settings {
                     sizes.add(depth, defaultGroupSize);
                 }
             }
+            depth = newDepth;
         }
     }
 

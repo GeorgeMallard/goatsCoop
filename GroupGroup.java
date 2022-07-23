@@ -10,20 +10,22 @@ public class GroupGroup extends Group {
 
     // CONSTRUCTOR
     // ===========
-    public GroupGroup(int level, int size) {
-        super(level, size);
-        this.populate();
+    public GroupGroup(int level, int size, boolean populate) {
+        super(level, size, populate);
     }
 
     // METHODS
     // =======
     public void populate() {
-        int subGroupSize = Settings.getGroupSize(this.getLevel() - 2);
         if (this.getLevel() == 2) {
             for (int i = 0; i < this.getSize(); i++) {
-                this.groups.add(new AgentGroup(1, subGroupSize));
+                this.groups.add(new AgentGroup(1, this.getSubGroupSize(), true));
             }
-        } else {}
+        } else {
+            for (int i = 0; i < this.getSize(); i++) {
+                this.groups.add(new GroupGroup(this.getLevel() - 1, this.getSubGroupSize(), true));
+            }
+        }
         
     }
 }

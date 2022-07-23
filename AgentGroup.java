@@ -10,15 +10,16 @@ public class AgentGroup extends Group {
 
     // CONSTRUCTOR
     // ===========
-    public AgentGroup(int level, int size) {
-        super(level, size);
-        this.populate();
+    public AgentGroup(int level, int size, boolean populate) {
+        super(level, size, populate);
     }
 
     // METHODS
     // =======
     public void populate() {
-        
+        for (int i = 0; i < this.getSize(); i++) {
+            agents.add(new Agent());
+        }
     }
     
 }

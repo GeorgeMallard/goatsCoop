@@ -1,21 +1,31 @@
 // TODO
-// fix iteration count bug
-// change from weighting to contribution
-// agent settings
-// --variable group numbers
-// --starting values
-// --mutable mutability
-// --crazy mutations
-// allow agent negative values
-// group class
-// group settings
-// --average or absolute
-// cty settings
-// --size
-// ste settings
-// --size
-// wld settings
-// --size
+
+// top level group
+// agent creation
+// simulation begin
+// TEST
+
+// gui alter settings and run sim:
+// --change depth
+// --change default group sizes
+// --change default agent weightings
+// --number of iterations (or stopping condition)
+// TEST
+
+// agent contributions passed up the chain
+// TEST
+
+// culling and repopulation of agents
+// TEST
+
+// add settings:
+// --average or absolute contribution
+// --mutation settings (mutable mutation, advanced mutation)
+// --allow agent negative values
+
+// displaying data
+// --weightings / contributions
+
 
 
 public class GUI {
