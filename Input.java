@@ -2,12 +2,19 @@ import java.util.Scanner;
 
 public class Input {
     
+    // ===============
+    // FINAL VARIABLES
+    // ===============
+
     private static final String INTEGER_FORMAT = "Enter an integer: ";
     private static final String INTEGER_BETWEEN = "Enter an integer between %d and %d: ";
     private static final String YES = "y";
     private static final String NO = "n";
     private static final String YES_OR_NO = "Please enter $s or $s: ";
 
+    // ===============
+    // UTILITY METHODS
+    // ===============
 
     /**
      * Read an integer input by the user between two values (inclusive)

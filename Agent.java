@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Citizen class
- * Creates Citizens
+ * Agent class
+ * Creates Agents
  * @author  Chris Litting
- * @version 2.1
+ * @version 3.0
  */
 public class Agent {
 	
@@ -13,122 +14,50 @@ public class Agent {
 	// =========
 
 	private static Random random = new Random(); //used in mutation
-	private static int defaultWeighting = 100; //used for all weightings when weightings are not specified
-	private static int defaultTotalResources = 100; //used when totalResources is not specified
-	private static int defaultMutability = 50; //used when mutability is not specified
-	public static String title = "MUT\tAGT\tCOM\tSTE\tWLD"; //used for output
+	//public static String title = "MUT\tAGT\tCOM\tSTE\tWLD"; //used for output
 	
 	// ======
 	// FIELDS
 	// ======
 
-
-	private int totalResources; //how many resources an Agent has to contribute
-	private int mutability; //out of 100
-
-	private int agentWeighting; //out of 100
-	private int communityWeighting; //out of 100
-	private int stateWeighting; //out of 100
-	private int worldWeighting; //out of 100
-
-	private double agentContribution; //calculated from agentWeighting and totalResources
-	private double communityContribution; //calculated from communityWeighting and totalResources
-	private double stateContribution; //calculated from stateWeighting and totalResources
-	private double worldContribution; //calculated from worldWeighting and totalResources
-
-	private double allocation; //baseline is agentContribution, possibly modified by higher domains
-
-	public Agent next = null; //used in AgentList (a type of Linked List)
+	private int mutability;
+	private int[] weightings;
+	private double[] contributions;
+	
 		
 	// ============
 	// CONSTRUCTORS
 	// ============
 
 	/**
-	 * Constructor for objects of class Agent (no values defined - default characteristics)
+	 * Constructor for Agent class
+	 * @param mutability as an int
+	 * @param weightings as an int array
 	 */
-	public Agent() {
-		//this.setMutability(random.nextInt(101));
-		//this.setTotalResources(100);
-		//this.setagentWeighting(random.nextInt(101));
-		//this.setcommunityWeighting(random.nextInt(101));
-		//this.setstateWeighting(random.nextInt(101));
-		//this.setworldWeighting(random.nextInt(101));
-		//this.setContributions();
-
-		this.setMutability(defaultMutability);
-		this.setTotalResources(defaultTotalResources);
-		this.setagentWeighting(defaultWeighting);
-		this.setcommunityWeighting(defaultWeighting);
-		this.setstateWeighting(defaultWeighting);
-		this.setworldWeighting(defaultWeighting);
-		this.setContributions();
-		this.resetAllocation();
-		this.next = null;
-	}
-	
-	/**
-	 * Constructor for objects of class Agent (values defined - custom Agent)
-	 * @param  mutability as an integer
-	 * @param  totalResources as an integer
-	 * @param  agentWeighting as an integer
-	 * @param  communityWeighting as an integer
-	 * @param  stateWeighting as an integer
-	 * @param  worldWeighting as an integer
-	 */
-	public Agent(
-		int mutability,	
-		int totalResources, 
-		int agentWeighting,
-		int communityWeighting,
-		int stateWeighting,
-		int worldWeighting
-	) {
+	public Agent(int mutability, int[] weightings) {
 		this.setMutability(mutability);
-		this.setTotalResources(totalResources);
-		this.setagentWeighting(agentWeighting);
-		this.setcommunityWeighting(communityWeighting);
-		this.setstateWeighting(stateWeighting);
-		this.setworldWeighting(worldWeighting);
-		this.setContributions();
-		this.resetAllocation();
-		this.next = null;	
+		this.setWeightings(weightings);
+		calculateContributions(weightings);
 	}
 
 	/**
 	 * Returns a clone of an existing Agent
-	 * @param a1 as an Agent
+	 * @param agent1 as an Agent
 	 * @return Agent
 	 */
-	public static Agent clone(Agent a1) {
+	public static Agent clone(Agent agent1) {
 		//System.out.println("cloning agent...");
-		Agent a2 = new Agent(
-			a1.getMutability(), 
-			a1.getTotalResources(), 
-			a1.getagentWeighting(), 
-			a1.getcommunityWeighting(), 
-			a1.getstateWeighting(), 
-			a1.getworldWeighting()
+		Agent agent2 = new Agent(
+			agent1.getMutability(),
+			agent1.getWeightings()
 		);
-		return a2;
+		return agent2;
 	}
 			
 	// =======
 	// SETTERS
 	// =======
 
-	/**
-	 * Set totalResources to a value
-	 * @param  totalResources as an integer
-	 */
-	private void setTotalResources(int totalResources) {
-		this.totalResources = totalResources;
-	}
-
-	/**
-	 * Set mutability to a value
-	 * @param  mutability as an integer between 0 and 100
-	 */
 	private void setMutability(int mutability) {
 		if (mutability < 0){
 			this.mutability = 0;
@@ -139,91 +68,27 @@ public class Agent {
 		}
 	}
 
-	/**
-	 * Set agentWeighting to a predefined percentage
-	 * @param  agentWeighting as an integer between 0 and 100
-	 */
-	private void setagentWeighting(int agentWeighting) {
-		if (agentWeighting < 0){
-			this.agentWeighting = 0;
-		} else if (agentWeighting > 100){
-			this.agentWeighting = 100;
-		} else {
-			this.agentWeighting = agentWeighting;
-		}
-	}
-	
-	/**
-	 * Set communityWeighting to a predefined percentage
-	 * @param  communityWeighting as an integer between 0 and 100
-	 */
-	private void setcommunityWeighting(int communityWeighting) {
-		if (communityWeighting < 0){
-			this.communityWeighting = 0;
-		} else if (communityWeighting > 100){
-			this.communityWeighting = 100;
-		} else {
-			this.communityWeighting = communityWeighting;
+	private void setWeightings(int[] weightings) {
+		this.weightings = new int[weightings.length];
+		for (int i = 0; i < weightings.length; i++) {
+			this.weightings[i] = weightings[i];
 		}
 	}
 
-	/**
-	 * Set stateWeighting to a predefined percentage
-	 * @param  stateWeighting as an integer between 0 and 100
-	 */
-	private void setstateWeighting(int stateWeighting) {
-		if (stateWeighting < 0){
-			this.stateWeighting = 0;
-		} else if (stateWeighting > 100){
-			this.stateWeighting = 100;
-		} else {
-			this.stateWeighting = stateWeighting;
+	private void calculateContributions(int[] weightings) {
+		this.contributions = new double[weightings.length];
+		int total = 0;
+		for (int x : weightings) {
+			total += x;
 		}
-	}
-
-	/**
-	 * Set worldWeighting to a predefined percentage
-	 * @param  worldWeighting as an integer between 0 and 100
-	 */
-	private void setworldWeighting(int worldWeighting) {
-		if (worldWeighting < 0){
-			this.worldWeighting = 0;
-		} else if (worldWeighting > 100){
-			this.worldWeighting = 100;
-		} else {
-			this.worldWeighting = worldWeighting;
+		for (int i = 0; i < weightings.length; i++) {
+			this.contributions[i] = (total * 1.0) / weightings[i];
 		}
-	}
-
-	/**
-	 * Set contributed resources based on weightings
-	 */
-	private void setContributions() {
-		int totalContribution = agentWeighting + communityWeighting + stateWeighting + worldWeighting;
-		this.agentContribution = agentWeighting * 1.0 / totalContribution;
-		this.communityContribution = communityWeighting * 1.0 / totalContribution;
-		this.stateContribution = stateWeighting * 1.0 / totalContribution;
-		this.worldContribution = worldWeighting * 1.0 / totalContribution;
-	}
-	
-	/**
-	 * Sets allocation equal to agentContribution
-	 */
-	public void resetAllocation() {
-		this.allocation = this.agentContribution;
 	}
 
 	// =======
 	// GETTERS
 	// =======
-
-	/**
-	 * Get Agent totalResources
-	 * @return totalResources as an integer
-	 */
-	public int getTotalResources() {
-		return this.totalResources;
-	}
 
 	/**
 	 * Get Agent mutability
@@ -234,88 +99,45 @@ public class Agent {
 	}
 
 	/**
-	 * Get Agent agentWeighting
-	 * @return agentWeighting as an integer
+	 * Get weightings
+	 * @return weightings as an int array
 	 */
-	public int getagentWeighting() {
-		return this.agentWeighting;
+	public int[] getWeightings() {
+		return this.weightings;
 	}
 
 	/**
-	 * Get Agent communityWeighting
-	 * @return communityWeighting as an integer
+	 * Get the weighting for a particular group level
+	 * @return weighting as an int
 	 */
-	public int getcommunityWeighting() {
-		return this.communityWeighting;
+	public int getWeighting(int level) {
+		if (level >= 0 && level < weightings.length) {
+			return this.weightings[level];
+		} else {
+			return -1;
+		}
 	}
 
 	/**
-	 * Get Agent stateWeighting
-	 * @return stateWeighting as an integer
+	 * Get contributions
+	 * @return contributions as a double array
 	 */
-	public int getstateWeighting() {
-		return this.stateWeighting;
+	public double[] getContributions() {
+		return this.contributions;
 	}
 
 	/**
-	 * Get Agent worldWeighting
-	 * @return worldWeighting as an integer
+	 * Gets the contribution for a particular group level
+	 * @param level as an int
+	 * @return contribution as a double
 	 */
-	public int getworldWeighting() {
-		return this.worldWeighting;
-	}
-
-	/**
-	 * Get Agent agentContribution
-	 * @return agentContribution as an integer
-	 */
-	public double getagentContribution() {
-		return this.agentContribution;
-	}
-
-	/**
-	 * Get Agent communityContribution
-	 * @return communityContribution as an integer
-	 */
-	public double getcommunityContribution() {
-		return this.communityContribution;
-	}
-
-	/**
-	 * Get Agent stateContribution
-	 * @return stateContribution as an integer
-	 */
-	public double getstateContribution() {
-		return this.stateContribution;
-	}
-
-	/**
-	 * Get Agent worldContribution
-	 * @return worldContribution as an integer
-	 */
-	public double getworldContribution() {
-		return this.worldContribution;
-	}
-
-	/**
-	 * Returns Agent allocation
-	 * @return allocation as a double
-	 */
-	public double getAllocation() {
-		return this.allocation;
+	public double getContribution(int level) {
+		return this.contributions[level];
 	}
 
 	// =========
 	// UTILITIES
 	// =========
-
-	/**
-	 * Increments allocation by n
-	 * @param n as a double
-	 */
-	public void incrementAllocation(double n) {
-		this.allocation += n;
-	}
 
 	/**
 	 * Creates a new Agent from an existing one
@@ -364,12 +186,12 @@ public class Agent {
 	// OUTPUT
 	// ======
 
-	
-	@Override
+	//@Override
 	/**
 	 * toString method for Agent
 	 * @return String
 	 */
+	/*
 	public String toString() {
 		return String.format(
 			"%d\t%d\t%d\t%d\t%d", 
@@ -379,6 +201,7 @@ public class Agent {
 			this.stateWeighting, 
 			this.worldWeighting);
 	}
+	*/
 
 	// ============
 	// MISC METHODS

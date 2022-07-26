@@ -1,7 +1,8 @@
 // TODO
 
 // top level group
-// agent creation
+// getters and setters for Settings
+// agent reproduction
 // simulation begin
 // TEST
 
@@ -37,6 +38,10 @@ public class GUI {
 	private static final String QUIT = "Quit";
 	private static final String GOODBYE_MSG = "Goodbye";
 
+	// =================
+	// SETTING VARIABLES
+	// =================
+
 	// AGENTS SETTINGS
 	// ===============
 	private static int defaultAgentWeighting = 100;
@@ -55,9 +60,16 @@ public class GUI {
 	private static int iterationsPerRound = 10000;
 	private static int rounds = 1;
 
+	// ===========
+	// MAIN METHOD
+	// ===========
 	public static void main(String[] args) {
 		mainMenu();	
 	}
+
+	// ============
+	// MENU METHODS
+	// ============
 
 	public static void mainMenu() {
 		boolean cont = true;
@@ -79,6 +91,10 @@ public class GUI {
 			}	
 		}
 	}
+
+	// ===============
+	// UTILITY METHODS
+	// ===============
 
 	public static void runSimulation() {
 		State.setDefaultSize(stateSize);
