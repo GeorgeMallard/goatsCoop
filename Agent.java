@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -21,6 +20,7 @@ public class Agent {
 	// ======
 
 	private int mutability;
+	private boolean mutableMutability;
 	private int[] weightings;
 	private double[] contributions;
 	
@@ -34,8 +34,9 @@ public class Agent {
 	 * @param mutability as an int
 	 * @param weightings as an int array
 	 */
-	public Agent(int mutability, int[] weightings) {
+	public Agent(int mutability, boolean mutableMutability, int[] weightings) {
 		this.setMutability(mutability);
+		this.setMutableMutability(mutableMutability);
 		this.setWeightings(weightings);
 		calculateContributions(weightings);
 	}
@@ -45,13 +46,13 @@ public class Agent {
 	 * @param agent1 as an Agent
 	 * @return Agent
 	 */
-	public static Agent clone(Agent agent1) {
+	public static Agent clone(Agent agent) {
 		//System.out.println("cloning agent...");
-		Agent agent2 = new Agent(
-			agent1.getMutability(),
-			agent1.getWeightings()
+		return new Agent(
+			agent.getMutability(),
+			agent.getMutableMutability(),
+			agent.getWeightings()
 		);
-		return agent2;
 	}
 			
 	// =======
@@ -66,6 +67,10 @@ public class Agent {
 		} else {
 			this.mutability = mutability;
 		}
+	}
+
+	private void setMutableMutability(boolean bool) {
+		this.mutableMutability = bool;
 	}
 
 	private void setWeightings(int[] weightings) {
@@ -96,6 +101,14 @@ public class Agent {
 	 */
 	public int getMutability() {
 		return this.mutability;
+	}
+
+	/**
+	 * Get whether mutability is itself mutable
+	 * @return boolean
+	 */
+	public boolean getMutableMutability() {
+		return this.mutableMutability;
 	}
 
 	/**
@@ -146,20 +159,16 @@ public class Agent {
 	 */
 	public static Agent reproduce(Agent agent) {
 		
-		int mutability = mutate(agent.mutability, agent.mutability);
-		int totalResources = 100;
-		int agentWeighting = mutate(agent.agentWeighting, mutability);
-		int communityWeighting = mutate(agent.communityWeighting, mutability);
-		int stateWeighting = mutate(agent.stateWeighting, mutability);
-		int worldWeighting = mutate(agent.worldWeighting, mutability);
-
+		int mutability = agent.mutableMutability ? mutate(agent.mutability, agent.mutability) : agent.mutability;
+		boolean mutableMutability = agent.mutableMutability;
+		int[] weightings = new int[agent.weightings.length];
+		for (int i = 0; i < agent.weightings.length; i++) {
+			weightings[i] = mutate(agent.weightings[i], mutability);
+		}
 		return new Agent(
 			mutability,
-			totalResources,
-			agentWeighting,
-			communityWeighting,
-			stateWeighting,
-			worldWeighting
+			mutableMutability,
+			weightings
 		);
 	}
 
