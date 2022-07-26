@@ -22,10 +22,16 @@ public class Settings {
     private static int agentDefaultMutability = 50;
     private static boolean agentMutableMutability = true;
     private static ArrayList<Integer> agentDefaultWeightings = new ArrayList<Integer>(Arrays.asList(50, 50, 50));
+    // ===SIMULATION===
+	private static int iterationsPerRound = 10000;
+	private static int rounds = 1;
 
     // =======
     // SETTERS
     // =======
+
+   // ===GROUPS===
+
 
     public static void setGroupDepth(int newDepth) {
         if (newDepth > 0 && newDepth < maxDepth && newDepth != groupDepth) {
@@ -48,6 +54,8 @@ public class Settings {
         }  
     }
 
+    // ===AGENTS===
+
     public static void setAgentDefaultMutability(int mutability) {
         if (mutability >= 0 && mutability <= 100) {
             agentDefaultMutability = mutability;
@@ -64,9 +72,16 @@ public class Settings {
         }
     }
 
+    // ===SIMULATION===
+
+
+
     // =======
     // GETTERS
     // =======
+
+    // ===GROUPS===
+
 
     public static int getDepth() {
         return groupDepth;
@@ -75,6 +90,8 @@ public class Settings {
     public static int getGroupSize(int groupLevel) {
         return groupDefaultSizes.get(groupLevel - 1);
     }
+
+    // ===AGENTS===
 
     public static int getAgentDefaultMutability() {
         return agentDefaultMutability;
@@ -99,5 +116,7 @@ public class Settings {
             return -1;
         }
     }
+
+    // ===SIMULATION===
 
 }
