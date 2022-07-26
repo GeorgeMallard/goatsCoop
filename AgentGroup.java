@@ -41,6 +41,7 @@ public class AgentGroup extends Group {
         for (int i = 0; i < this.getSize(); i++) {
             agents.add(new Agent(
                 Settings.getAgentDefaultMutability(), 
+                Settings.getAgentMutableMutability(),
                 Settings.getAgentDefaultWeightings()
             ));
         }
