@@ -20,6 +20,7 @@ public class Settings {
     private static ArrayList<Integer> groupDefaultSizes = new ArrayList<Integer>(Arrays.asList(10, 10, 10));
     // ===AGENTS===
     private static int agentDefaultMutability = 50;
+    private static boolean agentMutableMutability = true;
     private static ArrayList<Integer> agentDefaultWeightings = new ArrayList<Integer>(Arrays.asList(50, 50, 50));
 
     // =======
@@ -53,6 +54,10 @@ public class Settings {
         }
     }
 
+    public static void setAgentMutableMutability(boolean bool) {
+        agentMutableMutability = bool;
+    }
+
     public static void setAgentWeighting(int groupLevel, int value) {
         if (groupLevel > -1 && groupLevel < agentDefaultWeightings.size()) {
             agentDefaultWeightings.set(groupLevel, value);
@@ -71,6 +76,14 @@ public class Settings {
         return groupDefaultSizes.get(groupLevel - 1);
     }
 
+    public static int getAgentDefaultMutability() {
+        return agentDefaultMutability;
+    }
+
+    public static boolean getAgentMutableMutability() {
+        return agentMutableMutability;
+    }
+
     public static int[] getAgentDefaultWeightings() {
         int[] weightings = new int[agentDefaultWeightings.size()];
         for (int i = 0; i < agentDefaultWeightings.size(); i++) {
@@ -85,10 +98,6 @@ public class Settings {
         } else {
             return -1;
         }
-    }
-
-    public static int getAgentDefaultMutability() {
-        return agentDefaultMutability;
     }
 
 }
