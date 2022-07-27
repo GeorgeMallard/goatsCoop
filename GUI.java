@@ -1,32 +1,3 @@
-// TODO
-
-// top level group
-// simulation begin
-// TEST
-
-// gui alter settings and run sim:
-// --change depth
-// --change default group sizes
-// --change default agent weightings
-// --number of iterations (or stopping condition)
-// TEST
-
-// agent contributions passed up the chain
-// TEST
-
-// culling and repopulation of agents
-// TEST
-
-// add settings:
-// --average or absolute contribution
-// --mutation settings (mutable mutation, advanced mutation)
-// --allow agent negative values
-
-// displaying data
-// --weightings / contributions
-
-
-
 public class GUI {
 	
 	// =========
@@ -36,13 +7,6 @@ public class GUI {
 	private static final String RUN_SIMULATION = "Run simulation";
 	private static final String QUIT = "Quit";
 	private static final String GOODBYE_MSG = "Goodbye";
-
-	// ===========
-	// MAIN METHOD
-	// ===========
-	public static void main(String[] args) {
-		mainMenu();	
-	}
 
 	// ============
 	// MENU METHODS

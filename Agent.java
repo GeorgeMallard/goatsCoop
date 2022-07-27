@@ -35,6 +35,7 @@ public class Agent {
 	 * @param weightings as an int array
 	 */
 	public Agent(int mutability, boolean mutableMutability, int[] weightings) {
+		System.out.println("Creating Agent...");
 		this.setMutability(mutability);
 		this.setMutableMutability(mutableMutability);
 		this.setWeightings(weightings);

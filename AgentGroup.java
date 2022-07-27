@@ -34,15 +34,19 @@ public class AgentGroup extends Group {
     // METHODS
     // =======
 
+    public void initialise() {
+        agents = new ArrayList<Agent>();
+    }
+
     /**
      * Populates AgentGroup with default Agents
      */
     public void populate() {
         for (int i = 0; i < this.getSize(); i++) {
             agents.add(new Agent(
-                Settings.getAgentDefaultMutability(), 
+                Settings.getAgentInitialMutability(), 
                 Settings.getAgentMutableMutability(),
-                Settings.getAgentDefaultWeightings()
+                Settings.getAgentInitialWeightings()
             ));
         }
     }

@@ -18,8 +18,10 @@ public abstract class Group {
      * @param populate as a boolean (indicates whether group should be auto populated - used when sim is first started)
      */
     public Group(int level, int size, boolean populate) {
+        System.out.println("Creating Level " + level + " group...");
         this.setLevel(level);
         this.setSize(size);
+        this.initialise();
         if (populate) {
             this.populate();
         }
@@ -81,6 +83,9 @@ public abstract class Group {
      * Abstract method for auto-populating Groups
      */
     public abstract void populate();
+
+
+    public abstract void initialise();
     
 
 }

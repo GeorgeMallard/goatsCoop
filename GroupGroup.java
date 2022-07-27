@@ -33,6 +33,11 @@ public class GroupGroup extends Group {
     // METHODS
     // =======
 
+    public void initialise() {
+        groups = new ArrayList<Group>();
+    }
+
+
     /**
      * Auto-populates a group with sub-groups
      */
