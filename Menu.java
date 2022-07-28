@@ -1,6 +1,7 @@
 public class Menu {
     
-    public static int create(String prompt, String... args) {
+    public static int create(String title, String prompt, String... args) {
+        System.out.println("\n" + title);
         for (int i = 0; i < args.length - 1; i++) {
             System.out.println(String.format("%d. %s", i + 1, args[i]));
         }
