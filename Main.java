@@ -1,9 +1,8 @@
-// TODO
+// TO DO
 
 // gui alter settings and run sim:
-// --change default group sizes
-// --change mutable mutability
-// --change default agent weightings
+// --change initial group sizes
+// --change initial agent weightings
 // --number of iterations (or stopping condition)
 // TEST
 

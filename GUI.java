@@ -6,6 +6,8 @@ public class GUI {
 	
 	// ===GENERAL MENUS===
 	private static final String BACK = "Back";
+	private static final String ON = "ON";
+	private static final String OFF = "OFF";
 	// ===MAIN MENU===
 	private static final String MAIN_MENU_TITLE = "MAIN MENU\n=========";
 	private static final String SELECT_OPTION = "Select an option: ";
@@ -25,6 +27,10 @@ public class GUI {
 	private static final String ENTER_GROUP_DEPTH = "Enter new group depth (1 - " + Settings.getMaxGroupDepth() + "): ";
 	// ===AGENT SETTINGS MENU===
 	private static final String AGENT_SETTINGS_MENU_TITLE = "AGENT SETTINGS\n==============";
+	private static final String INITIAL_MUTABILITY = "Initial Mutability: ";
+	private static final String MUTABLE_MUTABILITY = "Mutable Mutability: ";
+	private static final String ENTER_MUTABILITY = "Enter Agent Mutability: ";
+
 	// ===SIMULATION SETTINGS MENU===
 	private static final String SIMULATION_SETTINGS_MENU_TITLE = "SIMULATION SETTINGS\n===================";	
 
@@ -36,12 +42,15 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
-			value = Menu.create(
-				MAIN_MENU_TITLE,
-				SELECT_OPTION, 
+			String[] options = {
 				RUN_SIMULATION,
 				SETTINGS,
 				QUIT
+			};
+			value = Menu.create(
+				MAIN_MENU_TITLE,
+				SELECT_OPTION,
+				options
 			);
 			switch (value) {
 				case 1:
@@ -65,13 +74,16 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
-			value = Menu.create(
-				SETTINGS_MENU_TITLE,
-				SELECT_OPTION,
+			String[] options = {
 				GROUP_SETTINGS,
 				AGENT_SETTINGS,
 				SIMULATION_SETTINGS,
 				BACK
+			};
+			value = Menu.create(
+				SETTINGS_MENU_TITLE,
+				SELECT_OPTION,
+				options				
 			);
 			switch (value) {
 				case 1:
@@ -95,11 +107,14 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
+			String[] options = {
+				GROUP_DEPTH + Settings.getGroupDepth(), 
+				BACK
+			};
 			value = Menu.create(
 				GROUP_SETTINGS_MENU_TITLE,
 				SELECT_OPTION,
-				GROUP_DEPTH + Settings.getGroupDepth(), 
-				BACK
+				options
 			);
 			switch (value) {
 				case 1:
@@ -117,12 +132,23 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
+			String[] options = {
+				INITIAL_MUTABILITY + Settings.getAgentInitialMutability(),
+				MUTABLE_MUTABILITY + (Settings.getAgentMutableMutability() ? ON : OFF),
+				BACK
+			};
 			value = Menu.create(
 				AGENT_SETTINGS_MENU_TITLE,
 				SELECT_OPTION, 
-				BACK
+				options
 			);
 			switch (value) {
+				case 1:
+					Settings.setAgentInitialMutability(Input.readIntBetween(ENTER_MUTABILITY, 1, 100));
+					break;
+				case 2:
+					Settings.setAgentMutableMutability(!Settings.getAgentMutableMutability());
+					break;
 				case 0:
 				default:
 					cont = false;
@@ -134,11 +160,14 @@ public class GUI {
 	public static void simulationSettingsMenu() {
 		boolean cont = true;
 		int value = -1;
+		String[] options = {
+			BACK
+		};
 		while (cont) {
 			value = Menu.create(
 				SIMULATION_SETTINGS_MENU_TITLE,
 				SELECT_OPTION, 
-				BACK
+				options
 			);
 			switch (value) {
 				case 0:
@@ -154,6 +183,9 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
+			String[] options = {
+				BACK
+			};
 			value = Menu.create(
 				MAIN_MENU_TITLE,
 				SELECT_OPTION, 
