@@ -23,6 +23,9 @@ public class Agent {
 	private boolean mutableMutability;
 	private int[] weightings;
 	private double[] contributions;
+
+	// ===Deprecated===
+	public Agent next = null;
 	
 		
 	// ============

@@ -51,7 +51,7 @@ public class Settings {
    // ===GROUPS===
 
     public static void setGroupDepth(int newDepth) {
-        if (newDepth > 0 && newDepth < maxDepth && newDepth != groupDepth) {
+        if (newDepth > 0 && newDepth <= maxDepth && newDepth != groupDepth) {
             if (newDepth < groupDepth) {
                 for (int i = 0; i < groupDepth - newDepth; i++) {
                     groupInitialSizes.remove(newDepth);
@@ -112,6 +112,10 @@ public class Settings {
 
     public static int getGroupDepth() {
         return groupDepth;
+    }
+
+    public static int getMaxGroupDepth() {
+        return maxDepth;
     }
 
     public static int getGroupSize(int groupLevel) {

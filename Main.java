@@ -1,8 +1,8 @@
 // TODO
 
 // gui alter settings and run sim:
-// --change depth
 // --change default group sizes
+// --change mutable mutability
 // --change default agent weightings
 // --number of iterations (or stopping condition)
 // TEST
@@ -15,11 +15,13 @@
 
 // add settings:
 // --average or absolute contribution
-// --mutation settings (mutable mutation, advanced mutation)
+// --advanced mutation option
 // --allow agent negative values
 
-// displaying data
-// --weightings / contributions
+// data output
+// --gather data (weightings / contributions)
+// --gather data (other)
+// --how best to output data? *ASK TUTOR*
 
 public class Main {
     
