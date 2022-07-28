@@ -10,11 +10,11 @@ public class Settings {
     // ===GROUPS===
     private static final int defaultGroupDepth = 3;         // change this number to alter default group depth (number of group levels)
     private static final int maxDepth = 5;                  // change this number to alter max group depth (number of group levels)
-    private static final int defaultGroupSize = 5;         // change this number to alter default group size
+    private static int defaultGroupSize = 5;                // change this number to alter default group size (**not technically a constant**)
     private static final int maxGroupSize = 100;            // change this number to alter max group size
     // ===AGENTS===
     private static final int defaultAgentMutability = 50;   // change this number to alter default agent mutability
-    private static final int defaultAgentWeighting = 50;    // change this number to alter default agent weighting
+    private static int defaultAgentWeighting = 50;          // change this number to alter default agent weighting (**not technically a constant**)
     // ===SIMULATION===
     private static final int defaultIterations = 10000;     // change this number to alter default number of iterations per round
     private static final int maxIterations = 1000000;       // change this number to alter max number of iterations per round
@@ -71,6 +71,13 @@ public class Settings {
         }  
     }
 
+    public static void setAllGroupSizes(int newSize) {
+        for (int i = 0; i < groupInitialSizes.size(); i++) {
+            groupInitialSizes.set(i, newSize);
+        }
+        defaultGroupSize = newSize;
+    }
+
     // ===AGENTS===
 
     public static void setAgentInitialMutability(int mutability) {
@@ -122,6 +129,10 @@ public class Settings {
         return groupInitialSizes.get(groupLevel - 1);
     }
 
+    public static int getMaxGroupSize() {
+        return maxGroupSize;
+    }
+
     // ===AGENTS===
 
     public static int getAgentInitialMutability() {
@@ -154,7 +165,15 @@ public class Settings {
         return iterationsPerRound;
     }
 
+    public static int getMaxIterations() {
+        return maxIterations;
+    }
+
     public static int getRounds() {
         return rounds;
+    }
+
+    public static int getMaxRounds() {
+        return maxRounds;
     }
 }
