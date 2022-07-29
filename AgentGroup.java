@@ -26,8 +26,8 @@ public class AgentGroup extends Group {
      * @param size as an int
      * @param populate as a boolean (indicates whether AgentGroup should auto-populate, used when sim is first created)
      */
-    public AgentGroup(int level, int size, boolean populate) {
-        super(level, size, populate);
+    public AgentGroup(int level, int size, boolean populate, Group parentGroup) {
+        super(level, size, populate, parentGroup);
     }
 
     // =======
@@ -46,7 +46,8 @@ public class AgentGroup extends Group {
             agents.add(new Agent(
                 Settings.getAgentInitialMutability(), 
                 Settings.getAgentMutableMutability(),
-                Settings.getAgentInitialWeightings()
+                Settings.getAgentInitialWeightings(),
+                this
             ));
         }
     }

@@ -25,8 +25,8 @@ public class GroupGroup extends Group {
      * @param size as an int
      * @param populate as a boolean (indicates whether or not to auto-populate, used when first starting a sim)
      */
-    public GroupGroup(int level, int size, boolean populate) {
-        super(level, size, populate);
+    public GroupGroup(int level, int size, boolean populate, Group parentGroup) {
+        super(level, size, populate, parentGroup);
     }
 
     // =======
@@ -44,11 +44,11 @@ public class GroupGroup extends Group {
     public void populate() {
         if (this.getLevel() == 2) {
             for (int i = 0; i < this.getSize(); i++) {
-                this.groups.add(new AgentGroup(1, this.getSubGroupSize(), true));
+                this.groups.add(new AgentGroup(1, this.getSubGroupSize(), true, this));
             }
         } else {
             for (int i = 0; i < this.getSize(); i++) {
-                this.groups.add(new GroupGroup(this.getLevel() - 1, this.getSubGroupSize(), true));
+                this.groups.add(new GroupGroup(this.getLevel() - 1, this.getSubGroupSize(), true, this));
             }
         }
         

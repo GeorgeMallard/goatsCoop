@@ -1,4 +1,4 @@
-public abstract class Group {
+public abstract class Group extends Entity {
     
     // ======
     // FIELDS
@@ -17,7 +17,8 @@ public abstract class Group {
      * @param size as an int
      * @param populate as a boolean (indicates whether group should be auto populated - used when sim is first started)
      */
-    public Group(int level, int size, boolean populate) {
+    public Group(int level, int size, boolean populate, Group parentGroup) {
+        super(parentGroup);
         System.out.println("Creating Level " + level + " group...");
         this.setLevel(level);
         this.setSize(size);

@@ -6,7 +6,7 @@ import java.util.Random;
  * @author  Chris Litting
  * @version 3.0
  */
-public class Agent {
+public class Agent extends Entity {
 	
 	// =========
 	// VARIABLES
@@ -37,7 +37,8 @@ public class Agent {
 	 * @param mutability as an int
 	 * @param weightings as an int array
 	 */
-	public Agent(int mutability, boolean mutableMutability, int[] weightings) {
+	public Agent(int mutability, boolean mutableMutability, int[] weightings, Group parentGroup) {
+		super(parentGroup);
 		System.out.println("Creating Agent...");
 		this.setMutability(mutability);
 		this.setMutableMutability(mutableMutability);
@@ -55,7 +56,8 @@ public class Agent {
 		return new Agent(
 			agent.getMutability(),
 			agent.getMutableMutability(),
-			agent.getWeightings()
+			agent.getWeightings(),
+			agent.getParentGroup()
 		);
 	}
 			
@@ -172,7 +174,8 @@ public class Agent {
 		return new Agent(
 			mutability,
 			mutableMutability,
-			weightings
+			weightings,
+			agent.getParentGroup()
 		);
 	}
 
