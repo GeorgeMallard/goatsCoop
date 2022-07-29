@@ -34,6 +34,8 @@ public class GUI {
 	private static final String INITIAL_MUTABILITY = "Initial Mutability: ";
 	private static final String MUTABLE_MUTABILITY = "Mutable Mutability: ";
 	private static final String ENTER_MUTABILITY = "Enter Agent Mutability (1 - 100): ";
+	private static final String AGENT_WEIGHTING = "Level %d Initial Weighting: %d";
+	private static final String ENTER_WEIGHTING = "Enter weighting for Level %d: ";
 	// ===SIMULATION SETTINGS MENU===
 	private static final String SIMULATION_SETTINGS_MENU_TITLE = "SIMULATION SETTINGS\n===================";	
 	private static final String ITERATIONS = "Iterations per Round: ";
@@ -148,10 +150,13 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
-			String[] options = {		//+agent weightings
-				INITIAL_MUTABILITY + Settings.getAgentInitialMutability(),
-				MUTABLE_MUTABILITY + (Settings.getAgentMutableMutability() ? ON : OFF)
-			};
+
+			String[] options = new String[2 + Settings.getGroupDepth()];
+			options[0] = INITIAL_MUTABILITY + Settings.getAgentInitialMutability();
+			options[1] = MUTABLE_MUTABILITY + (Settings.getAgentMutableMutability() ? ON : OFF);
+			for (int i = 0; i < Settings.getGroupDepth(); i++) {
+				options[i + 2] = String.format(String.format(AGENT_WEIGHTING, i, Settings.getAgentInitialWeighting(i)));
+			}				
 			value = Menu.create(
 				AGENT_SETTINGS_MENU_TITLE,
 				SELECT_OPTION, 
@@ -169,7 +174,7 @@ public class GUI {
 					cont = false;
 					break;
 				default:
-					//here
+					Settings.setAgentInitialWeighting(value - 3, Input.readIntBetween(String.format(ENTER_WEIGHTING, value - 3), 0, 100));
 					break;
 			}
 		}

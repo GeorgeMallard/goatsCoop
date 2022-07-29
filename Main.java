@@ -1,11 +1,5 @@
 // TO DO
 
-// gui alter settings and run sim:
-// --change initial group sizes
-// --change initial agent weightings
-// --number of iterations (or stopping condition)
-// TEST
-
 // agent contributions passed up the chain
 // TEST
 
