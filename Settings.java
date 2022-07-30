@@ -55,10 +55,12 @@ public class Settings {
             if (newDepth < groupDepth) {
                 for (int i = 0; i < groupDepth - newDepth; i++) {
                     groupInitialSizes.remove(newDepth);
+                    agentInitialWeightings.remove(newDepth);
                 }
             } else {
                 for (int i = 0; i < newDepth - groupDepth; i++) {
                     groupInitialSizes.add(groupDepth, defaultGroupSize);
+                    agentInitialWeightings.add(groupDepth, defaultAgentWeighting);
                 }
             }
             groupDepth = newDepth;
@@ -94,6 +96,13 @@ public class Settings {
         if (groupLevel > -1 && groupLevel < agentInitialWeightings.size()) {
             agentInitialWeightings.set(groupLevel, value);
         }
+    }
+
+    public static void setAllAgentWeightings(int newWeighting) {
+        for (int i = 0; i < agentInitialWeightings.size(); i++) {
+            agentInitialWeightings.set(i, newWeighting);
+        }
+        defaultAgentWeighting = newWeighting;
     }
 
     // ===SIMULATION===

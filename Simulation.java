@@ -10,6 +10,8 @@ public class Simulation {
 			topLevelGroup = new GroupGroup(Settings.getGroupDepth(), Settings.getGroupSize(Settings.getGroupDepth()), true, null);
 		}
 
+		topLevelGroup.gatherAllocations();
+
 
 	}
 

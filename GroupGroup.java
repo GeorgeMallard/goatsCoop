@@ -29,6 +29,19 @@ public class GroupGroup extends Group {
         super(level, size, populate, parentGroup);
     }
 
+
+    // =======
+    // GETTERS
+    // =======
+
+    /**
+     * Returns size of child group
+     * @return int
+     */
+    public int getSubGroupSize() {
+        return Settings.getGroupSize(this.getLevel() - 1);
+    }
+
     // =======
     // METHODS
     // =======
@@ -53,4 +66,28 @@ public class GroupGroup extends Group {
         }
         
     }
+
+    public void gatherAllocations() {
+
+        for (Group x : groups) {
+            x.gatherAllocations();
+        }
+
+        for (int i = 0; i < groups.size(); i++) {
+            for (int j = 0; j < Settings.getGroupDepth() - this.getLevel(); j++) {
+                this.incrementAllocation(j, groups.get(i).getAllocation(j + 1));
+            }
+        }
+        System.out.println("Level " + this.getLevel() + " Group reporting: " + convert(this.getAllocations()));
+    }
+
+    public String convert(double[] d) {
+        String str = "";
+        for (double x : d) {
+            str += Double.toString(x) + ", ";
+        }
+        return str;
+    }
+
+
 }

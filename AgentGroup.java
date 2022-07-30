@@ -12,8 +12,9 @@ public class AgentGroup extends Group {
     // FIELDS
     // ======
 
-    // private int level; (inherited)
-    // private int size;  (inherited)
+    // private int level;           (inherited from Group)
+    // private int size;            (inherited from Group)
+    // private double allocations;  (inherited from Group)
     public ArrayList<Agent> agents; 
 
     // ===========
@@ -50,6 +51,24 @@ public class AgentGroup extends Group {
                 this
             ));
         }
+    }
+
+    public void gatherAllocations() {
+
+        for (int i = 0; i < agents.size(); i++) {
+            for (int j = 0; j < Settings.getGroupDepth() - this.getLevel(); j++) {
+                this.incrementAllocation(j, agents.get(i).getContribution(j + 1));
+            }
+        }
+        System.out.println("Agent Group reporting: " + convert(this.getAllocations()));
+    }
+
+    public String convert(double[] d) {
+        String str = "";
+        for (double x : d) {
+            str += Double.toString(x) + ", ";
+        }
+        return str;
     }
     
 }

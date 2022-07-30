@@ -6,6 +6,7 @@ public abstract class Group extends Entity {
 
     private int level;
     private int size;
+    private double[] allocations;
     
     // ===========
     // CONSTRUCTOR
@@ -19,7 +20,8 @@ public abstract class Group extends Entity {
      */
     public Group(int level, int size, boolean populate, Group parentGroup) {
         super(parentGroup);
-        System.out.println("Creating Level " + level + " group...");
+        //System.out.println("Creating Level " + level + " group...");
+        this.allocations = new double[Settings.getGroupDepth() - level];
         this.setLevel(level);
         this.setSize(size);
         this.initialise();
@@ -48,6 +50,18 @@ public abstract class Group extends Entity {
         this.size = size;
     }
 
+    public void incrementAllocation(int index, double n) {
+        if (index < this.allocations.length) {
+            this.allocations[index] += n;
+        }
+    }
+
+    public void resetAllocations() {
+        for (int i = 0; i < this.allocations.length; i++) {
+            this.allocations[i] = 0.0;
+        }
+    }
+
     // =======
     // GETTERS
     // =======
@@ -69,24 +83,24 @@ public abstract class Group extends Entity {
     }
 
     /**
-     * R
-     * @return
+     * Returns the allocation for a given index
+     * @param index as an int
+     * @return double
      */
-    public int getSubGroupSize() {
-        return Settings.getGroupSize(this.level - 1);
+    public double getAllocation(int index) {
+        return this.allocations[index];
+    }
+
+    public double[] getAllocations() {
+        return this.allocations;
     }
 
     // ================
     // ABSTRACT METHODS
     // ================
 
-    /**
-     * Abstract method for auto-populating Groups
-     */
-    public abstract void populate();
-
-
-    public abstract void initialise();
-    
+    public abstract void populate();            //auto-populates with child Groups or Agents
+    public abstract void initialise();          //initialises Group or Agent ArrayLists
+    public abstract void gatherAllocations();   //gathers allocations from child Groups or Agents
 
 }

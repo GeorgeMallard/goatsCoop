@@ -28,9 +28,9 @@ public class Agent extends Entity {
 	public Agent next = null;
 	
 		
-	// ============
-	// CONSTRUCTORS
-	// ============
+	// ===========
+	// CONSTRUCTOR
+	// ===========
 
 	/**
 	 * Constructor for Agent class
@@ -39,28 +39,13 @@ public class Agent extends Entity {
 	 */
 	public Agent(int mutability, boolean mutableMutability, int[] weightings, Group parentGroup) {
 		super(parentGroup);
-		System.out.println("Creating Agent...");
+		//System.out.println("Creating Agent...");
 		this.setMutability(mutability);
 		this.setMutableMutability(mutableMutability);
 		this.setWeightings(weightings);
 		calculateContributions(weightings);
 	}
-
-	/**
-	 * Returns a clone of an existing Agent
-	 * @param agent1 as an Agent
-	 * @return Agent
-	 */
-	public static Agent clone(Agent agent) {
-		//System.out.println("cloning agent...");
-		return new Agent(
-			agent.getMutability(),
-			agent.getMutableMutability(),
-			agent.getWeightings(),
-			agent.getParentGroup()
-		);
-	}
-			
+		
 	// =======
 	// SETTERS
 	// =======
@@ -95,6 +80,7 @@ public class Agent extends Entity {
 		for (int i = 0; i < weightings.length; i++) {
 			this.contributions[i] = (total * 1.0) / weightings[i];
 		}
+		//System.out.println("Agent contributions: " + convert(this.getContributions()));
 	}
 
 	// =======
@@ -159,6 +145,21 @@ public class Agent extends Entity {
 	// =========
 
 	/**
+	 * Returns a clone of an existing Agent
+	 * @param agent1 as an Agent
+	 * @return Agent
+	 */
+	public static Agent clone(Agent agent) {
+		//System.out.println("cloning agent...");
+		return new Agent(
+			agent.getMutability(),
+			agent.getMutableMutability(),
+			agent.getWeightings(),
+			agent.getParentGroup()
+		);
+	}
+
+	/**
 	 * Creates a new Agent from an existing one
 	 * @param agent as an Agent
 	 * @return Agent
@@ -197,6 +198,14 @@ public class Agent extends Entity {
 		}
 		return value;
 	}
+
+	public String convert(double[] d) {
+        String str = "";
+        for (double x : d) {
+            str += Double.toString(x) + ", ";
+        }
+        return str;
+    }
 
 	// ======
 	// OUTPUT

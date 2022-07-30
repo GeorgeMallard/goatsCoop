@@ -1,7 +1,6 @@
 // TO DO
 
-// agent contributions passed up the chain
-// TEST
+// change all weightings at once
 
 // culling and repopulation of agents
 // TEST
