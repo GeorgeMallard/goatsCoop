@@ -1,7 +1,5 @@
 // TO DO
 
-// change all weightings at once
-
 // culling and repopulation of agents
 // TEST
 
@@ -9,11 +7,19 @@
 // --average or absolute contribution
 // --advanced mutation option
 // --allow agent negative values
+// TEST
 
 // data output
 // --gather data (weightings / contributions)
 // --gather data (other)
-// --how best to output data? *ASK TUTOR*
+// --how best to output data? (output as .txt file?) *ASK TUTOR*
+// TEST
+
+// repeatability
+// --run directly from cmd line
+// TEST
+
+
 
 public class Main {
     
