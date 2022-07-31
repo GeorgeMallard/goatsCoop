@@ -1,10 +1,16 @@
 import java.util.Scanner;
 
+/**
+ * Input class
+ * Contains methods for taking different kinds of input from the user
+ * @author Chris Litting
+ * @version 1.0
+ */
 public class Input {
     
-    // ===============
-    // FINAL VARIABLES
-    // ===============
+    // =========
+    // CONSTANTS
+    // =========
 
     private static final String INTEGER_FORMAT = "Enter an integer: ";
     private static final String INTEGER_BETWEEN = "Enter an integer between %d and %d: ";
@@ -12,9 +18,9 @@ public class Input {
     private static final String NO = "n";
     private static final String YES_OR_NO = "Please enter $s or $s: ";
 
-    // ===============
-    // UTILITY METHODS
-    // ===============
+    // =======
+    // METHODS
+    // =======
 
     /**
      * Read an integer input by the user between two values (inclusive)

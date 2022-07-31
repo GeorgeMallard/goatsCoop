@@ -35,12 +35,15 @@ public class AgentGroup extends Group {
     // METHODS
     // =======
 
+    /**
+     * Initialises agents ArrayList
+     */
     public void initialise() {
         agents = new ArrayList<Agent>();
     }
 
     /**
-     * Populates AgentGroup with default Agents
+     * Populates AgentGroup with default Agents (used in simulation setup)
      */
     public void populate() {
         for (int i = 0; i < this.getSize(); i++) {
@@ -53,6 +56,9 @@ public class AgentGroup extends Group {
         }
     }
 
+    /**
+     * Counts tokens assigned by Agents to this and higher level Groups
+     */
     public void gatherAllocations() {
 
         for (int i = 0; i < agents.size(); i++) {
@@ -63,6 +69,11 @@ public class AgentGroup extends Group {
         System.out.println("Agent Group reporting: " + convert(this.getAllocations()));
     }
 
+    // ===============
+    // UTILITY METHODS
+    // ===============
+
+    //USED FOR TESTING PURPOSES - DELETE LATER
     public String convert(double[] d) {
         String str = "";
         for (double x : d) {

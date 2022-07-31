@@ -1,3 +1,9 @@
+/**
+ * GUI class
+ * Creates interactive interface for users to change settings and run simulation
+ * @author Chris Litting
+ * @version 1.0
+ */
 public class GUI {
 	
 	// =========

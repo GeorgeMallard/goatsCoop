@@ -1,12 +1,18 @@
+/**
+ * Group class
+ * Abstract superclass for GroupGroup and AgentGroup classes
+ * @author  Chris Litting
+ * @version 1.0
+ */
 public abstract class Group extends Entity {
     
     // ======
     // FIELDS
     // ======
 
-    private int level;
-    private int size;
-    private double[] allocations;
+    private int level;              //level within the group hierarchy. 1 is bottom group containing Agents
+    private int size;               //number of Agents or Groups this Group can contain
+    private double[] allocations;   //keeps track of tokens allocated to this Group and those higher up
     
     // ===========
     // CONSTRUCTOR

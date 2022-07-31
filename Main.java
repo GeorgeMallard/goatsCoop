@@ -1,6 +1,8 @@
 // TO DO
 
-// culling and repopulation of agents
+// sorting agents and groups
+// culling agents and groups
+// repopulating agents and groups
 // TEST
 
 // add settings:
@@ -20,13 +22,23 @@
 // TEST
 
 
-
+/**
+ * Main class
+ * Contains main method
+ * @author Chris Litting
+ * @version 1.0
+ */
 public class Main {
     
     // ===========
 	// MAIN METHOD
 	// ===========
-	public static void main(String[] args) {
+
+    /**
+     * Main method
+     * @param args as a String array
+     */
+    public static void main(String[] args) {
 		GUI.mainMenu();	
 	}
 

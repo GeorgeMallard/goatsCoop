@@ -12,20 +12,20 @@ public class Agent extends Entity {
 	// VARIABLES
 	// =========
 
-	private static Random random = new Random(); //used in mutation
-	//public static String title = "MUT\tAGT\tCOM\tSTE\tWLD"; //used for output
+	private static Random random = new Random(); 				//used in mutation
+	//public static String title = "MUT\tAGT\tCOM\tSTE\tWLD"; 	//used for output
 	
 	// ======
 	// FIELDS
 	// ======
 
-	private int mutability;
-	private boolean mutableMutability;
-	private int[] weightings;
-	private double[] contributions;
+	private int mutability;					//indicates % chance that mutation will occur for any given property upon reproduction
+	private boolean mutableMutability;		//indicates whether mutability is itself a mutable property
+	private int[] weightings;				//indicates how the Agent prioritises different group levels
+	private double[] contributions;			//indicates how many tokens the Agent allocates to each group level (weighting as a % of the total)
 
 	// ===Deprecated===
-	public Agent next = null;
+	public Agent next = null;				//used in conjunction with AgentList class, previously used when migrating Agents (deprecated feature)
 	
 		
 	// ===========
@@ -50,6 +50,10 @@ public class Agent extends Entity {
 	// SETTERS
 	// =======
 
+	/**
+	 * Sets Agent mutability
+	 * @param mutability as an int
+	 */
 	private void setMutability(int mutability) {
 		if (mutability < 0){
 			this.mutability = 0;
@@ -60,10 +64,18 @@ public class Agent extends Entity {
 		}
 	}
 
+	/**
+	 * Sets whether mutability is itself mutable
+	 * @param bool as a boolean
+	 */
 	private void setMutableMutability(boolean bool) {
 		this.mutableMutability = bool;
 	}
 
+	/**
+	 * Sets Agent weightings
+	 * @param weightings as an int array
+	 */
 	private void setWeightings(int[] weightings) {
 		this.weightings = new int[weightings.length];
 		for (int i = 0; i < weightings.length; i++) {
@@ -71,6 +83,10 @@ public class Agent extends Entity {
 		}
 	}
 
+	/**
+	 * Calculates Agent contributions based on weightings
+	 * @param weightings as an int array
+	 */
 	private void calculateContributions(int[] weightings) {
 		this.contributions = new double[weightings.length];
 		int total = 0;
@@ -199,14 +215,6 @@ public class Agent extends Entity {
 		return value;
 	}
 
-	public String convert(double[] d) {
-        String str = "";
-        for (double x : d) {
-            str += Double.toString(x) + ", ";
-        }
-        return str;
-    }
-
 	// ======
 	// OUTPUT
 	// ======
@@ -228,9 +236,16 @@ public class Agent extends Entity {
 	}
 	*/
 
-	// ============
-	// MISC METHODS
-	// ============
+	// ===============
+	// UTILITY METHODS
+	// ===============
 
-
+	//USED FOR TESTING PURPOSES - DELETE LATER
+	public String convert(double[] d) {
+        String str = "";
+        for (double x : d) {
+            str += Double.toString(x) + ", ";
+        }
+        return str;
+    }
 }

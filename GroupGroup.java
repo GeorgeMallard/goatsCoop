@@ -29,6 +29,11 @@ public class GroupGroup extends Group {
         super(level, size, populate, parentGroup);
     }
 
+    // =======
+    // SETTERS
+    // =======
+
+    //empty
 
     // =======
     // GETTERS
@@ -46,13 +51,16 @@ public class GroupGroup extends Group {
     // METHODS
     // =======
 
+    /**
+     * Initialises groups ArrayList
+     */
     public void initialise() {
         groups = new ArrayList<Group>();
     }
 
 
     /**
-     * Auto-populates a group with sub-groups
+     * Auto-populates a group with sub-groups (used in simulation setup)
      */
     public void populate() {
         if (this.getLevel() == 2) {
@@ -67,12 +75,13 @@ public class GroupGroup extends Group {
         
     }
 
+    /**
+     * Counts tokens assigned by Agents to this and higher level Groups
+     */
     public void gatherAllocations() {
-
         for (Group x : groups) {
             x.gatherAllocations();
         }
-
         for (int i = 0; i < groups.size(); i++) {
             for (int j = 0; j < Settings.getGroupDepth() - this.getLevel(); j++) {
                 this.incrementAllocation(j, groups.get(i).getAllocation(j + 1));
@@ -81,6 +90,11 @@ public class GroupGroup extends Group {
         System.out.println("Level " + this.getLevel() + " Group reporting: " + convert(this.getAllocations()));
     }
 
+    // ===============
+    // UTILITY METHODS
+    // ===============
+
+    //FOR TESTING PURPOSES - DELETE LATER
     public String convert(double[] d) {
         String str = "";
         for (double x : d) {
@@ -88,6 +102,5 @@ public class GroupGroup extends Group {
         }
         return str;
     }
-
 
 }
