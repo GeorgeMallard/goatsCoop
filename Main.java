@@ -1,11 +1,12 @@
 // TO DO
 
-// sorting agents and groups
-// culling agents and groups
-// repopulating agents and groups
+// sorting Entities
+// culling Entities
+// repopulating Entities
 // TEST
 
 // add settings:
+// --number of culled agents/groups
 // --average or absolute contribution
 // --advanced mutation option
 // --allow agent negative values

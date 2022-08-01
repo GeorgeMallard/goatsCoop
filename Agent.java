@@ -19,11 +19,13 @@ public class Agent extends Entity {
 	// FIELDS
 	// ======
 
+	//private int level 					(inherited from Entity)
+	//private Group parentGroup 			(inherited from Entity)
+	//private double[] contributions 		(inherited from Entity)
 	private int mutability;					//indicates % chance that mutation will occur for any given property upon reproduction
 	private boolean mutableMutability;		//indicates whether mutability is itself a mutable property
 	private int[] weightings;				//indicates how the Agent prioritises different group levels
-	private double[] contributions;			//indicates how many tokens the Agent allocates to each group level (weighting as a % of the total)
-
+	
 	// ===Deprecated===
 	public Agent next = null;				//used in conjunction with AgentList class, previously used when migrating Agents (deprecated feature)
 	
@@ -38,8 +40,8 @@ public class Agent extends Entity {
 	 * @param weightings as an int array
 	 */
 	public Agent(int mutability, boolean mutableMutability, int[] weightings, Group parentGroup) {
-		super(parentGroup);
-		//System.out.println("Creating Agent...");
+		super(0, parentGroup);
+		System.out.println("Creating Agent...");
 		this.setMutability(mutability);
 		this.setMutableMutability(mutableMutability);
 		this.setWeightings(weightings);
@@ -88,13 +90,12 @@ public class Agent extends Entity {
 	 * @param weightings as an int array
 	 */
 	private void calculateContributions(int[] weightings) {
-		this.contributions = new double[weightings.length];
 		int total = 0;
 		for (int x : weightings) {
 			total += x;
 		}
 		for (int i = 0; i < weightings.length; i++) {
-			this.contributions[i] = (total * 1.0) / weightings[i];
+			this.setContribution(i, (total * 1.0) / weightings[i]);
 		}
 		//System.out.println("Agent contributions: " + convert(this.getContributions()));
 	}
@@ -139,26 +140,9 @@ public class Agent extends Entity {
 		}
 	}
 
-	/**
-	 * Get contributions
-	 * @return contributions as a double array
-	 */
-	public double[] getContributions() {
-		return this.contributions;
-	}
-
-	/**
-	 * Gets the contribution for a particular group level
-	 * @param level as an int
-	 * @return contribution as a double
-	 */
-	public double getContribution(int level) {
-		return this.contributions[level];
-	}
-
-	// =========
-	// UTILITIES
-	// =========
+	// =======
+	// METHODS
+	// =======
 
 	/**
 	 * Returns a clone of an existing Agent
@@ -195,6 +179,18 @@ public class Agent extends Entity {
 			agent.getParentGroup()
 		);
 	}
+
+	public void gatherContributions() {
+		//intentionally left blank
+	}
+
+	public void sortChildren() {
+		//intentionally left blank
+	}
+
+	// =========
+	// UTILITIES
+	// =========
 
 	/**
 	 * Mutates a value up or down based on mutationFactor
