@@ -1,6 +1,12 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Settings class
+ * Provides default settings and keeps track of changes to settings
+ * @author Chris Litting
+ * @version 1.0
+ */
 public class Settings {
     
     // =========
@@ -10,7 +16,7 @@ public class Settings {
     // ===GROUPS===
     private static final int defaultGroupDepth = 3;         // change this number to alter default group depth (number of group levels)
     private static final int maxDepth = 5;                  // change this number to alter max group depth (number of group levels)
-    private static int defaultGroupSize = 5;                // change this number to alter default group size (**not technically a constant**)
+    private static int defaultGroupSize = 6;                // change this number to alter default group size (**not technically a constant**)
     private static final int maxGroupSize = 100;            // change this number to alter max group size
     // ===AGENTS===
     private static final int defaultAgentMutability = 50;   // change this number to alter default agent mutability
@@ -124,7 +130,6 @@ public class Settings {
     // =======
 
     // ===GROUPS===
-
 
     public static int getGroupDepth() {
         return groupDepth;

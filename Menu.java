@@ -16,7 +16,7 @@ public class Menu {
      * @param prompt as a String (displayed on input line)
      * @param zeroOption as a String (provides text for option 0, usually 'Back', 'Quit' etc.)
      * @param options as a String array 
-     * @return
+     * @return int
      */
     public static int create(String title, String prompt, String zeroOption, String[] options) {
         System.out.println("\n" + title);

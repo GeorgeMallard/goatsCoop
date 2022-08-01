@@ -48,16 +48,29 @@ public abstract class Entity {
         this.parentGroup = parentGroup;
     }
 
+    /**
+     * Sets contribution at given index to value n
+     * @param index as an int
+     * @param n as a double
+     */
     public void setContribution(int index, double n) {
         this.contributions[index] = n;
     }
 
+    /**
+     * Increments contribution at given index by amount n
+     * @param index as an int
+     * @param n as a double
+     */
     public void incrementContribution(int index, double n) {
         if (index < this.contributions.length) {
             this.contributions[index] += n;
         }
     }
 
+    /**
+     * Sets all contributions back to zero
+     */
     public void resetContributions() {
         for (int i = 0; i < this.contributions.length; i++) {
             this.contributions[i] = 0.0;

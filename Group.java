@@ -104,7 +104,7 @@ public class Group extends Entity {
     }
 
     /**
-     * Counts tokens assigned by Agents to this and higher level Groups
+     * Counts tokens assigned by Agents to this and higher level Groups (recursive method)
      */
     public void gatherContributions() {
 
@@ -123,21 +123,15 @@ public class Group extends Entity {
     }
 
     /**
-     * Sorts children for all Groups
-     */
-    public void sortAll() {
+	 * Sorts Entities in descending order of self contribution (recursive method)
+	 */
+	public void sortChildren() {
         if (this.getLevel() > 1) {
             for (Entity y : children) {
                 y.sortChildren();
             }
         }
-        this.sortChildren();
-    }
 
-    /**
-	 * Sorts Entities in descending order of self contribution
-	 */
-	public void sortChildren() {
 		Entity[] arr = children.toArray(new Entity[children.size()]);
         mergeSort(arr);
         children.clear();
@@ -145,7 +139,6 @@ public class Group extends Entity {
             children.add(x);
         }
 	}
-
 
     // ===============
     // UTILITY METHODS
@@ -222,9 +215,6 @@ public class Group extends Entity {
 		}
 		return B;
 	}
-
-
-
 
     //USED FOR TESTING PURPOSES - DELETE LATER
     public String convert(double[] d) {

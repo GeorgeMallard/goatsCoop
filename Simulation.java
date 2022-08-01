@@ -25,11 +25,19 @@ public class Simulation {
 			Settings.getGroupDepth(), 
 			Settings.getGroupSize(Settings.getGroupDepth()), 
 			true, 
-			null);
+			null
+		);
 		
-		topLevelGroup.gatherContributions();
-
-
+		for (int i = 0; i < Settings.getRounds(); i++) {
+			for (int j = 0; j < Settings.getIterations(); j++) {
+				topLevelGroup.gatherContributions();
+				topLevelGroup.sortChildren();
+				//cull
+				//repopulate
+				//report
+				//reset contributions
+			}
+		}
 	}
 
 }

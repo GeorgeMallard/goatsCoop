@@ -1,6 +1,5 @@
 // TO DO
 
-// sorting Entities
 // culling Entities
 // repopulating Entities
 // TEST
