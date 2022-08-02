@@ -188,6 +188,10 @@ public class Agent extends Entity {
 		//intentionally left blank
 	}
 
+	public void cullChildren() {
+		//intentionally left blank
+	}
+
 	// =========
 	// UTILITIES
 	// =========

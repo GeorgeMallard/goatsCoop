@@ -137,4 +137,5 @@ public abstract class Entity {
 
     public abstract void gatherContributions();
     public abstract void sortChildren();
+    public abstract void cullChildren();
 }

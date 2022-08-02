@@ -16,6 +16,7 @@ public class Group extends Entity {
 	//private Group parentGroup 			(inherited from Entity)
 	//private double[] contributions 		(inherited from Entity)
     private int size;                       //number of Agents or Groups this Group can contain
+    private int capacity;                   //number of Agents or Groups that will not be culled each iteration
     private ArrayList<Entity> children;     //contains either Groups or Agents
     
     // ===========
@@ -36,6 +37,7 @@ public class Group extends Entity {
         if (populate) {
             this.populate();
         }
+        this.capacity = size / 2;
     }
 
     // =======
@@ -139,6 +141,20 @@ public class Group extends Entity {
             children.add(x);
         }
 	}
+
+    /**
+     * Removes Entities from children until a set number remain (recursive function)
+     */
+    public void cullChildren() {
+        while (children.size() > this.capacity) {
+            children.remove(this.capacity);
+        }
+        if (this.getLevel() > 1) {
+            for (Entity x : children) {
+                x.cullChildren();
+            }
+        }
+    }
 
     // ===============
     // UTILITY METHODS
