@@ -15,9 +15,10 @@ public class Group extends Entity {
     //private int level 					(inherited from Entity)
 	//private Group parentGroup 			(inherited from Entity)
 	//private double[] contributions 		(inherited from Entity)
-    private int size;                       //number of Agents or Groups this Group can contain
-    private int capacity;                   //number of Agents or Groups that will not be culled each iteration
-    private ArrayList<Entity> children;     //contains either Groups or Agents
+    //private int mutability                (inherited from Entity)
+    private int size;                       //number of child Agents or Groups this Group can contain
+    private int capacity;                   //number of child Agents or Groups that will survive each iteration
+    private ArrayList<Entity> children;     //contains child Agents or Groups, depending on level
     
     // ===========
     // CONSTRUCTOR
@@ -29,8 +30,8 @@ public class Group extends Entity {
      * @param size as an int
      * @param populate as a boolean (indicates whether group should be auto populated - used when sim is first started)
      */
-    public Group(int level, int size, boolean populate, Group parentGroup) {
-        super(level, parentGroup);
+    public Group(int level, int size, boolean populate, Group parentGroup, int mutability) {
+        super(level, parentGroup, mutability);
         System.out.println("Creating Level " + level + " group...");
         this.setSize(size);
         this.children = new ArrayList<Entity>();
@@ -94,14 +95,15 @@ public class Group extends Entity {
                     this.getLevel() - 1, 
                     this.getSubGroupSize(), 
                     true, 
-                    this
+                    this,
+                    Settings.getInitialMutability(this.getLevel() - 1)
                 ));
             }
         } else {
             for (int i = 0; i < this.getSize(); i++) {
                 this.children.add(new Agent(
-                    Settings.getAgentInitialMutability(), 
-                    Settings.getAgentMutableMutability(),
+                    Settings.getInitialMutability(0), 
+                    Settings.getMutableMutability(0),
                     Settings.getAgentInitialWeightings(),
                     this
                 ));
@@ -160,12 +162,16 @@ public class Group extends Entity {
         }
     }
 
+    /**
+     * Creates clone of existing Entity (recursive function)
+     */
     public Entity clone(Group parentGroup) {
         Entity clone = (Entity) new Group(
             this.getLevel(), 
             this.getSize(), 
             false, 
-            parentGroup
+            parentGroup,
+            this.getMutability()
         );
 
         for (Entity x : this.children) {
@@ -175,6 +181,9 @@ public class Group extends Entity {
         return clone;
     }
 
+    /**
+     * Repopulates children from survivors (recursive function)
+     */
     public void repopulate() {
         
         for (Entity x : children) {
@@ -189,6 +198,16 @@ public class Group extends Entity {
             diff--;
             i++;
         }
+    }
+
+    /**
+     * Mutates Entities according to their mutability (recursive function)
+     */
+    public void mutateEntity() {
+        for (Entity x : children) {
+            x.mutateEntity();
+        }
+        this.capacity = mutate(this.capacity, this.getMutability());
     }
 
     // ===============

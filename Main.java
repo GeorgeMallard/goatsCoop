@@ -4,11 +4,10 @@
 // reset Entities
 // TEST
 
-// add settings:
-// --group capacity
-// --average or absolute contribution
-// --advanced mutation option
-// --allow agent negative values
+// add level settings:
+// --group capacities
+// --mutability
+// --mutable mutability
 // TEST
 
 // data output
@@ -17,9 +16,16 @@
 // --how best to output data? (output as .txt file?) *ASK TUTOR*
 // TEST
 
-// repeatability
-// --run directly from cmd line
+// additional features:
+// --average or absolute contribution (?)
+// --advanced mutation option
+// --allow agent negative weightings
 // TEST
+
+// repeatability
+// --run directly from cmd line with args
+// TEST
+
 
 
 /**

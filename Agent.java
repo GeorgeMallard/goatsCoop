@@ -1,5 +1,3 @@
-import java.util.Random;
-
 /**
  * Agent class
  * Creates Agents
@@ -12,7 +10,7 @@ public class Agent extends Entity {
 	// VARIABLES
 	// =========
 
-	private static Random random = new Random(); 				//used in mutation
+	
 	//public static String title = "MUT\tAGT\tCOM\tSTE\tWLD"; 	//used for output
 	
 	// ======
@@ -22,7 +20,7 @@ public class Agent extends Entity {
 	//private int level 					(inherited from Entity)
 	//private Group parentGroup 			(inherited from Entity)
 	//private double[] contributions 		(inherited from Entity)
-	private int mutability;					//indicates % chance that mutation will occur for any given property upon reproduction
+	//private int mutability;				(inherited from Entity)
 	private boolean mutableMutability;		//indicates whether mutability is itself a mutable property
 	private int[] weightings;				//indicates how the Agent prioritises different group levels
 	
@@ -40,9 +38,8 @@ public class Agent extends Entity {
 	 * @param weightings as an int array
 	 */
 	public Agent(int mutability, boolean mutableMutability, int[] weightings, Group parentGroup) {
-		super(0, parentGroup);
+		super(0, parentGroup, mutability);
 		System.out.println("Creating Agent...");
-		this.setMutability(mutability);
 		this.setMutableMutability(mutableMutability);
 		this.setWeightings(weightings);
 		calculateContributions(weightings);
@@ -51,20 +48,6 @@ public class Agent extends Entity {
 	// =======
 	// SETTERS
 	// =======
-
-	/**
-	 * Sets Agent mutability
-	 * @param mutability as an int
-	 */
-	private void setMutability(int mutability) {
-		if (mutability < 0){
-			this.mutability = 0;
-		} else if (mutability > 100){
-			this.mutability = 100;
-		} else {
-			this.mutability = mutability;
-		}
-	}
 
 	/**
 	 * Sets whether mutability is itself mutable
@@ -103,14 +86,6 @@ public class Agent extends Entity {
 	// =======
 	// GETTERS
 	// =======
-
-	/**
-	 * Get Agent mutability
-	 * @return mutability as an integer
-	 */
-	public int getMutability() {
-		return this.mutability;
-	}
 
 	/**
 	 * Get whether mutability is itself mutable
@@ -160,24 +135,13 @@ public class Agent extends Entity {
 	}
 
 	/**
-	 * Creates a new Agent from an existing one
-	 * @param agent as an Agent
-	 * @return Agent
+	 * Mutates Agent properties
 	 */
-	public static Agent reproduce(Agent agent) {
-		
-		int mutability = agent.mutableMutability ? mutate(agent.mutability, agent.mutability) : agent.mutability;
-		boolean mutableMutability = agent.mutableMutability;
-		int[] weightings = new int[agent.weightings.length];
-		for (int i = 0; i < agent.weightings.length; i++) {
-			weightings[i] = mutate(agent.weightings[i], mutability);
+	public void mutateEntity() {
+		this.setMutability(this.getMutableMutability() ? mutate(this.getMutability(), this.getMutability()) : this.getMutability());
+		for (int i = 0; i < this.weightings.length; i++) {
+			this.weightings[i] = mutate(this.weightings[i], this.getMutability());
 		}
-		return new Agent(
-			mutability,
-			mutableMutability,
-			weightings,
-			agent.getParentGroup()
-		);
 	}
 
 	public void gatherContributions() {
@@ -198,29 +162,6 @@ public class Agent extends Entity {
 
 	public void addChild(Entity newChild) {
 		//intentionally left blank
-	}
-
-	// =========
-	// UTILITIES
-	// =========
-
-	/**
-	 * Mutates a value up or down based on mutationFactor
-	 * @param value as an int
-	 * @param mutationFactor as an int
-	 * @return int
-	 */
-	public static int mutate(int value, int mutationFactor) {
-		if (random.nextInt(101) < mutationFactor) {
-			if (value == 0) {
-				value++;
-			} else if (value == 100) {
-				value--;
-			} else {
-				value = random.nextInt(2) > 0 ? value + 1 : value - 1;
-			}
-		}
-		return value;
 	}
 
 	// ======

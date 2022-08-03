@@ -25,7 +25,8 @@ public class Simulation {
 			Settings.getGroupDepth(), 
 			Settings.getGroupSize(Settings.getGroupDepth()), 
 			true, 
-			null
+			null,
+			Settings.getInitialMutability(Settings.getGroupDepth())
 		);
 		
 		for (int i = 0; i < Settings.getRounds(); i++) {
@@ -34,6 +35,7 @@ public class Simulation {
 				topLevelGroup.sortChildren();
 				topLevelGroup.cullChildren();
 				topLevelGroup.repopulate();
+				topLevelGroup.mutateEntity();
 				//report
 				//reset contributions
 			}

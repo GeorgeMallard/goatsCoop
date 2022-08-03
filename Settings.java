@@ -9,28 +9,43 @@ import java.util.Arrays;
  */
 public class Settings {
     
-    // =========
-    // CONSTANTS
-    // =========
+    // ==============
+    // DEFAULT VALUES
+    // ==============
 
+    // ===ENTITIES===
+    private static int defaultMutability = 50;                  // change this number to alter default mutability for all Entities
+    private static boolean defaultMutableMutability = false;    // change this value to alter whether mutabilities are mutable by default
     // ===GROUPS===
-    private static final int defaultGroupDepth = 3;         // change this number to alter default group depth (number of group levels)
-    private static final int maxDepth = 5;                  // change this number to alter max group depth (number of group levels)
-    private static int defaultGroupSize = 6;                // change this number to alter default group size (**not technically a constant**)
-    private static final int maxGroupSize = 100;            // change this number to alter max group size
+    private static final int defaultGroupDepth = 3;             // change this number to alter default group depth (number of group levels)
+    private static final int maxDepth = 5;                      // change this number to alter max group depth (number of group levels)
+    private static int defaultGroupSize = 6;                    // change this number to alter default group size
+    private static final int maxGroupSize = 100;                // change this number to alter max group size
     // ===AGENTS===
-    private static final int defaultAgentMutability = 50;   // change this number to alter default agent mutability
-    private static int defaultAgentWeighting = 50;          // change this number to alter default agent weighting (**not technically a constant**)
+    private static int defaultAgentWeighting = 50;              // change this number to alter default agent weighting
     // ===SIMULATION===
-    private static final int defaultIterations = 5;     // change this number to alter default number of iterations per round
-    private static final int maxIterations = 1000000;       // change this number to alter max number of iterations per round
-    private static final int defaultRounds = 1;             // change this number to alter default number of rounds
-    private static final int maxRounds = 100;               // change this number to alter max number of rounds
+    private static final int defaultIterations = 5;             // change this number to alter default number of iterations per round
+    private static final int maxIterations = 1000000;           // change this number to alter max number of iterations per round
+    private static final int defaultRounds = 1;                 // change this number to alter default number of rounds
+    private static final int maxRounds = 100;                   // change this number to alter max number of rounds
 
     // =========
     // VARIABLES
     // =========
 
+    // ===ENTITIES===
+    private static ArrayList<Integer> initialMutabilities = new ArrayList<Integer>(Arrays.asList(
+        defaultMutability,
+        defaultMutability,
+        defaultMutability,
+        defaultMutability
+    ));
+    private static ArrayList<Boolean> mutableMutabilities = new ArrayList<Boolean>(Arrays.asList(
+        defaultMutableMutability,
+        defaultMutableMutability,
+        defaultMutableMutability,
+        defaultMutableMutability
+    ));
     // ===GROUPS===
     private static int groupDepth = defaultGroupDepth;
     private static ArrayList<Integer> groupInitialSizes = new ArrayList<Integer>(Arrays.asList(
@@ -39,8 +54,6 @@ public class Settings {
         defaultGroupSize
     ));
     // ===AGENTS===
-    private static int agentInitialMutability = defaultAgentMutability;
-    private static boolean agentMutableMutability = true;
     private static ArrayList<Integer> agentInitialWeightings = new ArrayList<Integer>(Arrays.asList(
         defaultAgentWeighting, 
         defaultAgentWeighting, 
@@ -54,7 +67,19 @@ public class Settings {
     // SETTERS
     // =======
 
-   // ===GROUPS===
+    // ===ENTITIES===
+
+    public static void setInitialMutability(int level, int mutability) {
+        if (mutability >= 0 && mutability <= 100) {
+            initialMutabilities.set(level, mutability);
+        }
+    }
+
+    public static void setMutableMutability(int level, boolean bool) {
+        mutableMutabilities.set(level, bool);
+    }
+
+    // ===GROUPS===
 
     public static void setGroupDepth(int newDepth) {
         if (newDepth > 0 && newDepth <= maxDepth && newDepth != groupDepth) {
@@ -62,11 +87,16 @@ public class Settings {
                 for (int i = 0; i < groupDepth - newDepth; i++) {
                     groupInitialSizes.remove(newDepth);
                     agentInitialWeightings.remove(newDepth);
+                    initialMutabilities.remove(newDepth + 1);
+                    mutableMutabilities.remove(newDepth + 1);
+
                 }
             } else {
                 for (int i = 0; i < newDepth - groupDepth; i++) {
                     groupInitialSizes.add(groupDepth, defaultGroupSize);
                     agentInitialWeightings.add(groupDepth, defaultAgentWeighting);
+                    initialMutabilities.add(groupDepth + 1, defaultMutability);
+                    mutableMutabilities.add(groupDepth + 1, defaultMutableMutability);
                 }
             }
             groupDepth = newDepth;
@@ -87,16 +117,6 @@ public class Settings {
     }
 
     // ===AGENTS===
-
-    public static void setAgentInitialMutability(int mutability) {
-        if (mutability >= 0 && mutability <= 100) {
-            agentInitialMutability = mutability;
-        }
-    }
-
-    public static void setAgentMutableMutability(boolean bool) {
-        agentMutableMutability = bool;
-    }
 
     public static void setAgentInitialWeighting(int groupLevel, int value) {
         if (groupLevel > -1 && groupLevel < agentInitialWeightings.size()) {
@@ -129,6 +149,16 @@ public class Settings {
     // GETTERS
     // =======
 
+    // ===ENTITIES===
+
+    public static int getInitialMutability(int level) {
+        return initialMutabilities.get(level);
+    }
+
+    public static boolean getMutableMutability(int level) {
+        return mutableMutabilities.get(level);
+    }
+
     // ===GROUPS===
 
     public static int getGroupDepth() {
@@ -148,14 +178,6 @@ public class Settings {
     }
 
     // ===AGENTS===
-
-    public static int getAgentInitialMutability() {
-        return agentInitialMutability;
-    }
-
-    public static boolean getAgentMutableMutability() {
-        return agentMutableMutability;
-    }
 
     public static int[] getAgentInitialWeightings() {
         int[] weightings = new int[agentInitialWeightings.size()];

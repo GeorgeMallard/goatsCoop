@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Entity class
  * Abstract superclass for Group and Agent
@@ -6,6 +8,8 @@
  */
 public abstract class Entity {
     
+    private static Random random = new Random(); 		//used in mutation
+
     // ======
     // FIELDS
     // ======
@@ -13,6 +17,7 @@ public abstract class Entity {
     private int level;
     private Group parentGroup;
     private double[] contributions;
+    private int mutability;
 
     // ===========
     // CONSTRUCTOR
@@ -22,10 +27,11 @@ public abstract class Entity {
      * Creates Entity objects
      * @param parentGroup as a Group (null if Entity is top level Group)
      */
-    public Entity(int level, Group parentGroup) {
+    public Entity(int level, Group parentGroup, int mutability) {
         this.setLevel(level);
         this.setParentGroup(parentGroup);
         this.contributions = new double[Settings.getGroupDepth() - level];
+        this.setMutability(mutability);
     }
 
     // =======
@@ -77,6 +83,10 @@ public abstract class Entity {
         }
     }
 
+    public void setMutability(int mutability) {
+        this.mutability = mutability;
+    }
+
     // =======
     // GETTERS
     // =======
@@ -126,11 +136,37 @@ public abstract class Entity {
         return this.contributions;
     }
 
+    public int getMutability() {
+        return this.mutability;
+    }
+
     // =======
     // METHODS
     // =======
 
-    
+    // ==============
+    // STATIC METHODS
+    // ==============
+
+    /**
+	 * Mutates a value up or down based on mutationFactor
+	 * @param value as an int
+	 * @param mutationFactor as an int
+	 * @return int
+	 */
+	public static int mutate(int value, int mutationFactor) {
+		if (random.nextInt(101) < mutationFactor) {
+			if (value == 0) {
+				value++;
+			} else if (value == 100) {
+				value--;
+			} else {
+				value = random.nextInt(2) > 0 ? value + 1 : value - 1;
+			}
+		}
+		return value;
+	}
+
     // ================
     // ABSTRACT METHODS
     // ================
@@ -141,4 +177,5 @@ public abstract class Entity {
     public abstract void repopulate();
     public abstract Entity clone(Group parentGroup);
     public abstract void addChild(Entity newChild);
+    public abstract void mutateEntity();
 }
