@@ -22,9 +22,9 @@ public class Settings {
     private static final int defaultAgentMutability = 50;   // change this number to alter default agent mutability
     private static int defaultAgentWeighting = 50;          // change this number to alter default agent weighting (**not technically a constant**)
     // ===SIMULATION===
-    private static final int defaultIterations = 10000;     // change this number to alter default number of iterations per round
+    private static final int defaultIterations = 5;     // change this number to alter default number of iterations per round
     private static final int maxIterations = 1000000;       // change this number to alter max number of iterations per round
-    private static final int defaultRounds = 3;             // change this number to alter default number of rounds
+    private static final int defaultRounds = 1;             // change this number to alter default number of rounds
     private static final int maxRounds = 100;               // change this number to alter max number of rounds
 
     // =========

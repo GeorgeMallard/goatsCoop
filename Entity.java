@@ -138,4 +138,7 @@ public abstract class Entity {
     public abstract void gatherContributions();
     public abstract void sortChildren();
     public abstract void cullChildren();
+    public abstract void repopulate();
+    public abstract Entity clone(Group parentGroup);
+    public abstract void addChild(Entity newChild);
 }

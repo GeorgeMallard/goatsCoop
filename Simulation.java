@@ -32,8 +32,8 @@ public class Simulation {
 			for (int j = 0; j < Settings.getIterations(); j++) {
 				topLevelGroup.gatherContributions();
 				topLevelGroup.sortChildren();
-				//cull
-				//repopulate
+				topLevelGroup.cullChildren();
+				topLevelGroup.repopulate();
 				//report
 				//reset contributions
 			}

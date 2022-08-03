@@ -1,11 +1,11 @@
 // TO DO
 
-// culling Entities
-// repopulating Entities
+// mutate Entities
+// reset Entities
 // TEST
 
 // add settings:
-// --number of culled agents/groups
+// --group capacity
 // --average or absolute contribution
 // --advanced mutation option
 // --allow agent negative values

@@ -52,6 +52,10 @@ public class Group extends Entity {
         this.size = size;
     }
 
+    public void addChild(Entity newChild) {
+        this.children.add(newChild);
+    }
+
     // =======
     // GETTERS
     // =======
@@ -153,6 +157,37 @@ public class Group extends Entity {
             for (Entity x : children) {
                 x.cullChildren();
             }
+        }
+    }
+
+    public Entity clone(Group parentGroup) {
+        Entity clone = (Entity) new Group(
+            this.getLevel(), 
+            this.getSize(), 
+            false, 
+            parentGroup
+        );
+
+        for (Entity x : this.children) {
+            clone.addChild(x.clone(this));
+        }
+
+        return clone;
+    }
+
+    public void repopulate() {
+        
+        for (Entity x : children) {
+            x.repopulate();
+        }
+        
+        int diff = this.getSize() - this.capacity;
+        int i = 0;
+
+        while (diff > 0) {
+            this.addChild(this.children.get(i % this.capacity).clone(this));
+            diff--;
+            i++;
         }
     }
 

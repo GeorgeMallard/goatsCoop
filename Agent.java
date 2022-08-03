@@ -149,13 +149,13 @@ public class Agent extends Entity {
 	 * @param agent1 as an Agent
 	 * @return Agent
 	 */
-	public static Agent clone(Agent agent) {
+	public Entity clone(Group parentGroup) {
 		//System.out.println("cloning agent...");
-		return new Agent(
-			agent.getMutability(),
-			agent.getMutableMutability(),
-			agent.getWeightings(),
-			agent.getParentGroup()
+		return (Entity) new Agent(
+			this.getMutability(),
+			this.getMutableMutability(),
+			this.getWeightings(),
+			parentGroup
 		);
 	}
 
@@ -189,6 +189,14 @@ public class Agent extends Entity {
 	}
 
 	public void cullChildren() {
+		//intentionally left blank
+	}
+
+	public void repopulate() {
+		//intentionally left blank
+	}
+
+	public void addChild(Entity newChild) {
 		//intentionally left blank
 	}
 
