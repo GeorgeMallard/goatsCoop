@@ -39,7 +39,7 @@ public class Agent extends Entity {
 	 */
 	public Agent(int mutability, boolean mutableMutability, int[] weightings, Group parentGroup) {
 		super(0, parentGroup, mutability);
-		System.out.println("Creating Agent...");
+		//System.out.println("Creating Agent...");
 		this.setMutableMutability(mutableMutability);
 		this.setWeightings(weightings);
 		calculateContributions(weightings);
@@ -144,6 +144,10 @@ public class Agent extends Entity {
 		}
 	}
 
+	public void report() {
+		System.out.println("Agent reporting! Current weightings: " + intArrToString(this.weightings));
+	}
+
 	public void gatherContributions() {
 		//intentionally left blank
 	}
@@ -188,6 +192,14 @@ public class Agent extends Entity {
 			this.worldWeighting);
 	}
 	*/
+
+	public static String intArrToString(int[] arr) {
+		String str = "";
+		for (int x : arr) {
+			str += x + ", ";
+		}
+		return str;
+	}
 
 	// ===============
 	// UTILITY METHODS

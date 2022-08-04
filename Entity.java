@@ -170,4 +170,5 @@ public abstract class Entity {
     public abstract void addChild(Entity newChild);
     public abstract void mutateEntity();
     public abstract void resetContributions();
+    public abstract void report();
 }

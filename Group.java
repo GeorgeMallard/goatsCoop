@@ -30,15 +30,19 @@ public class Group extends Entity {
      * @param size as an int
      * @param populate as a boolean (indicates whether group should be auto populated - used when sim is first started)
      */
-    public Group(int level, int size, boolean populate, Group parentGroup, int mutability) {
+    public Group(int level, int size, boolean populate, Group parentGroup, int mutability, int capacity) {
         super(level, parentGroup, mutability);
-        System.out.println("Creating Level " + level + " group...");
+        //System.out.println("Creating Level " + level + " group...");
         this.setSize(size);
         this.children = new ArrayList<Entity>();
         if (populate) {
             this.populate();
         }
-        this.capacity = size / 2;
+        if (capacity > size) {
+            this.setCapacity(size);
+        } else {
+            this.setCapacity(capacity);
+        }
     }
 
     // =======
@@ -55,6 +59,14 @@ public class Group extends Entity {
 
     public void addChild(Entity newChild) {
         this.children.add(newChild);
+    }
+
+    public void setCapacity(int cap) {
+        if (cap > 0) {
+            this.capacity = cap;
+        } else {
+            this.capacity = 1;
+        }    
     }
 
     // =======
@@ -81,6 +93,10 @@ public class Group extends Entity {
         }
     }
 
+    public int getCapacity() {
+        return this.capacity;
+    }
+
     // =======
     // METHODS
     // =======
@@ -96,7 +112,8 @@ public class Group extends Entity {
                     this.getSubGroupSize(), 
                     true, 
                     this,
-                    Settings.getInitialMutability(this.getLevel() - 1)
+                    Settings.getInitialMutability(this.getLevel() - 1),
+                    Settings.getGroupCapacity(this.getLevel() - 1)
                 ));
             }
         } else {
@@ -127,7 +144,7 @@ public class Group extends Entity {
                 this.incrementContribution(j, children.get(i).getContribution(j + 1));
             }
         }
-        System.out.println("Level " + this.getLevel() + " Group reporting: " + convert(this.getContributions()));
+        //System.out.println("Level " + this.getLevel() + " Group reporting: " + convert(this.getContributions()));
     }
 
     /**
@@ -171,7 +188,8 @@ public class Group extends Entity {
             this.getSize(), 
             false, 
             parentGroup,
-            this.getMutability()
+            this.getMutability(),
+            this.getCapacity()
         );
 
         for (Entity x : this.children) {
@@ -207,7 +225,10 @@ public class Group extends Entity {
         for (Entity x : children) {
             x.mutateEntity();
         }
-        this.capacity = mutate(this.capacity, this.getMutability());
+        int newCapacity = mutate(this.getCapacity(), this.getMutability());
+        if (newCapacity <= this.getSize()) {
+            this.setCapacity(newCapacity);
+        }
     }
 
     /**
@@ -222,6 +243,13 @@ public class Group extends Entity {
         for (int i = 0; i < this.getContributions().length; i++) {
             this.setContribution(i, 0.0);
         }
+    }
+
+    public void report() {
+        for (Entity x : children) {
+            x.report();
+        }
+        System.out.println("Level " + this.getLevel() + " Group reporting! Size: " + this.getSize() + " Capacity: " + this.getCapacity());
     }
 
     // ===============

@@ -33,8 +33,8 @@ public class GUI {
 	private static final String SIMULATION_SETTINGS = "Simulation Settings";
 	// ===SIMULATION SETTINGS MENU===
 	private static final String SIMULATION_SETTINGS_MENU_TITLE = "SIMULATION SETTINGS\n===================";	
-	private static final String ITERATIONS = "Iterations per Round: ";
-	private static final String ROUNDS = "Rounds: ";
+	private static final String ITERATIONS = "Iterations per Round: %,d";
+	private static final String ROUNDS = "Rounds: %d";
 	private static final String ENTER_ITERATIONS = "Enter number of iterations per round (1 - " + Settings.getMaxIterations() + "): ";
 	private static final String ENTER_ROUNDS = "Enter number of rounds (1 - " + Settings.getMaxRounds() + "): ";
 	// ===AGENT SETTINGS MENU===
@@ -153,11 +153,11 @@ public class GUI {
 	public static void simulationSettingsMenu() {
 		boolean cont = true;
 		int value = -1;
-		String[] options = {
-			ITERATIONS + String.format("%,d", Settings.getIterations()),
-			ROUNDS + Settings.getRounds()
-		};
 		while (cont) {
+			String[] options = {
+				String.format(ITERATIONS, Settings.getIterations()),
+				String.format(ROUNDS, Settings.getRounds())
+			};
 			value = Menu.create(
 				SIMULATION_SETTINGS_MENU_TITLE,
 				SELECT_OPTION,
@@ -183,7 +183,6 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
-
 			String[] options = new String[3 + Settings.getGroupDepth()];
 			options[0] = INITIAL_MUTABILITY + Settings.getInitialMutability(0);
 			options[1] = MUTABLE_MUTABILITY + (Settings.getMutableMutability(0) ? ON : OFF);
