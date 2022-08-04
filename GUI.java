@@ -27,7 +27,7 @@ public class GUI {
 	private static final String GROUP_DEPTH = "Group Depth: ";
 	private static final String ENTER_GROUP_DEPTH = "Enter new group depth (1 - " + Settings.getMaxGroupDepth() + "): ";
 	private static final String GROUP_DEFAULT_SETTINGS = "General Group Settings";
-	private static final String GROUP_OPTION = "Level %d Group [Size: %d | Capacity %d | Mutability: %d | Mutable Mutability: $s]";
+	private static final String GROUP_OPTION = "Level %d Group [Size: %d | Capacity %d | Mutability: %d | Mutable Mutability: %s]";
 	//private static final String GROUP_SETTINGS = "Group Settings";
 	private static final String AGENT_SETTINGS = "Agent Settings";
 	private static final String SIMULATION_SETTINGS = "Simulation Settings";
@@ -50,21 +50,20 @@ public class GUI {
 	private static final String GROUP_DEFAULT_SETTINGS_TITLE = "GROUP SETTINGS\n==============";
 	private static final String CHANGE_ALL_GROUP_SIZES = "Change size for all groups";
 	private static final String ENTER_GROUP_SIZES = "Enter new size for all groups: ";
-	private static final String CHANGE_ALL_GROUP_CAPACITIES = "";
+	private static final String CHANGE_ALL_GROUP_CAPACITIES = "Change capacity for all groups";
 	private static final String ENTER_GROUP_CAPACITIES = "Enter new capacity for all groups (1 - " + Settings.getMaxCapacity() + "): ";
-	private static final String CHANGE_ALL_GROUP_MUTABILITIES = "";
+	private static final String CHANGE_ALL_GROUP_MUTABILITIES = "Change mutability for all groups";
 	private static final String ENTER_GROUP_MUTABILITIES = "Enter mutability for all groups (0 - 100): ";
-	private static final String CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES = "";
+	private static final String CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES = "Toggle mutable mutability for all groups";
 	// ===GROUP SETTINGS MENU===
-	private static final String GROUP_SETTINGS_MENU_TITLE = "LEVEL $d GROUP SETTINGS\n==============";
+	private static final String GROUP_SETTINGS_MENU_TITLE = "LEVEL %d GROUP SETTINGS\n==============";
 	private static final String GROUP_SIZE = "Size: %d";
 	private static final String ENTER_GROUP_SIZE =  "Enter size for Level %d groups (2 - " + Settings.getMaxGroupSize() + "): ";
 	private static final String GROUP_CAPACITY = "Capacity: %d";
 	private static final String ENTER_GROUP_CAPACITY = "Enter capacity for level %d groups (1 - %d): ";
-	private static final String GROUP_MUTABILITY = "Mutability: $d";
+	private static final String GROUP_MUTABILITY = "Mutability: %d";
 	private static final String ENTER_GROUP_MUTABILITY = "Enter mutability for level %d groups (0 - 100): ";
-	private static final String GROUP_MUTABLE_MUTABILITY = "Mutable mutability: $s";
-	
+	private static final String GROUP_MUTABLE_MUTABILITY = "Mutable mutability: %s";
 	
 	// ============
 	// MENU METHODS
@@ -226,8 +225,7 @@ public class GUI {
 				CHANGE_ALL_GROUP_SIZES,
 				CHANGE_ALL_GROUP_CAPACITIES,
 				CHANGE_ALL_GROUP_MUTABILITIES,
-				CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES,
-				BACK
+				CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES
 			};
 			value = Menu.create(
 				GROUP_DEFAULT_SETTINGS_TITLE,
