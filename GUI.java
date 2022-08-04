@@ -51,7 +51,7 @@ public class GUI {
 	private static final String CHANGE_ALL_GROUP_SIZES = "Change size for all groups";
 	private static final String ENTER_GROUP_SIZES = "Enter new size for all groups: ";
 	private static final String CHANGE_ALL_GROUP_CAPACITIES = "Change capacity for all groups";
-	private static final String ENTER_GROUP_CAPACITIES = "Enter new capacity for all groups (1 - " + Settings.getMaxCapacity() + "): ";
+	private static final String ENTER_GROUP_CAPACITIES = "Enter new capacity for all groups (1 - %d): ";
 	private static final String CHANGE_ALL_GROUP_MUTABILITIES = "Change mutability for all groups";
 	private static final String ENTER_GROUP_MUTABILITIES = "Enter mutability for all groups (0 - 100): ";
 	private static final String CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES = "Toggle mutable mutability for all groups";
@@ -237,7 +237,7 @@ public class GUI {
 					Settings.setAllGroupSizes(Input.readIntBetween(ENTER_GROUP_SIZES, 1, Settings.getMaxGroupSize()));
 					break;
 				case 2:
-					Settings.setAllGroupCapacities(Input.readIntBetween(ENTER_GROUP_CAPACITIES, 1, Settings.getMaxCapacity()));
+					Settings.setAllGroupCapacities(Input.readIntBetween(String.format(ENTER_GROUP_CAPACITIES, Settings.getMaxCapacity()), 1, Settings.getMaxCapacity()));
 					break;
 				case 3:
 					Settings.setAllGroupMutabilities(Input.readIntBetween(ENTER_GROUP_MUTABILITIES, 0, 100));
@@ -274,7 +274,7 @@ public class GUI {
 					Settings.setGroupSize(level, Input.readIntBetween(String.format(ENTER_GROUP_SIZE, level), 2, Settings.getMaxGroupSize()));
 					break;
 				case 2:
-					Settings.setGroupCapacity(level, Input.readIntBetween(String.format(ENTER_GROUP_CAPACITY, level), 1, Settings.getGroupCapacity(level)));
+					Settings.setGroupCapacity(level, Input.readIntBetween(String.format(ENTER_GROUP_CAPACITY, level, Settings.getGroupSize(level)), 1, Settings.getGroupCapacity(level)));
 					break;
 				case 3:
 					Settings.setInitialMutability(level, Input.readIntBetween(ENTER_GROUP_MUTABILITY, 0, 100));
