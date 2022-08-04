@@ -1,15 +1,5 @@
 // TO DO
 
-// mutate Entities
-// reset Entities
-// TEST
-
-// add level settings:
-// --group capacities
-// --mutability
-// --mutable mutability
-// TEST
-
 // data output
 // --gather data (weightings / contributions)
 // --gather data (other)
