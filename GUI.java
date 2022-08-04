@@ -20,37 +20,52 @@ public class GUI {
 	private static final String RUN_SIMULATION = "Run simulation";
 	private static final String SETTINGS = "Settings";
 	private static final String QUIT = "Quit";
-	private static final String QUIT_CONFIRM = "Are you sure you want to quit? (y/n): ";
+	private static final String QUIT_CONFIRM = "\nAre you sure you want to quit? (y/n): ";
 	private static final String GOODBYE_MSG = "\nPROGRAM CLOSED\n==============\n";
 	// ===SETTINGS MENU===
 	private static final String SETTINGS_MENU_TITLE = "SETTINGS\n========";
-	private static final String GROUP_SETTINGS = "Group Settings";
-	private static final String AGENT_SETTINGS = "Agent Settings";
-	private static final String SIMULATION_SETTINGS = "Simulation Settings";
-	// ===GROUP SETTINGS MENU===
-	private static final String GROUP_SETTINGS_MENU_TITLE = "GROUP SETTINGS\n==============";
 	private static final String GROUP_DEPTH = "Group Depth: ";
 	private static final String ENTER_GROUP_DEPTH = "Enter new group depth (1 - " + Settings.getMaxGroupDepth() + "): ";
-	private static final String GROUP_SIZE = "Level %d Groups Size: %d";
-	private static final String ENTER_GROUP_SIZE =  "Enter size for Level %d groups (2 - " + Settings.getMaxGroupSize() + "): ";
-	private static final String CHANGE_ALL_GROUP_SIZES = "Change size for all groups";
-	private static final String ENTER_GROUP_SIZES = "Enter new size for all groups: ";
-	// ===AGENT SETTINGS MENU===
-	private static final String AGENT_SETTINGS_MENU_TITLE = "AGENT SETTINGS\n==============";
-	private static final String INITIAL_MUTABILITY = "Initial Mutability: ";
-	private static final String MUTABLE_MUTABILITY = "Mutable Mutability: ";
-	private static final String ENTER_MUTABILITY = "Enter Agent Mutability (1 - 100): ";
-	private static final String CHANGE_ALL_AGENT_WEIGHTINGS = "Change all Agent weightings";
-	private static final String ENTER_WEIGHTINGS = "Enter new weighting for all levels (0 - 100): ";
-	private static final String AGENT_WEIGHTING = "Level %d Initial Weighting: %d";
-	private static final String ENTER_WEIGHTING = "Enter weighting for Level %d: ";
+	private static final String GROUP_DEFAULT_SETTINGS = "General Group Settings";
+	private static final String GROUP_OPTION = "Level %d Group [Size: %d | Capacity %d | Mutability: %d | Mutable Mutability: $s]";
+	//private static final String GROUP_SETTINGS = "Group Settings";
+	private static final String AGENT_SETTINGS = "Agent Settings";
+	private static final String SIMULATION_SETTINGS = "Simulation Settings";
 	// ===SIMULATION SETTINGS MENU===
 	private static final String SIMULATION_SETTINGS_MENU_TITLE = "SIMULATION SETTINGS\n===================";	
 	private static final String ITERATIONS = "Iterations per Round: ";
 	private static final String ROUNDS = "Rounds: ";
 	private static final String ENTER_ITERATIONS = "Enter number of iterations per round (1 - " + Settings.getMaxIterations() + "): ";
 	private static final String ENTER_ROUNDS = "Enter number of rounds (1 - " + Settings.getMaxRounds() + "): ";
-
+	// ===AGENT SETTINGS MENU===
+	private static final String AGENT_SETTINGS_MENU_TITLE = "AGENT SETTINGS\n==============";
+	private static final String INITIAL_MUTABILITY = "Initial Mutability: ";
+	private static final String MUTABLE_MUTABILITY = "Mutable Mutability: ";
+	private static final String ENTER_MUTABILITY = "Enter Agent Mutability (0 - 100): ";
+	private static final String CHANGE_ALL_AGENT_WEIGHTINGS = "Change all Agent weightings";
+	private static final String ENTER_WEIGHTINGS = "Enter new weighting for all levels (0 - 100): ";
+	private static final String AGENT_WEIGHTING = "Level %d Initial Weighting: %d";
+	private static final String ENTER_WEIGHTING = "Enter weighting for Level %d: ";
+	// ===GROUP DEFAULT SETTINGS MENU===
+	private static final String GROUP_DEFAULT_SETTINGS_TITLE = "GROUP SETTINGS\n==============";
+	private static final String CHANGE_ALL_GROUP_SIZES = "Change size for all groups";
+	private static final String ENTER_GROUP_SIZES = "Enter new size for all groups: ";
+	private static final String CHANGE_ALL_GROUP_CAPACITIES = "";
+	private static final String ENTER_GROUP_CAPACITIES = "Enter new capacity for all groups (1 - " + Settings.getMaxCapacity() + "): ";
+	private static final String CHANGE_ALL_GROUP_MUTABILITIES = "";
+	private static final String ENTER_GROUP_MUTABILITIES = "Enter mutability for all groups (0 - 100): ";
+	private static final String CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES = "";
+	// ===GROUP SETTINGS MENU===
+	private static final String GROUP_SETTINGS_MENU_TITLE = "LEVEL $d GROUP SETTINGS\n==============";
+	private static final String GROUP_SIZE = "Size: %d";
+	private static final String ENTER_GROUP_SIZE =  "Enter size for Level %d groups (2 - " + Settings.getMaxGroupSize() + "): ";
+	private static final String GROUP_CAPACITY = "Capacity: %d";
+	private static final String ENTER_GROUP_CAPACITY = "Enter capacity for level %d groups (1 - %d): ";
+	private static final String GROUP_MUTABILITY = "Mutability: $d";
+	private static final String ENTER_GROUP_MUTABILITY = "Enter mutability for level %d groups (0 - 100): ";
+	private static final String GROUP_MUTABLE_MUTABILITY = "Mutable mutability: $s";
+	
+	
 	// ============
 	// MENU METHODS
 	// ============
@@ -91,11 +106,22 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
-			String[] options = {
-				GROUP_SETTINGS,
-				AGENT_SETTINGS,
-				SIMULATION_SETTINGS
-			};
+			String[] options = new String[Settings.getGroupDepth() + 4];
+			options[0] = SIMULATION_SETTINGS;
+			options[1] = GROUP_DEPTH + Settings.getGroupDepth();
+			options[2] = AGENT_SETTINGS;
+			options[3] = GROUP_DEFAULT_SETTINGS;
+			for (int i = 1; i <= Settings.getGroupDepth(); i++) {
+				options[i + 3] = String.format(
+					GROUP_OPTION, 
+					i, 
+					Settings.getGroupSize(i), 
+					Settings.getGroupCapacity(i), 
+					Settings.getInitialMutability(i), 
+					Settings.getMutableMutabilityString(i)
+				);
+			}			
+	
 			value = Menu.create(
 				SETTINGS_MENU_TITLE,
 				SELECT_OPTION,
@@ -104,89 +130,22 @@ public class GUI {
 			);
 			switch (value) {
 				case 1:
-					groupSettingsMenu();
-					break;
-				case 2:
-					agentSettingsMenu();
-					break;
-				case 3:
 					simulationSettingsMenu();
 					break;
-				case 0:
-				default:
-					cont = false;
-					break;
-			}
-		}
-	}
-
-	public static void groupSettingsMenu() {
-		boolean cont = true;
-		int value = -1;
-		while (cont) {
-			String[] options = new String[2 + Settings.getGroupDepth()];
-			options[0] = GROUP_DEPTH + Settings.getGroupDepth();
-			options[1] = CHANGE_ALL_GROUP_SIZES;
-			for (int i = 1; i <= Settings.getGroupDepth(); i++) {
-				options[i + 1] = String.format(String.format(GROUP_SIZE, i, Settings.getGroupSize(i)));
-			}
-			
-			value = Menu.create(
-				GROUP_SETTINGS_MENU_TITLE,
-				SELECT_OPTION,
-				BACK,
-				options
-			);
-			switch (value) {
-				case 1:
+				case 2:
 					Settings.setGroupDepth(Input.readIntBetween(ENTER_GROUP_DEPTH, 1, Settings.getMaxGroupDepth()));
 					break;
-				case 2:
-					Settings.setAllGroupSizes(Input.readIntBetween(ENTER_GROUP_SIZES, 1, Settings.getMaxGroupSize()));
-					break;
-				case 0:
-					cont = false;
-					break;
-				default:
-					Settings.setGroupSize(value - 2, Input.readIntBetween(String.format(ENTER_GROUP_SIZE, value - 2), 2, Settings.getMaxGroupSize()));
-					break;
-			}
-		}
-	}
-
-	public static void agentSettingsMenu() {
-		boolean cont = true;
-		int value = -1;
-		while (cont) {
-
-			String[] options = new String[3 + Settings.getGroupDepth()];
-			options[0] = INITIAL_MUTABILITY + Settings.getAgentInitialMutability();
-			options[1] = MUTABLE_MUTABILITY + (Settings.getAgentMutableMutability() ? ON : OFF);
-			options[2] = CHANGE_ALL_AGENT_WEIGHTINGS;
-			for (int i = 0; i < Settings.getGroupDepth(); i++) {
-				options[i + 3] = String.format(String.format(AGENT_WEIGHTING, i, Settings.getAgentInitialWeighting(i)));
-			}				
-			value = Menu.create(
-				AGENT_SETTINGS_MENU_TITLE,
-				SELECT_OPTION, 
-				BACK,
-				options
-			);
-			switch (value) {
-				case 1:
-					Settings.setAgentInitialMutability(Input.readIntBetween(ENTER_MUTABILITY, 1, 100));
-					break;
-				case 2:
-					Settings.setAgentMutableMutability(!Settings.getAgentMutableMutability());
-					break;
 				case 3:
-					Settings.setAllAgentWeightings(Input.readIntBetween(ENTER_WEIGHTINGS, 0, 100));
+					agentSettingsMenu();
+					break;
+				case 4:
+					groupDefaultSettingsMenu();
 					break;
 				case 0:
 					cont = false;
 					break;
 				default:
-					Settings.setAgentInitialWeighting(value - 4, Input.readIntBetween(String.format(ENTER_WEIGHTING, value - 4), 0, 100));
+					groupSettingsMenu(value - 4);;
 					break;
 			}
 		}
@@ -221,18 +180,136 @@ public class GUI {
 		}
 	}
 
+	public static void agentSettingsMenu() {
+		boolean cont = true;
+		int value = -1;
+		while (cont) {
+
+			String[] options = new String[3 + Settings.getGroupDepth()];
+			options[0] = INITIAL_MUTABILITY + Settings.getInitialMutability(0);
+			options[1] = MUTABLE_MUTABILITY + (Settings.getMutableMutability(0) ? ON : OFF);
+			options[2] = CHANGE_ALL_AGENT_WEIGHTINGS;
+			for (int i = 0; i < Settings.getGroupDepth(); i++) {
+				options[i + 3] = String.format(String.format(AGENT_WEIGHTING, i, Settings.getAgentInitialWeighting(i)));
+			}				
+			value = Menu.create(
+				AGENT_SETTINGS_MENU_TITLE,
+				SELECT_OPTION, 
+				BACK,
+				options
+			);
+			switch (value) {
+				case 1:
+					Settings.setInitialMutability(0, Input.readIntBetween(ENTER_MUTABILITY, 1, 100));
+					break;
+				case 2:
+					Settings.setMutableMutability(0, !Settings.getMutableMutability(0));
+					break;
+				case 3:
+					Settings.setAllAgentWeightings(Input.readIntBetween(ENTER_WEIGHTINGS, 0, 100));
+					break;
+				case 0:
+					cont = false;
+					break;
+				default:
+					Settings.setAgentInitialWeighting(value - 4, Input.readIntBetween(String.format(ENTER_WEIGHTING, value - 4), 0, 100));
+					break;
+			}
+		}
+	}
+
+	public static void groupDefaultSettingsMenu() {
+		boolean cont = true;
+		int value = -1;
+		while (cont) {
+			String[] options = {
+				CHANGE_ALL_GROUP_SIZES,
+				CHANGE_ALL_GROUP_CAPACITIES,
+				CHANGE_ALL_GROUP_MUTABILITIES,
+				CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES,
+				BACK
+			};
+			value = Menu.create(
+				GROUP_DEFAULT_SETTINGS_TITLE,
+				SELECT_OPTION, 
+				BACK,
+				options
+			);
+			switch (value) {
+				case 1:
+					Settings.setAllGroupSizes(Input.readIntBetween(ENTER_GROUP_SIZES, 1, Settings.getMaxGroupSize()));
+					break;
+				case 2:
+					Settings.setAllGroupCapacities(Input.readIntBetween(ENTER_GROUP_CAPACITIES, 1, Settings.getMaxCapacity()));
+					break;
+				case 3:
+					Settings.setAllGroupMutabilities(Input.readIntBetween(ENTER_GROUP_MUTABILITIES, 0, 100));
+					break;
+				case 4:
+					Settings.toggleGroupMutableMutabilities();
+					break;
+				case 0:
+				default:
+					cont = false;
+					break;
+			}
+		}
+	}
+
+	public static void groupSettingsMenu(int level) {
+		boolean cont = true;
+		int value = -1;
+		while (cont) {
+			String[] options = {
+				String.format(GROUP_SIZE, Settings.getGroupSize(level)),
+				String.format(GROUP_CAPACITY, Settings.getGroupCapacity(level)),
+				String.format(GROUP_MUTABILITY, Settings.getInitialMutability(level)),
+				String.format(GROUP_MUTABLE_MUTABILITY, (Settings.getMutableMutability(level) ? ON : OFF))
+			};
+			
+			value = Menu.create(
+				String.format(GROUP_SETTINGS_MENU_TITLE, level),
+				SELECT_OPTION,
+				BACK,
+				options
+			);
+			switch (value) {
+				case 1:
+					Settings.setGroupSize(level, Input.readIntBetween(String.format(ENTER_GROUP_SIZE, level), 2, Settings.getMaxGroupSize()));
+					break;
+				case 2:
+					Settings.setGroupCapacity(level, Input.readIntBetween(String.format(ENTER_GROUP_CAPACITY, level), 1, Settings.getGroupCapacity(level)));
+					break;
+				case 3:
+					Settings.setInitialMutability(level, Input.readIntBetween(ENTER_GROUP_MUTABILITY, 0, 100));
+					break;
+				case 4:
+					Settings.toggleMutableMutability(level);
+					break;
+				case 0:
+				default:
+					cont = false;
+					break;
+			}
+		}
+	}
+
+	
+
+	
 	/*
 	public static void menuTemplate() {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
 			String[] options = {
-				BACK
+				//options here
 			};
 			value = Menu.create(
 				MAIN_MENU_TITLE,
 				SELECT_OPTION, 
-				BACK
+				BACK,
+				options
 			);
 			switch (value) {
 				case 0:

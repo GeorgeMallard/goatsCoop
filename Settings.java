@@ -20,6 +20,7 @@ public class Settings {
     private static final int defaultGroupDepth = 3;             // change this number to alter default group depth (number of group levels)
     private static final int maxDepth = 5;                      // change this number to alter max group depth (number of group levels)
     private static int defaultGroupSize = 6;                    // change this number to alter default group size
+    private static int defaultGroupCapacity = defaultGroupSize / 2;
     private static final int maxGroupSize = 100;                // change this number to alter max group size
     // ===AGENTS===
     private static int defaultAgentWeighting = 50;              // change this number to alter default agent weighting
@@ -53,6 +54,11 @@ public class Settings {
         defaultGroupSize, 
         defaultGroupSize
     ));
+    private static ArrayList<Integer> groupInitialCapacities = new ArrayList<Integer>(Arrays.asList(
+        defaultGroupCapacity,
+        defaultGroupCapacity,
+        defaultGroupCapacity
+    ));
     // ===AGENTS===
     private static ArrayList<Integer> agentInitialWeightings = new ArrayList<Integer>(Arrays.asList(
         defaultAgentWeighting, 
@@ -79,6 +85,10 @@ public class Settings {
         mutableMutabilities.set(level, bool);
     }
 
+    public static void toggleMutableMutability(int level) {
+        mutableMutabilities.set(level, !mutableMutabilities.get(level));
+    }
+
     // ===GROUPS===
 
     public static void setGroupDepth(int newDepth) {
@@ -86,6 +96,7 @@ public class Settings {
             if (newDepth < groupDepth) {
                 for (int i = 0; i < groupDepth - newDepth; i++) {
                     groupInitialSizes.remove(newDepth);
+                    groupInitialCapacities.remove(newDepth);
                     agentInitialWeightings.remove(newDepth);
                     initialMutabilities.remove(newDepth + 1);
                     mutableMutabilities.remove(newDepth + 1);
@@ -94,6 +105,7 @@ public class Settings {
             } else {
                 for (int i = 0; i < newDepth - groupDepth; i++) {
                     groupInitialSizes.add(groupDepth, defaultGroupSize);
+                    groupInitialCapacities.add(groupDepth, defaultGroupSize / 2);
                     agentInitialWeightings.add(groupDepth, defaultAgentWeighting);
                     initialMutabilities.add(groupDepth + 1, defaultMutability);
                     mutableMutabilities.add(groupDepth + 1, defaultMutableMutability);
@@ -104,17 +116,51 @@ public class Settings {
     }
 
     public static void setGroupSize(int groupLevel, int newSize) {
-        if (groupLevel > 0 && groupLevel <= groupInitialSizes.size() && newSize <= maxGroupSize) {
+        if (groupLevel > 0 && groupLevel <= groupInitialSizes.size() && newSize <= maxGroupSize && newSize >= getGroupCapacity(groupLevel)) {
             groupInitialSizes.set(groupLevel - 1, newSize);
         }  
     }
 
     public static void setAllGroupSizes(int newSize) {
-        for (int i = 0; i < groupInitialSizes.size(); i++) {
-            groupInitialSizes.set(i, newSize);
-        }
-        defaultGroupSize = newSize;
+        if (newSize >= getMinGroupSize()) {
+            for (int i = 0; i < groupInitialSizes.size(); i++) {
+                groupInitialSizes.set(i, newSize);
+            }
+            defaultGroupSize = newSize;
+        } 
     }
+
+    public static void setGroupCapacity(int groupLevel, int newCapacity) {
+        if (newCapacity <= getGroupSize(groupLevel) && newCapacity > 0 && groupLevel > 0 && groupLevel <= groupInitialCapacities.size()) {
+            groupInitialCapacities.set(groupLevel - 1, newCapacity);
+            defaultGroupCapacity = newCapacity;
+        }   
+    }
+
+    public static void setAllGroupCapacities(int newCapacity) {
+        if (newCapacity <= getMaxCapacity()) {
+            for (int i = 0; i <groupInitialCapacities.size(); i++) {
+                groupInitialCapacities.set(i, newCapacity);
+            }
+        }
+    }
+
+    public static void setAllGroupMutabilities(int newMutability) {
+        if (newMutability >= 0 && newMutability <= 100) {
+            for (int i = 1; i < initialMutabilities.size(); i++) {
+                initialMutabilities.set(i, newMutability);
+            }  
+            defaultMutability = newMutability; 
+        }
+    }
+
+    public static void toggleGroupMutableMutabilities() {
+        defaultMutableMutability = !defaultMutableMutability;
+        for (int i = 1; i < initialMutabilities.size(); i++) {
+            mutableMutabilities.set(i, defaultMutableMutability);
+        }
+    }
+
 
     // ===AGENTS===
 
@@ -159,6 +205,10 @@ public class Settings {
         return mutableMutabilities.get(level);
     }
 
+    public static String getMutableMutabilityString(int level) {
+        return mutableMutabilities.get(level) ? "ON" : "OFF";
+    }
+
     // ===GROUPS===
 
     public static int getGroupDepth() {
@@ -175,6 +225,30 @@ public class Settings {
 
     public static int getMaxGroupSize() {
         return maxGroupSize;
+    }
+
+    public static int getGroupCapacity(int groupLevel) {
+        return groupInitialCapacities.get(groupLevel - 1);
+    }
+
+    public static int getMaxCapacity() {
+        int min = maxGroupSize;
+        for (Integer x : groupInitialSizes) {
+            if (x < min) {
+                min = x;
+            }
+        }
+        return min;
+    }
+
+    public static int getMinGroupSize() {
+        int max = 0;
+        for (Integer x : groupInitialCapacities) {
+            if (x > max) {
+                max = x;
+            }
+        }
+        return max;
     }
 
     // ===AGENTS===
