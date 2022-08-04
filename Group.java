@@ -210,6 +210,20 @@ public class Group extends Entity {
         this.capacity = mutate(this.capacity, this.getMutability());
     }
 
+    /**
+     * Sets all contributions back to zero
+     */
+    public void resetContributions() {
+        if (this.getLevel() > 1){
+            for (Entity x : children) {
+                x.resetContributions();
+            }
+        }
+        for (int i = 0; i < this.getContributions().length; i++) {
+            this.setContribution(i, 0.0);
+        }
+    }
+
     // ===============
     // UTILITY METHODS
     // ===============

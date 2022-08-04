@@ -164,6 +164,10 @@ public class Agent extends Entity {
 		//intentionally left blank
 	}
 
+	public void resetContributions() {
+		//intentionally left blank
+	}
+
 	// ======
 	// OUTPUT
 	// ======

@@ -74,15 +74,6 @@ public abstract class Entity {
         }
     }
 
-    /**
-     * Sets all contributions back to zero
-     */
-    public void resetContributions() {
-        for (int i = 0; i < this.contributions.length; i++) {
-            this.contributions[i] = 0.0;
-        }
-    }
-
     public void setMutability(int mutability) {
         this.mutability = mutability;
     }
@@ -178,4 +169,5 @@ public abstract class Entity {
     public abstract Entity clone(Group parentGroup);
     public abstract void addChild(Entity newChild);
     public abstract void mutateEntity();
+    public abstract void resetContributions();
 }

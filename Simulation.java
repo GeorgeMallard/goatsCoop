@@ -36,8 +36,8 @@ public class Simulation {
 				topLevelGroup.cullChildren();
 				topLevelGroup.repopulate();
 				topLevelGroup.mutateEntity();
+				topLevelGroup.resetContributions();
 				//report
-				//reset contributions
 			}
 		}
 	}
