@@ -1,4 +1,8 @@
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Scanner;
+
+import org.junit.Test;
 
 /**
  * Input class
@@ -30,10 +34,13 @@ public class Input {
      * @return int
      */
     public static int readIntBetween(String prompt, int min, int max) {
-        System.out.print(prompt);
+        if (max < min) {
+            throw new IllegalArgumentException("Max value is less than min value");
+        }
+        System.out.print(prompt.equals("") ? ">" : prompt);
         Scanner in = new Scanner(System.in);
         boolean inputError = false;
-        int value = min - 1;
+        Integer value;
         do {
             while (!in.hasNextInt()) {
                 System.out.print(INTEGER_FORMAT);
@@ -53,13 +60,18 @@ public class Input {
         return value;
     }
 
+    @Test
+    public void minGreaterThanMaxShouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> readIntBetween("", 3, 2));
+    }
+
    /**
     * Read a boolean input by the user in the form y/n
     * @param prompt as a String
     * @return boolean
     */
     public static boolean readBoolean(String prompt) {
-        System.out.print(prompt);
+        System.out.print(prompt.equals("") ? ">" : prompt);
         Scanner in = new Scanner(System.in);
         boolean bool = false;
         boolean inputError = false;
