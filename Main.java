@@ -1,9 +1,14 @@
 // TO DO
 
+// how best to package? *ASK TUTOR*
+
+// unit testing
+// --lots of exceptions ok? *ASK TUTOR*
+
 // data output
 // --gather data (weightings / contributions)
 // --gather data (other)
-// --how best to output data? (output as .txt file?) *ASK TUTOR*
+// --output as .txt file
 // TEST
 
 // additional features:
@@ -36,6 +41,6 @@ public class Main {
      */
     public static void main(String[] args) {
 		GUI.mainMenu();	
-	}
+    }
 
 }

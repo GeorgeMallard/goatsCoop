@@ -1,4 +1,9 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Random;
+
+import org.junit.Test;
 
 /**
  * Entity class
@@ -8,8 +13,12 @@ import java.util.Random;
  */
 public abstract class Entity {
     
-    private static Random random = new Random(); 		//used in mutation
+    // =========
+    // VARIABLES
+    // =========
 
+    private static Random random = new Random();
+    
     // ======
     // FIELDS
     // ======
@@ -74,6 +83,10 @@ public abstract class Entity {
         }
     }
 
+    /**
+     * Sets mutability
+     * @param mutability as an int
+     */
     public void setMutability(int mutability) {
         this.mutability = mutability;
     }
@@ -127,6 +140,10 @@ public abstract class Entity {
         return this.contributions;
     }
 
+    /**
+     * Returns mutability
+     * @return int
+     */
     public int getMutability() {
         return this.mutability;
     }
@@ -145,18 +162,27 @@ public abstract class Entity {
 	 * @param mutationFactor as an int
 	 * @return int
 	 */
-	public static int mutate(int value, int mutationFactor) {
-		if (random.nextInt(101) < mutationFactor) {
-			if (value == 0) {
-				value++;
-			} else if (value == 100) {
-				value--;
-			} else {
-				value = random.nextInt(2) > 0 ? value + 1 : value - 1;
-			}
+	public static int mutate(int value, int mutationFactor, int min, int max) {
+        if (max < min) {
+            throw new IllegalArgumentException("Max is less than min");
+        }
+        if (value < min) {
+            throw new IllegalArgumentException("Value is less than min");
+        }
+        if (value > max) {
+            throw new IllegalArgumentException("Value is greater than max");
+        }
+        int x = random.nextInt(101);
+		if (x < mutationFactor) {
+            value = random.nextInt(2) > 0 ? value + 1 : value - 1;
+            if (value < min) {
+				value = min + 1;
+			} else if (value > max) {
+				value = max - 1;
+			} 
 		}
 		return value;
-	}
+	}  
 
     // ================
     // ABSTRACT METHODS

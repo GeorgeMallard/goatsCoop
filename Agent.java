@@ -9,9 +9,6 @@ public class Agent extends Entity {
 	// =========
 	// VARIABLES
 	// =========
-
-	
-	//public static String title = "MUT\tAGT\tCOM\tSTE\tWLD"; 	//used for output
 	
 	// ======
 	// FIELDS
@@ -26,8 +23,7 @@ public class Agent extends Entity {
 	
 	// ===Deprecated===
 	public Agent next = null;				//used in conjunction with AgentList class, previously used when migrating Agents (deprecated feature)
-	
-		
+			
 	// ===========
 	// CONSTRUCTOR
 	// ===========
@@ -39,7 +35,6 @@ public class Agent extends Entity {
 	 */
 	public Agent(int mutability, boolean mutableMutability, int[] weightings, Group parentGroup) {
 		super(0, parentGroup, mutability);
-		//System.out.println("Creating Agent...");
 		this.setMutableMutability(mutableMutability);
 		this.setWeightings(weightings);
 		calculateContributions(weightings);
@@ -80,7 +75,6 @@ public class Agent extends Entity {
 		for (int i = 0; i < weightings.length; i++) {
 			this.setContribution(i, (total * 1.0) / weightings[i]);
 		}
-		//System.out.println("Agent contributions: " + convert(this.getContributions()));
 	}
 
 	// =======
@@ -125,7 +119,6 @@ public class Agent extends Entity {
 	 * @return Agent
 	 */
 	public Entity clone(Group parentGroup) {
-		//System.out.println("cloning agent...");
 		return (Entity) new Agent(
 			this.getMutability(),
 			this.getMutableMutability(),
@@ -138,9 +131,9 @@ public class Agent extends Entity {
 	 * Mutates Agent properties
 	 */
 	public void mutateEntity() {
-		this.setMutability(this.getMutableMutability() ? mutate(this.getMutability(), this.getMutability()) : this.getMutability());
+		this.setMutability(this.getMutableMutability() ? mutate(this.getMutability(), this.getMutability(), 0, 100) : this.getMutability());
 		for (int i = 0; i < this.weightings.length; i++) {
-			this.weightings[i] = mutate(this.weightings[i], this.getMutability());
+			this.weightings[i] = mutate(this.weightings[i], this.getMutability(), 0, 100);
 		}
 	}
 
@@ -196,7 +189,7 @@ public class Agent extends Entity {
 	public static String intArrToString(int[] arr) {
 		String str = "";
 		for (int x : arr) {
-			str += x + ", ";
+			str += x + " ";
 		}
 		return str;
 	}

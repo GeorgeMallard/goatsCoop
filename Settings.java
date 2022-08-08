@@ -19,7 +19,7 @@ public class Settings {
     // ===GROUPS===
     private static final int defaultGroupDepth = 3;             // change this number to alter default group depth (number of group levels)
     private static final int maxDepth = 5;                      // change this number to alter max group depth (number of group levels)
-    private static int defaultGroupSize = 6;                    // change this number to alter default group size
+    private static int defaultGroupSize = 6;                    // change this number to alter default group size (min 2)
     private static int defaultGroupCapacity = defaultGroupSize / 2;
     private static final int maxGroupSize = 100;                // change this number to alter max group size
     // ===AGENTS===
