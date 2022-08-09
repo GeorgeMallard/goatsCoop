@@ -1,9 +1,4 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Random;
-
-import org.junit.Test;
 
 /**
  * Entity class
@@ -157,9 +152,9 @@ public abstract class Entity {
     // ==============
 
     /**
-	 * Mutates a value up or down based on mutationFactor
+	 * Mutates a value up or down based on mutationFactor (mutationFactor = % chance of mutation occurring)
 	 * @param value as an int
-	 * @param mutationFactor as an int
+	 * @param mutationFactor as an int between 0 and 100
 	 * @return int
 	 */
 	public static int mutate(int value, int mutationFactor, int min, int max) {
@@ -171,6 +166,12 @@ public abstract class Entity {
         }
         if (value > max) {
             throw new IllegalArgumentException("Value is greater than max");
+        }
+        if (mutationFactor < 0) {
+            throw new IllegalArgumentException("Mutation factor is less than 0");
+        }
+        if (mutationFactor > 100) {
+            throw new IllegalArgumentException("Mutation factor is greater than 100");
         }
         int x = random.nextInt(101);
 		if (x < mutationFactor) {
