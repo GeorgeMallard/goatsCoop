@@ -177,9 +177,9 @@ public abstract class Entity {
 		if (x < mutationFactor) {
             value = random.nextInt(2) > 0 ? value + 1 : value - 1;
             if (value < min) {
-				value = min + 1;
+				value = min;
 			} else if (value > max) {
-				value = max - 1;
+				value = max;
 			} 
 		}
 		return value;
