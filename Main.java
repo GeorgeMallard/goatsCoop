@@ -1,9 +1,6 @@
 // TO DO
 
-// how best to package? *ASK TUTOR*
-
 // unit testing
-// --lots of exceptions ok? *ASK TUTOR*
 
 // data output
 // --gather data (weightings / contributions)
