@@ -1,9 +1,6 @@
 package Program;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Scanner;
-
-import org.junit.Test;
 
 /**
  * Input class
@@ -35,9 +32,7 @@ public class Input {
      * @return int
      */
     public static int readIntBetween(String prompt, int min, int max) {
-        if (max < min) {
-            throw new IllegalArgumentException("Max value is less than min value");
-        }
+        assert (max >= min) : "min is greater than max";
         System.out.print(prompt.equals("") ? ">" : prompt);
         Scanner in = new Scanner(System.in);
         boolean inputError = false;
@@ -59,11 +54,6 @@ public class Input {
             }
         } while (inputError);
         return value;
-    }
-
-    @Test
-    public void minGreaterThanMaxShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> readIntBetween("", 3, 2));
     }
 
    /**

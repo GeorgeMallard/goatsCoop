@@ -19,7 +19,6 @@ public class Agent extends Entity {
 	//private Group parentGroup 			(inherited from Entity)
 	//private double[] contributions 		(inherited from Entity)
 	//private int mutability;				(inherited from Entity)
-	private boolean mutableMutability;		//indicates whether mutability is itself a mutable property
 	private int[] weightings;				//indicates how the Agent prioritises different group levels
 	
 	// ===Deprecated===
@@ -34,9 +33,8 @@ public class Agent extends Entity {
 	 * @param mutability as an int
 	 * @param weightings as an int array
 	 */
-	public Agent(int mutability, boolean mutableMutability, int[] weightings, Group parentGroup) {
+	public Agent(int mutability, int[] weightings, Group parentGroup) {
 		super(0, parentGroup, mutability);
-		this.setMutableMutability(mutableMutability);
 		this.setWeightings(weightings);
 		calculateContributions(weightings);
 	}
@@ -44,14 +42,6 @@ public class Agent extends Entity {
 	// =======
 	// SETTERS
 	// =======
-
-	/**
-	 * Sets whether mutability is itself mutable
-	 * @param bool as a boolean
-	 */
-	private void setMutableMutability(boolean bool) {
-		this.mutableMutability = bool;
-	}
 
 	/**
 	 * Sets Agent weightings
@@ -81,14 +71,6 @@ public class Agent extends Entity {
 	// =======
 	// GETTERS
 	// =======
-
-	/**
-	 * Get whether mutability is itself mutable
-	 * @return boolean
-	 */
-	public boolean getMutableMutability() {
-		return this.mutableMutability;
-	}
 
 	/**
 	 * Get weightings
@@ -122,7 +104,6 @@ public class Agent extends Entity {
 	public Entity clone(Group parentGroup) {
 		return (Entity) new Agent(
 			this.getMutability(),
-			this.getMutableMutability(),
 			this.getWeightings(),
 			parentGroup
 		);
@@ -132,7 +113,9 @@ public class Agent extends Entity {
 	 * Mutates Agent properties
 	 */
 	public void mutateEntity() {
-		this.setMutability(this.getMutableMutability() ? mutate(this.getMutability(), this.getMutability(), 0, 100) : this.getMutability());
+		if (Settings.getMutableMutability(this.getLevel())) {
+            this.setMutability(mutate(this.getMutability(), this.getMutability(), 0, 100));
+        }
 		for (int i = 0; i < this.weightings.length; i++) {
 			this.weightings[i] = mutate(this.weightings[i], this.getMutability(), 0, 100);
 		}

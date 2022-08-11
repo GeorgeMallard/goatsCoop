@@ -159,28 +159,19 @@ public abstract class Entity {
 	 * @return int
 	 */
 	public static int mutate(int value, int mutationFactor, int min, int max) {
-        if (max < min) {
-            throw new IllegalArgumentException("Max is less than min");
-        }
-        if (value < min) {
-            throw new IllegalArgumentException("Value is less than min");
-        }
-        if (value > max) {
-            throw new IllegalArgumentException("Value is greater than max");
-        }
-        if (mutationFactor < 0) {
-            throw new IllegalArgumentException("Mutation factor is less than 0");
-        }
-        if (mutationFactor > 100) {
-            throw new IllegalArgumentException("Mutation factor is greater than 100");
-        }
+        assert (max >= min) : "max is less than min";
+        assert (value >= min) : "value is less than min";
+        assert (value <= max) : "value is greater than max";
+        assert (mutationFactor >= 0) : "mutation factor is less than 0";
+        assert (mutationFactor <= 100) : "mutation factor is greater than 100";
+        
         int x = random.nextInt(101);
 		if (x < mutationFactor) {
             value = random.nextInt(2) > 0 ? value + 1 : value - 1;
             if (value < min) {
-				value = min;
+				value = (min == max) ? min : min + 1;
 			} else if (value > max) {
-				value = max;
+				value = (min == max) ? max : max - 1;
 			} 
 		}
 		return value;

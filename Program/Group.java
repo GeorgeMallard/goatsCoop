@@ -132,7 +132,6 @@ public class Group extends Entity {
             for (int i = 0; i < this.getSize(); i++) {
                 this.children.add(new Agent(
                     Settings.getInitialMutability(0), 
-                    Settings.getMutableMutability(0),
                     Settings.getAgentInitialWeightings(),
                     this
                 ));
@@ -227,6 +226,9 @@ public class Group extends Entity {
     public void mutateEntity() {
         for (Entity x : children) {
             x.mutateEntity();
+        }
+        if (Settings.getMutableMutability(this.getLevel())) {
+            this.setMutability(mutate(this.getMutability(), this.getMutability(), 0, 100));
         }
         int newCapacity = mutate(this.getCapacity(), this.getMutability(), 0, 100);
         if (newCapacity <= this.getSize()) {
