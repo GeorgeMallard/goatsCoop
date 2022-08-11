@@ -265,20 +265,12 @@ public class Group extends Entity {
      * @param group as a Group
      * @return boolean
      */
-    public boolean equals(Group group) {
-        boolean contributionsCheck = true;
-        for (int i = 0; i < this.getContributions().length; i++) {
-            if (this.getContribution(i) != group.getContribution(i)) {
-                contributionsCheck = false;
-                break;
-            }
-        }      
+    public boolean equals(Group group) {    
         if (
             this.getLevel() == group.getLevel()
             && this.getMutability() == group.getMutability()
             && this.getSize() == group.getSize()
             && this.getCapacity() == group.getCapacity()
-            && contributionsCheck
         ) {
             return true;
         } else {

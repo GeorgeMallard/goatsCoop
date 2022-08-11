@@ -1,25 +1,25 @@
 package Program;
 // TO DO
 
-// unit testing
+// assertions
 
 // data output
 // --gather data (weightings / contributions)
 // --gather data (other)
 // --output as .txt file
+// --additional unit testing for output
 // TEST
 
 // additional features:
 // --average or absolute contribution (?)
 // --advanced mutation option
-// --allow agent negative weightings
+// --allow agent negative weightings (?)
 // TEST
 
 // repeatability
 // --run directly from cmd line with args
+// --exceptions
 // TEST
-
-
 
 /**
  * Main class
@@ -29,7 +29,7 @@ package Program;
  */
 public class Main {
     
-    // ===========
+  // ===========
 	// MAIN METHOD
 	// ===========
 
@@ -38,7 +38,11 @@ public class Main {
      * @param args as a String array
      */
     public static void main(String[] args) {
-		GUI.mainMenu();	
+      if (args.length == 0) {
+	      GUI.mainMenu();
+      }	else {
+        //args version goes here
+      }
     }
 
 }

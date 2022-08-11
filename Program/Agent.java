@@ -149,6 +149,20 @@ public class Agent extends Entity {
 		//intentionally left blank
 	}
 
+	/**
+     * Checks if this Agent is identical to another, in all aspects except parentGroup
+     * @param agent as an Agent
+     * @return boolean
+     */
+    public boolean equals(Agent agent) {
+        for (int i = 0; i < this.getWeightings().length; i++) {
+            if (this.getWeighting(i) != agent.getWeighting(i)) {
+                return false;
+            }
+        }      
+        return (this.getMutability() == agent.getMutability()) ? true : false;
+    }
+
 	// ======
 	// OUTPUT
 	// ======
