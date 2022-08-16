@@ -52,5 +52,4 @@ public class AgentTest {
         assertFalse(testAgent1.equals(testAgent2));
     }
 
-
 }

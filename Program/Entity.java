@@ -13,16 +13,16 @@ public abstract class Entity {
     // VARIABLES
     // =========
 
-    private static Random random = new Random();
+    private static Random random = new Random();    // used in mutate method
     
     // ======
     // FIELDS
     // ======
 
-    private int level;
-    private Group parentGroup;
-    private double[] contributions;
-    private int mutability;
+    private int level;                  // indicates Agent or Group level (Agent is level 0, first Group level is 1, etc)
+    private Group parentGroup;          // indicates Group that Entity belongs to, this should be null for top level Group
+    private double[] contributions;     // indicates contributions made to this and higher level Entities according to Agent weightings
+    private int mutability;             // indicates likelihood for any given property to mutate each iteration
 
     // ===========
     // CONSTRUCTOR
@@ -33,6 +33,11 @@ public abstract class Entity {
      * @param parentGroup as a Group (null if Entity is top level Group)
      */
     public Entity(int level, Group parentGroup, int mutability) {
+        assert (level >= 0) : "Cannot create entity with level below 0";
+        assert (level <= Settings.getGroupDepth()) : "Cannot create entity with level above group depth";
+        assert (mutability >= 0) : "Cannot create entity with mutability below 0";
+        assert (mutability <= Settings.getMaxMutability()) : "Cannot create entity with mutability greater than max mutability";
+
         this.setLevel(level);
         this.setParentGroup(parentGroup);
         this.contributions = new double[Settings.getGroupDepth() - level];
@@ -48,6 +53,8 @@ public abstract class Entity {
      * @param level as an int (Agent is considered level 0, groups begin at 1)
      */
     public void setLevel(int level) {
+        assert (level > 0) : "Cannot set entity level below 0";
+        assert (level <= Settings.getGroupDepth()) : "Cannot set entity level above group depth";
         this.level = level;
     }
 
@@ -65,6 +72,8 @@ public abstract class Entity {
      * @param n as a double
      */
     public void setContribution(int index, double n) {
+        assert (index < this.contributions.length) : "Contributions index is too high";
+        assert (index >= 0) : "Contributions index is below 0";
         this.contributions[index] = n;
     }
 
@@ -74,9 +83,9 @@ public abstract class Entity {
      * @param n as a double
      */
     public void incrementContribution(int index, double n) {
-        if (index < this.contributions.length) {
-            this.contributions[index] += n;
-        }
+        assert (index < this.contributions.length) : "Contributions index is too high";
+        assert (index >= 0) : "Contributions index is below 0";
+        this.contributions[index] += n;   
     }
 
     /**
@@ -84,6 +93,8 @@ public abstract class Entity {
      * @param mutability as an int
      */
     public void setMutability(int mutability) {
+        assert (mutability >= 0) : "Mutability cannot be below 0";
+        assert (mutability <= Settings.getMaxMutability()) : "Mutability cannot be above max mutability";
         this.mutability = mutability;
     }
 
@@ -113,6 +124,8 @@ public abstract class Entity {
      * @return double
      */
     public double getContribution(int index) {
+        assert (index < this.contributions.length) : "Contributions index is too high";
+        assert (index >= 0) : "Contributions index is below 0";
         return this.contributions[index];
     }
 
@@ -190,4 +203,5 @@ public abstract class Entity {
     public abstract void mutateEntity();
     public abstract void resetContributions();
     public abstract void report();
+
 }

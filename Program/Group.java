@@ -33,6 +33,13 @@ public class Group extends Entity {
      */
     public Group(int level, int size, boolean populate, Group parentGroup, int mutability, int capacity) {
         super(level, parentGroup, mutability);
+        
+        assert (mutability >= 0) : "Cannot create group with mutability below 0";
+        assert (mutability <= Settings.getMaxMutability()) : "Cannot create group with mutability above max mutability";
+        assert (size > 0) : "Cannot create group with size below 1";
+        assert (size <= Settings.getMaxGroupSize()) : "Group size cannot exceed max group size";
+        assert (capacity <= size) : "Capacity cannot exceed size";
+        
         this.setSize(size);
         this.children = new ArrayList<Entity>();
         if (populate) {
@@ -54,6 +61,8 @@ public class Group extends Entity {
      * @param size as an int
      */
     public void setSize(int size) {
+        assert (size > 0) : "Cannot set size to below 0";
+        assert (size <= Settings.getMaxGroupSize()) : "Size cannot exceed max group size";
         this.size = size;
     }
 
@@ -62,6 +71,7 @@ public class Group extends Entity {
      * @param child as an Entity
      */
     public void addChild(Entity newChild) {
+        assert (this.children.size() < this.size) : "Number of children cannot exceed group size";
         this.children.add(newChild);
     }
 
@@ -70,11 +80,8 @@ public class Group extends Entity {
      * @param capacity as an int
      */
     public void setCapacity(int capacity) {
-        if (capacity > 0) {
-            this.capacity = capacity;
-        } else {
-            this.capacity = 1;
-        }    
+        assert (capacity > 0) : "Capacity cannot be less than 1";
+        this.capacity = capacity;     
     }
 
     // =======
@@ -94,11 +101,8 @@ public class Group extends Entity {
      * @return int
      */
     public int getSubGroupSize() {
-        if (this.getLevel() > 1) {
-            return Settings.getGroupSize(this.getLevel() - 1);
-        } else {
-            return 0;
-        }
+        assert (this.getLevel() > 1) : "Cannot get sub groups for levels 1 and below";
+        return Settings.getGroupSize(this.getLevel() - 1);
     }
 
     /**
@@ -118,6 +122,7 @@ public class Group extends Entity {
      */
     public void populate() {
         if (this.getLevel() > 1) {
+            // New Groups
             for (int i = 0; i < this.getSize(); i++) {
                 this.children.add(new Group(
                     this.getLevel() - 1, 
@@ -129,6 +134,7 @@ public class Group extends Entity {
                 ));
             }
         } else {
+            // New Agents
             for (int i = 0; i < this.getSize(); i++) {
                 this.children.add(new Agent(
                     Settings.getInitialMutability(0), 
@@ -143,11 +149,13 @@ public class Group extends Entity {
      * Counts tokens assigned by Agents to this and higher level Groups (recursive method)
      */
     public void gatherContributions() {
+        // Recursive part
         if (this.getLevel() > 1) {
             for (Entity x : children) {
                 x.gatherContributions();
             }
         }
+        // Function part
         for (int i = 0; i < children.size(); i++) {
             for (int j = 0; j < Settings.getGroupDepth() - this.getLevel(); j++) {
                 this.incrementContribution(j, children.get(i).getContribution(j + 1));
@@ -159,11 +167,13 @@ public class Group extends Entity {
 	 * Sorts Entities in descending order of self contribution (recursive method)
 	 */
 	public void sortChildren() {
+        // Recursive part
         if (this.getLevel() > 1) {
             for (Entity y : children) {
                 y.sortChildren();
             }
         }
+        // Function part
 		Entity[] arr = children.toArray(new Entity[children.size()]);
         mergeSort(arr);
         children.clear();
@@ -176,9 +186,11 @@ public class Group extends Entity {
      * Removes Entities from children until a set number remain (recursive method)
      */
     public void cullChildren() {
+        // Funciton part
         while (children.size() > this.capacity) {
             children.remove(this.capacity);
         }
+        // Recursive part
         if (this.getLevel() > 1) {
             for (Entity x : children) {
                 x.cullChildren();
@@ -187,30 +199,14 @@ public class Group extends Entity {
     }
 
     /**
-     * Creates clone of existing Entity (recursive method)
-     */
-    public Entity clone(Group parentGroup) {
-        Entity clone = (Entity) new Group(
-            this.getLevel(), 
-            this.getSize(), 
-            false, 
-            parentGroup,
-            this.getMutability(),
-            this.getCapacity()
-        );
-        for (Entity x : this.children) {
-            clone.addChild(x.clone(this));
-        }
-        return clone;
-    }
-
-    /**
      * Repopulates children from survivors (recursive method)
      */
     public void repopulate() {
+        // Recursive part
         for (Entity x : children) {
             x.repopulate();
         }
+        // Function part
         int diff = this.getSize() - this.capacity;
         int i = 0;
         while (diff > 0) {
@@ -221,42 +217,65 @@ public class Group extends Entity {
     }
 
     /**
-     * Mutates Entities according to their mutability (recursive function)
+     * Creates clone of existing Entity, used with repopulate method (recursive method)
      */
-    public void mutateEntity() {
-        for (Entity x : children) {
-            x.mutateEntity();
+    public Entity clone(Group parentGroup) {
+        // Function part
+        Entity clone = (Entity) new Group(
+            this.getLevel(), 
+            this.getSize(), 
+            false, 
+            parentGroup,
+            this.getMutability(),
+            this.getCapacity()
+        );
+        // Recursive part
+        for (Entity x : this.children) {
+            clone.addChild(x.clone(this));
         }
-        if (Settings.getMutableMutability(this.getLevel())) {
-            this.setMutability(mutate(this.getMutability(), this.getMutability(), 0, 100));
-        }
-        int newCapacity = mutate(this.getCapacity(), this.getMutability(), 0, 100);
-        if (newCapacity <= this.getSize()) {
-            this.setCapacity(newCapacity);
-        }
+        return clone;
     }
 
     /**
-     * Sets all contributions back to zero
+     * Mutates Entities according to their mutability (recursive method)
+     */
+    public void mutateEntity() {
+        // Recursive part
+        for (Entity x : children) {
+            x.mutateEntity();
+        }
+        // Function part
+        if (Settings.getMutableMutability(this.getLevel())) {
+            this.setMutability(mutate(this.getMutability(), this.getMutability(), 0, Settings.getMaxMutability()));
+        }
+        this.setCapacity(mutate(this.getCapacity(), this.getMutability(), 0, this.getSize()));
+    }
+
+    /**
+     * Sets all contributions back to zero (recursve method)
      */
     public void resetContributions() {
+        // Recursive part
         if (this.getLevel() > 1){
             for (Entity x : children) {
                 x.resetContributions();
             }
         }
+        // Function part
         for (int i = 0; i < this.getContributions().length; i++) {
             this.setContribution(i, 0.0);
         }
     }
 
     /**
-     * Causes Group and all subGroups to produce a report
+     * Causes Group and all subGroups to produce a report (recursive method)
      */
     public void report() {
+        // Recursive part
         for (Entity x : children) {
             x.report();
         }
+        // Function part
         System.out.println("Level " + this.getLevel() + " Group reporting! Size: " + this.getSize() + " Capacity: " + this.getCapacity());
     }
 
@@ -362,6 +381,5 @@ public class Group extends Entity {
         }
         return str;
     }
-
 
 }

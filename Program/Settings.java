@@ -17,6 +17,7 @@ public class Settings {
     // ===ENTITIES===
     private static int defaultMutability = 50;                  // change this number to alter default mutability for all Entities
     private static boolean defaultMutableMutability = false;    // change this value to alter whether mutabilities are mutable by default
+    private static int maxMutability = 100;                     // change this number to alter maximum mutability (increase for greater granularity)
     // ===GROUPS===
     private static final int defaultGroupDepth = 3;             // change this number to alter default group depth (number of group levels)
     private static final int maxDepth = 5;                      // change this number to alter max group depth (number of group levels)
@@ -25,6 +26,8 @@ public class Settings {
     private static final int maxGroupSize = 100;                // change this number to alter max group size
     // ===AGENTS===
     private static int defaultAgentWeighting = 50;              // change this number to alter default agent weighting
+    private static final int minAgentWeighting = 0;             // change this number to alter minimum agent weighting
+    private static final int maxAgentWeighting = 100;           // change this number to alter maximum agent weighting
     // ===SIMULATION===
     private static final int defaultIterations = 5;             // change this number to alter default number of iterations per round
     private static final int maxIterations = 1000000;           // change this number to alter max number of iterations per round
@@ -77,23 +80,31 @@ public class Settings {
     // ===ENTITIES===
 
     public static void setInitialMutability(int level, int mutability) {
-        if (mutability >= 0 && mutability <= 100) {
-            initialMutabilities.set(level, mutability);
-        }
+        assert (level >= 0) : "Cannot set initial mutability for level below 0";
+        assert (level <= groupDepth) : "Cannot set initial mutability for level above max level";
+        assert (mutability >= 0) : "Cannot set initial mutability below 0";
+        assert (mutability <= maxMutability) : "Cannot set initial mutability greater than max mutability";
+        initialMutabilities.set(level, mutability);
     }
 
     public static void setMutableMutability(int level, boolean bool) {
+        assert (level >= 0) : "Cannot set mutable mutability for level below 0";
+        assert (level <= groupDepth) : "Cannot set mutable mutability for level above max level";
         mutableMutabilities.set(level, bool);
     }
 
     public static void toggleMutableMutability(int level) {
+        assert (level >= 0) : "Cannot toggle mutable mutability for level below 0";
+        assert (level <= groupDepth) : "Cannot toggle mutable mutability for level above max level";
         mutableMutabilities.set(level, !mutableMutabilities.get(level));
     }
 
     // ===GROUPS===
 
     public static void setGroupDepth(int newDepth) {
-        if (newDepth > 0 && newDepth <= maxDepth && newDepth != groupDepth) {
+        assert (newDepth > 0) : "Cannot set group depth less than 1";
+        assert (newDepth <= maxDepth) : "Cannot set group depth greater than max depth";
+        if (newDepth != groupDepth) {
             if (newDepth < groupDepth) {
                 for (int i = 0; i < groupDepth - newDepth; i++) {
                     groupInitialSizes.remove(newDepth);
@@ -117,36 +128,43 @@ public class Settings {
     }
 
     public static void setGroupSize(int groupLevel, int newSize) {
-        if (groupLevel > 0 && groupLevel <= groupInitialSizes.size() && newSize <= maxGroupSize && newSize >= getGroupCapacity(groupLevel)) {
-            groupInitialSizes.set(groupLevel - 1, newSize);
-        }  
+        assert (groupLevel > 0) : "Cannot set group size for group level below 0";
+        assert (groupLevel <= groupDepth) : "Cannot set group size for group level above max";
+        assert (newSize >= getGroupCapacity(groupLevel)) : "Cannot set group size lower than group capacity";
+        assert (newSize <= maxGroupSize) : "Cannot set group size above max group size";
+        groupInitialSizes.set(groupLevel - 1, newSize); 
     }
 
     public static void setAllGroupSizes(int newSize) {
-        if (newSize >= getMinGroupSize()) {
-            for (int i = 0; i < groupInitialSizes.size(); i++) {
-                groupInitialSizes.set(i, newSize);
-            }
-            defaultGroupSize = newSize;
-        } 
+        assert (newSize >= getMinGroupSize()) : "Cannot set group size below group capacity";
+        assert (newSize <= maxGroupSize) : "Group size cannot exceed max group size";
+        for (int i = 0; i < groupInitialSizes.size(); i++) {
+            groupInitialSizes.set(i, newSize);
+        }
+        defaultGroupSize = newSize;
     }
 
     public static void setGroupCapacity(int groupLevel, int newCapacity) {
-        if (newCapacity <= getGroupSize(groupLevel) && newCapacity > 0 && groupLevel > 0 && groupLevel <= groupInitialCapacities.size()) {
-            groupInitialCapacities.set(groupLevel - 1, newCapacity);
-            defaultGroupCapacity = newCapacity;
-        }   
+        assert (newCapacity > 0) : "Capacity cannot be less than 1";
+        assert (newCapacity <= getGroupSize(groupLevel)) : "Capacity cannot exceed group size";
+        assert (groupLevel > 0) : "Group level cannot be less than 1";
+        assert (groupLevel <= groupDepth) : "Group level cannot exceed group depth";
+        groupInitialCapacities.set(groupLevel - 1, newCapacity);
+        defaultGroupCapacity = newCapacity; 
     }
 
     public static void setAllGroupCapacities(int newCapacity) {
-        if (newCapacity <= getMaxCapacity()) {
-            for (int i = 0; i <groupInitialCapacities.size(); i++) {
-                groupInitialCapacities.set(i, newCapacity);
-            }
+        assert (newCapacity <= getMaxCapacity()) : "Capacity cannot exceed size of any group";
+        assert (newCapacity > 0) : "Capacity must be greater than 0";
+        for (int i = 0; i <groupInitialCapacities.size(); i++) {
+            groupInitialCapacities.set(i, newCapacity);
         }
+        defaultGroupCapacity = newCapacity;
     }
 
     public static void setAllGroupMutabilities(int newMutability) {
+        assert (newMutability >= 0) : "Mutability cannot be less than 0";
+        assert (newMutability <= maxMutability) : "Mutability cannot exceed max mutability";
         if (newMutability >= 0 && newMutability <= 100) {
             for (int i = 1; i < initialMutabilities.size(); i++) {
                 initialMutabilities.set(i, newMutability);
@@ -162,16 +180,19 @@ public class Settings {
         }
     }
 
-
     // ===AGENTS===
 
-    public static void setAgentInitialWeighting(int groupLevel, int value) {
-        if (groupLevel > -1 && groupLevel < agentInitialWeightings.size()) {
-            agentInitialWeightings.set(groupLevel, value);
-        }
+    public static void setAgentInitialWeighting(int groupLevel, int newWeighting) {
+        assert (groupLevel >= 0) : "Group level cannot be less than 0";
+        assert (groupLevel <= groupDepth) : "Group level cannot exceed group depth";
+        assert (newWeighting >= minAgentWeighting) : "Weighting cannot be less than minimum agent weighting";
+        assert (newWeighting <= maxAgentWeighting) : "Weighting cannot exceed maximum agent weighting";
+        agentInitialWeightings.set(groupLevel, newWeighting);
     }
 
     public static void setAllAgentWeightings(int newWeighting) {
+        assert (newWeighting >= minAgentWeighting) : "Weighting cannot be less than minimum agent weighting";
+        assert (newWeighting <= maxAgentWeighting) : "Weighting cannot exceed maximum agent weighting";
         for (int i = 0; i < agentInitialWeightings.size(); i++) {
             agentInitialWeightings.set(i, newWeighting);
         }
@@ -181,15 +202,15 @@ public class Settings {
     // ===SIMULATION===
 
     public static void setIterations(int n) {
-        if (n > 0 && n <= maxIterations) {
-            iterationsPerRound = n;
-        }
+        assert (n > 0) : "Iterations must be greater than 0";
+        assert (n <= maxIterations) : "Iterations cannot exceed max iterations";
+        iterationsPerRound = n;
     }
 
     public static void setRounds(int n) {
-        if (n > 0 && n <= maxRounds) {
-            rounds = n;
-        }
+        assert (n > 0) : "Rounds must be greater than 0";
+        assert (n <= maxRounds) : "Rounds cannot exceed max rounds";
+        rounds = n;
     }
 
     // =======
@@ -199,15 +220,23 @@ public class Settings {
     // ===ENTITIES===
 
     public static int getInitialMutability(int level) {
+        assert (level > 0) : "Level cannot be less than 0";
+        assert (level <= groupDepth) : "Level cannot exceed group depth";
         return initialMutabilities.get(level);
     }
 
     public static boolean getMutableMutability(int level) {
+        assert (level > 0) : "Level cannot be less than 0";
+        assert (level <= groupDepth) : "Level cannot exceed group depth";
         return mutableMutabilities.get(level);
     }
 
     public static String getMutableMutabilityString(int level) {
         return mutableMutabilities.get(level) ? "ON" : "OFF";
+    }
+
+    public static int getMaxMutability() {
+        return maxMutability;
     }
 
     // ===GROUPS===
@@ -221,6 +250,8 @@ public class Settings {
     }
 
     public static int getGroupSize(int groupLevel) {
+        assert (groupLevel > 0) : "Group level cannot be less than 1";
+        assert (groupLevel <= groupDepth) : "Group level cannot exceed group depth";
         return groupInitialSizes.get(groupLevel - 1);
     }
 
@@ -229,6 +260,8 @@ public class Settings {
     }
 
     public static int getGroupCapacity(int groupLevel) {
+        assert (groupLevel > 0) : "Group level cannot be less than 1";
+        assert (groupLevel <= groupDepth) : "Group level cannot be greater than group depth";
         return groupInitialCapacities.get(groupLevel - 1);
     }
 
@@ -263,11 +296,17 @@ public class Settings {
     }
 
     public static int getAgentInitialWeighting(int groupLevel) {
-        if (groupLevel > -1 && groupLevel < agentInitialWeightings.size()) {
-            return agentInitialWeightings.get(groupLevel);
-        } else {
-            return -1;
-        }
+        assert (groupLevel > -1) : "Group level cannot be less than 0";
+        assert (groupLevel <= groupDepth) : "Group level cannot exceed group depth";
+        return agentInitialWeightings.get(groupLevel);
+    }
+
+    public static int getMinAgentWeighting() {
+        return minAgentWeighting;
+    }
+
+    public static int getMaxAgentWeighting() {
+        return maxAgentWeighting;
     }
 
     // ===SIMULATION===

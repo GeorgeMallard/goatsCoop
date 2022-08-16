@@ -13,7 +13,6 @@ package Program;
 // additional features:
 // --average or absolute contribution (?)
 // --advanced mutation option
-// --allow agent negative weightings (?)
 // TEST
 
 // repeatability

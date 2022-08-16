@@ -24,6 +24,9 @@ public class Menu {
         for (int i = 0; i < options.length; i++) {
             System.out.println(String.format("%d. %s", i + 1, options[i]));
         }
+        if (zeroOption == "") {
+            zeroOption = "<-";
+        }
         System.out.println(String.format("%d. %s", 0, zeroOption));
         return Input.readIntBetween(prompt, 0, options.length);
     }
