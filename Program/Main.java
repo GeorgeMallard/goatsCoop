@@ -1,8 +1,6 @@
 package Program;
 // TO DO
 
-// assertions
-
 // data output
 // --gather data (weightings / contributions)
 // --gather data (other)
@@ -19,6 +17,9 @@ package Program;
 // --run directly from cmd line with args
 // --exceptions
 // TEST
+
+// if there's extra time
+// --make asserts more specific
 
 /**
  * Main class
