@@ -145,7 +145,7 @@ public class GUI {
 					cont = false;
 					break;
 				default:
-					groupSettingsMenu(value - 4);;
+					groupSettingsMenu(value - 4);	//group select
 					break;
 			}
 		}
@@ -277,10 +277,10 @@ public class GUI {
 					Settings.setGroupSize(level, Input.readIntBetween(String.format(ENTER_GROUP_SIZE, level), 2, Settings.getMaxGroupSize()));
 					break;
 				case 2:
-					Settings.setGroupCapacity(level, Input.readIntBetween(String.format(ENTER_GROUP_CAPACITY, level, Settings.getGroupSize(level)), 1, Settings.getGroupCapacity(level)));
+					Settings.setGroupCapacity(level, Input.readIntBetween(String.format(ENTER_GROUP_CAPACITY, level, Settings.getGroupSize(level)), 1, Settings.getGroupSize(level)));
 					break;
 				case 3:
-					Settings.setInitialMutability(level, Input.readIntBetween(ENTER_GROUP_MUTABILITY, 0, 100));
+					Settings.setInitialMutability(level, Input.readIntBetween(String.format(ENTER_GROUP_MUTABILITY, level), 0, 100));
 					break;
 				case 4:
 					Settings.toggleMutableMutability(level);

@@ -52,6 +52,7 @@ public class Agent extends Entity {
 	private void setWeightings(int[] weightings) {
 
 		assert (weightings.length > 1) : "Agent has fewer than 2 weightings";
+		assert (weightings.length == Settings.getGroupDepth()) : "Weightings length does not match group depth";
 
 		this.weightings = new int[weightings.length];
 		for (int i = 0; i < weightings.length; i++) {
@@ -76,8 +77,11 @@ public class Agent extends Entity {
 			assert (x <= Settings.getMaxAgentWeighting()) : "Weighting above maximum weighting value";
 			total += x;
 		}
+		if (total == 0) {
+			total = 1;
+		}
 		for (int i = 0; i < weightings.length; i++) {
-			this.setContribution(i, (total * 1.0) / weightings[i]);
+			this.setContribution(i, weightings[i] / (total * 1.0));
 		}
 	}
 
@@ -140,10 +144,11 @@ public class Agent extends Entity {
 		for (int i = 0; i < this.getWeightings().length; i++) {
 			this.setWeighting(i, mutate(this.getWeighting(i), this.getMutability(), 0, Settings.getMaxMutability()));
 		}
+		this.calculateContributions(this.getWeightings());
 	}
 
 	public void report() {
-		System.out.println("Agent reporting! Current weightings: " + intArrToString(this.weightings));
+		System.out.println("Agent reporting! Current weightings: " + intArrToString(this.weightings) + " self cont: " + this.getSelfContribution());
 	}
 
 	public void gatherContributions() {
@@ -219,7 +224,7 @@ public class Agent extends Entity {
 	// ===============
 
 	//USED FOR TESTING PURPOSES - DELETE LATER
-	public String convert(double[] d) {
+	public String doubleArrToString(double[] d) {
         String str = "";
         for (double x : d) {
             str += Double.toString(x) + ", ";

@@ -7,7 +7,7 @@ import java.util.Random;
  * @author Chris Litting
  * @version 1.0
  */
-public abstract class Entity {
+public abstract class Entity implements Comparable<Entity> {
     
     // =========
     // VARIABLES
@@ -160,6 +160,17 @@ public abstract class Entity {
     // =======
     // METHODS
     // =======
+
+    @Override
+    public int compareTo(Entity otherEntity) {
+        if (this.getSelfContribution() > otherEntity.getSelfContribution()) {
+            return -1;
+        } else if (this.getSelfContribution() < otherEntity.getSelfContribution()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
     // ==============
     // STATIC METHODS

@@ -1,5 +1,6 @@
 package Program;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Group class
@@ -20,6 +21,7 @@ public class Group extends Entity {
     private int size;                       //number of child Agents or Groups this Group can contain
     private int capacity;                   //number of child Agents or Groups that will survive each iteration
     private ArrayList<Entity> children;     //contains child Agents or Groups, depending on level
+    private double[] averageWeightings;     //contains average weightings data from Agents
 
     // ===========
     // CONSTRUCTOR
@@ -174,22 +176,27 @@ public class Group extends Entity {
             }
         }
         // Function part
+        /*
 		Entity[] arr = children.toArray(new Entity[children.size()]);
         mergeSort(arr);
         children.clear();
         for (Entity x : arr) {
             children.add(x);
         }
+        */
+        //System.out.println("level " + this.getLevel()+ " group sorting children");
+        Collections.sort(children);
 	}
 
     /**
      * Removes Entities from children until a set number remain (recursive method)
      */
     public void cullChildren() {
-        // Funciton part
+        // Function part
         while (children.size() > this.capacity) {
             children.remove(this.capacity);
         }
+
         // Recursive part
         if (this.getLevel() > 1) {
             for (Entity x : children) {
@@ -248,7 +255,7 @@ public class Group extends Entity {
         if (Settings.getMutableMutability(this.getLevel())) {
             this.setMutability(mutate(this.getMutability(), this.getMutability(), 0, Settings.getMaxMutability()));
         }
-        this.setCapacity(mutate(this.getCapacity(), this.getMutability(), 0, this.getSize()));
+        this.setCapacity(mutate(this.getCapacity(), this.getMutability(), 1, this.getSize()));
     }
 
     /**
