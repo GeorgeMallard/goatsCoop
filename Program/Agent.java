@@ -148,7 +148,7 @@ public class Agent extends Entity {
 	}
 
 	public void report() {
-		System.out.println("Agent reporting! Current weightings: " + intArrToString(this.weightings) + " self cont: " + this.getSelfContribution());
+		//intentionally left blank
 	}
 
 	public void gatherContributions() {

@@ -40,7 +40,7 @@ public abstract class Entity implements Comparable<Entity> {
 
         this.setLevel(level);
         this.setParentGroup(parentGroup);
-        this.contributions = new double[Settings.getGroupDepth() - level];
+        this.contributions = new double[Settings.getGroupDepth()];
         this.setMutability(mutability);
     }
 
@@ -135,7 +135,7 @@ public abstract class Entity implements Comparable<Entity> {
      */
     public double getSelfContribution() {
         if (this.level != Settings.getGroupDepth()) {
-            return this.contributions[0];
+            return this.contributions[this.getLevel()];
         } else {
             return 0.0;
         }

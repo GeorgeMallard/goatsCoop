@@ -2,15 +2,9 @@ package Program;
 // TO DO
 
 // data output
-// --gather data (weightings / contributions)
-// --gather data (other)
+// --gather data (mutabilities / group capacities)
 // --output as .txt file
 // --additional unit testing for output
-// TEST
-
-// additional features:
-// --average or absolute contribution (?)
-// --advanced mutation option
 // TEST
 
 // repeatability
@@ -20,6 +14,8 @@ package Program;
 
 // if there's extra time
 // --make asserts more specific
+// --average or absolute contribution (?)
+// --advanced mutation option
 
 /**
  * Main class

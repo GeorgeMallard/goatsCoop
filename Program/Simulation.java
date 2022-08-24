@@ -33,16 +33,13 @@ public class Simulation {
 		
 		for (int i = 0; i < Settings.getRounds(); i++) {
 			for (int j = 0; j < Settings.getIterations(); j++) {
+				topLevelGroup.resetContributions();
 				topLevelGroup.gatherContributions();
 				topLevelGroup.sortChildren();
-				//System.out.println("after sort");
-				//topLevelGroup.report();
 				topLevelGroup.cullChildren();
-				//System.out.println("after cull");
-				//topLevelGroup.report();
 				topLevelGroup.repopulate();
 				topLevelGroup.mutateEntity();
-				topLevelGroup.resetContributions();
+				
 			}
 			topLevelGroup.report();
 		}

@@ -21,7 +21,9 @@ public class Group extends Entity {
     private int size;                       //number of child Agents or Groups this Group can contain
     private int capacity;                   //number of child Agents or Groups that will survive each iteration
     private ArrayList<Entity> children;     //contains child Agents or Groups, depending on level
-    private double[] averageWeightings;     //contains average weightings data from Agents
+    //private double[] averageContributions;  //contains average contributions data from Agents
+    //private double[] averageMutabilities;   //contains average mutabilities data from Agents and Groups
+    //private double[] averageCapacities;     //contains average capacities data from Groups
 
     // ===========
     // CONSTRUCTOR
@@ -159,9 +161,12 @@ public class Group extends Entity {
         }
         // Function part
         for (int i = 0; i < children.size(); i++) {
-            for (int j = 0; j < Settings.getGroupDepth() - this.getLevel(); j++) {
-                this.incrementContribution(j, children.get(i).getContribution(j + 1));
+            for (int j = 0; j < Settings.getGroupDepth(); j++) {
+                this.incrementContribution(j, children.get(i).getContribution(j));
             }
+        }
+        for (int j = 0; j < Settings.getGroupDepth(); j++) {
+            this.setContribution(j, this.getContribution(j) / this.children.size());
         }
     }
 
@@ -275,15 +280,13 @@ public class Group extends Entity {
     }
 
     /**
-     * Causes Group and all subGroups to produce a report (recursive method)
+     * REPORT
      */
     public void report() {
-        // Recursive part
-        for (Entity x : children) {
-            x.report();
-        }
-        // Function part
-        System.out.println("Level " + this.getLevel() + " Group reporting! Size: " + this.getSize() + " Capacity: " + this.getCapacity());
+        
+        System.out.println(convert(this.getContributions()));
+
+        
     }
 
     /**
