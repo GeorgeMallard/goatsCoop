@@ -85,5 +85,74 @@ public class Input {
         return bool;
     }
 
+    public static void parseArgs(String[] strArgs) {
+        int counter = 0;
+        int[] args = strArrayToIntArray(strArgs);
+        
+        //GROUP DEPTH
+        Settings.setGroupDepth(args[counter]);
+        counter++;
+
+        //MUTABILITIES
+        for (int i = 0; i <= Settings.getGroupDepth(); i++) {
+            Settings.setInitialMutability(i, args[counter]);
+            counter++;
+        }
+
+        //MUTABLE MUTABILITIES
+        for (int i = 0; i <= Settings.getGroupDepth(); i++) {
+            if (args[counter] == 1) {
+                Settings.setMutableMutability(i, true);
+            } else {
+                Settings.setMutableMutability(i, false);
+            }
+            counter++;
+        }
+
+        //GROUP SIZES AND CAPACITIES (size first then capacity)
+        for (int i = 0; i < Settings.getGroupDepth(); i++) {
+            if (args[counter] < Settings.getGroupSize(i + 1)) {
+                Settings.setGroupCapacity(i + 1, args[counter + 1]);
+                Settings.setGroupSize(i + 1, args[counter]);
+            } else {
+                Settings.setGroupSize(i + 1, args[counter]);
+                Settings.setGroupCapacity(i + 1, args[counter + 1]);
+            }
+            counter += 2;
+        }     
+
+        //AGENT WEIGHTINGS
+        for (int i = 0; i < Settings.getGroupDepth(); i++) {
+            Settings.setAgentInitialWeighting(i, args[counter]);
+            counter++;
+        }
+
+        //SIM ITERATIONS
+        Settings.setIterations(args[counter]);
+        counter++;
+
+        //SIM ROUNDS
+        Settings.setRounds(args[counter]);
+    }
+
+    public static int[] strArrayToIntArray(String[] strArr) {
+        int[] intArr = new int[strArr.length];
+        for (int i = 0; i < strArr.length; i++) {
+            intArr[i] = tryParseInt(strArr[i]);
+        }
+        return intArr;
+    }
+
+    public static int tryParseInt(String str) {
+        int n = -1;
+        try {
+            n = Integer.parseInt(str);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
+        return n;
+    }
+
 
 }

@@ -37,7 +37,8 @@ public class Main {
       if (args.length == 0) {
 	      GUI.mainMenu();
       }	else {
-        //args version goes here
+        Input.parseArgs(args);
+        Simulation.run();
       }
     }
 
