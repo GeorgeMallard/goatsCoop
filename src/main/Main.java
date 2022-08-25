@@ -1,4 +1,4 @@
-package Program;
+package src.main;
 // TO DO
 
 // data output

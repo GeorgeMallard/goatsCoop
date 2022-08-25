@@ -1,4 +1,5 @@
-package Program;
+package src.test;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -13,7 +14,7 @@ public class GroupTest {
     private static int level = 3;
     private static int size = 20;
     private static boolean populate = false;
-    private static Group parentGroup = null;
+    private static src.main.Group parentGroup = null;
     private static int mutability = 50;
     private static int capacity = 10;
 
@@ -22,16 +23,16 @@ public class GroupTest {
     // ================
 
     @Test
-    public void groupEqualsIdenticalGroup() {
-        Group testGroup1 = new Group(level, size, populate, parentGroup, mutability, capacity);
-        Group testGroup2 = new Group(level, size, populate, parentGroup, mutability, capacity);
+    public void GroupEqualsIdenticalGroup() {
+        src.main.Group testGroup1 = new src.main.Group(level, size, populate, parentGroup, mutability, capacity);
+        src.main.Group testGroup2 = new src.main.Group(level, size, populate, parentGroup, mutability, capacity);
         assertTrue(testGroup1.equals(testGroup2));
     }
 
     @Test
     public void cloneProducesIdenticalGroup() {
-        Group testGroup1 = new Group(level, size, populate, parentGroup, mutability, capacity);
-        assertTrue(testGroup1.equals((Group)testGroup1.clone(null)));
+        src.main.Group testGroup1 = new src.main.Group(level, size, populate, parentGroup, mutability, capacity);
+        assertTrue(testGroup1.equals((src.main.Group)testGroup1.clone(null)));
     }
     
     // =============
@@ -40,16 +41,16 @@ public class GroupTest {
 
     @Test
     public void groupStillSameAfterMutationIfMutationFactorIsZero() {
-        Group testGroup1 = new Group(level, size, populate, parentGroup, 0, capacity);
-        Group testGroup2 = new Group(level, size, populate, parentGroup, 0, capacity);
+        src.main.Group testGroup1 = new src.main.Group(level, size, populate, parentGroup, 0, capacity);
+        src.main.Group testGroup2 = new src.main.Group(level, size, populate, parentGroup, 0, capacity);
         testGroup2.mutateEntity();
         assertTrue(testGroup1.equals(testGroup2));
     }
 
     @Test
     public void groupNotSameAfterMutationIfMutationFactorIsHundred() {
-        Group testGroup1 = new Group(level, size, populate, parentGroup, 100, capacity);
-        Group testGroup2 = new Group(level, size, populate, parentGroup, 100, capacity);
+        src.main.Group testGroup1 = new src.main.Group(level, size, populate, parentGroup, 100, capacity);
+        src.main.Group testGroup2 = new src.main.Group(level, size, populate, parentGroup, 100, capacity);
         testGroup2.mutateEntity();
         assertFalse(testGroup1.equals(testGroup2));
     }

@@ -1,4 +1,4 @@
-package Program;
+package src.main;
 /**
  * GUI class
  * Creates interactive interface for users to change settings and run simulation

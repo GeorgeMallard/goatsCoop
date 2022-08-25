@@ -1,4 +1,4 @@
-package Program;
+package src.main;
 /**
  * Agent class
  * Creates Agents

@@ -1,4 +1,4 @@
-package Program;
+package src.main;
 /**
  * Simulation class
  * Runs simulation according to current settings
