@@ -227,7 +227,7 @@ public class Settings {
     }
 
     public static boolean getMutableMutability(int level) {
-        assert (level > 0) : "Level cannot be less than 0";
+        assert (level >= 0) : "Level cannot be less than 0";
         assert (level <= groupDepth) : "Level cannot exceed group depth";
         return mutableMutabilities.get(level);
     }

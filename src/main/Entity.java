@@ -33,7 +33,7 @@ public abstract class Entity implements Comparable<Entity> {
      * @param parentGroup as a Group (null if Entity is top level Group)
      */
     public Entity(int level, Group parentGroup, int mutability) {
-        assert (level >= 0) : "Cannot create entity with level below 0";
+        assert (level >= 0) : "Cannot create entity with level below 0 (level is " + level + ")";
         assert (level <= Settings.getGroupDepth()) : "Cannot create entity with level above group depth";
         assert (mutability >= 0) : "Cannot create entity with mutability below 0";
         assert (mutability <= Settings.getMaxMutability()) : "Cannot create entity with mutability greater than max mutability";
@@ -53,7 +53,7 @@ public abstract class Entity implements Comparable<Entity> {
      * @param level as an int (Agent is considered level 0, groups begin at 1)
      */
     public void setLevel(int level) {
-        assert (level > 0) : "Cannot set entity level below 0";
+        assert (level >= 0) : "Cannot set entity level below 0";
         assert (level <= Settings.getGroupDepth()) : "Cannot set entity level above group depth";
         this.level = level;
     }
