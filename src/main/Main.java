@@ -7,14 +7,8 @@ package src.main;
 // --additional unit testing for output
 // TEST
 
-// repeatability
-// --run directly from cmd line with args
-// --exceptions
-// TEST
-
 // if there's extra time
 // --make asserts more specific
-// --average or absolute contribution (?)
 // --advanced mutation option
 
 /**
@@ -29,17 +23,17 @@ public class Main {
 	// MAIN METHOD
 	// ===========
 
-    /**
-     * Main method
-     * @param args as a String array
-     */
-    public static void main(String[] args) {
-      if (args.length == 0) {
-	      GUI.mainMenu();
-      }	else {
-        Input.parseArgs(args);
-        Simulation.run();
-      }
+  /**
+   * Main method
+   * @param args as a String array
+   */
+  public static void main(String[] args) {
+    if (args.length == 0) {
+      GUI.mainMenu();
+    }	else {
+      Input.parseArgs(args);
+      Simulation.run();
     }
+  }
 
 }
