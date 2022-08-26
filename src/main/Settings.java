@@ -184,16 +184,16 @@ public class Settings {
     // ===AGENTS===
 
     public static void setAgentInitialWeighting(int groupLevel, int newWeighting) {
-        assert (groupLevel >= 0) : "Cannot set weighting for group level below 0";
-        assert (groupLevel <= groupDepth) : "Cannot set weighting for group level above group depth";
-        assert (newWeighting >= minAgentWeighting) : "Cannot set weighting below minimum agent weighting";
-        assert (newWeighting <= maxAgentWeighting) : "Cannot set weighting above maximum agent weighting";
+        assert (groupLevel >= 0) : "Cannot set weighting for group level below 0. Level: " + groupLevel;
+        assert (groupLevel <= groupDepth) : "Cannot set weighting for group level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
+        assert (newWeighting >= minAgentWeighting) : "Cannot set weighting below minimum agent weighting. Weighting: " + newWeighting + ". Min: " + minAgentWeighting;
+        assert (newWeighting <= maxAgentWeighting) : "Cannot set weighting above maximum agent weighting. Weighting: " + newWeighting + ". Max: " + maxAgentWeighting;
         agentInitialWeightings.set(groupLevel, newWeighting);
     }
 
     public static void setAllAgentWeightings(int newWeighting) {
-        assert (newWeighting >= minAgentWeighting) : "Cannot set weightings below minimum agent weighting";
-        assert (newWeighting <= maxAgentWeighting) : "Cannot set weightings above maximum agent weighting";
+        assert (newWeighting >= minAgentWeighting) : "Cannot set weightings below minimum agent weighting. Weighting: " + newWeighting + ". Min: " + minAgentWeighting;
+        assert (newWeighting <= maxAgentWeighting) : "Cannot set weightings above maximum agent weighting. Weighting: " + newWeighting + ". Max: " + maxAgentWeighting;
         for (int i = 0; i < agentInitialWeightings.size(); i++) {
             agentInitialWeightings.set(i, newWeighting);
         }
@@ -203,14 +203,14 @@ public class Settings {
     // ===SIMULATION===
 
     public static void setIterations(int n) {
-        assert (n > 0) : "Cannot set iterations below 1";
-        assert (n <= maxIterations) : "Cannot set iterations above max iterations";
+        assert (n > 0) : "Cannot set iterations below 1. Iterations: " + n;
+        assert (n <= maxIterations) : "Cannot set iterations above max iterations. Iterations: " + n + ". Max: " + maxIterations;
         iterationsPerRound = n;
     }
 
     public static void setRounds(int n) {
-        assert (n > 0) : "Cannot set rounds below 1";
-        assert (n <= maxRounds) : "Cannot set rounds above max rounds";
+        assert (n > 0) : "Cannot set rounds below 1. Rounds: " + n;
+        assert (n <= maxRounds) : "Cannot set rounds above max rounds. Rounds: " + n + "Max: " + maxRounds;
         rounds = n;
     }
 
@@ -221,14 +221,14 @@ public class Settings {
     // ===ENTITIES===
 
     public static int getInitialMutability(int level) {
-        assert (level >= 0) : "Cannot get mutability for Level below 0";
-        assert (level <= groupDepth) : "Cannot get mutability for Level above group depth";
+        assert (level >= 0) : "Cannot get mutability for Level below 0. Level: " + level;
+        assert (level <= groupDepth) : "Cannot get mutability for Level above group depth. Level: " + level + ". Depth: " + groupDepth;
         return initialMutabilities.get(level);
     }
 
     public static boolean getMutableMutability(int level) {
-        assert (level >= 0) : "Cannot get mutable mutability for Level below 0";
-        assert (level <= groupDepth) : "Cannot get mutable mutability for Level above group depth";
+        assert (level >= 0) : "Cannot get mutable mutability for Level below 0. Level: " + level;
+        assert (level <= groupDepth) : "Cannot get mutable mutability for Level above group depth. Level: " + level + ". Depth: " + groupDepth;
         return mutableMutabilities.get(level);
     }
 
@@ -251,8 +251,8 @@ public class Settings {
     }
 
     public static int getGroupSize(int groupLevel) {
-        assert (groupLevel > 0) : "Cannot get group size for level below 1";
-        assert (groupLevel <= groupDepth) : "Cannot get group size for level above group depth";
+        assert (groupLevel > 0) : "Cannot get group size for level below 1. Level: " + groupLevel;
+        assert (groupLevel <= groupDepth) : "Cannot get group size for level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
         return groupInitialSizes.get(groupLevel - 1);
     }
 
@@ -261,8 +261,8 @@ public class Settings {
     }
 
     public static int getGroupCapacity(int groupLevel) {
-        assert (groupLevel > 0) : "Cannot get capacity for level below 1";
-        assert (groupLevel <= groupDepth) : "Cannot get capacity for level above group depth";
+        assert (groupLevel > 0) : "Cannot get capacity for level below 1. Level: " + groupLevel;
+        assert (groupLevel <= groupDepth) : "Cannot get capacity for level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
         return groupInitialCapacities.get(groupLevel - 1);
     }
 
@@ -297,8 +297,8 @@ public class Settings {
     }
 
     public static int getAgentInitialWeighting(int groupLevel) {
-        assert (groupLevel > -1) : "Cannot get weighting for level below 0";
-        assert (groupLevel <= groupDepth) : "Cannot get weighting for level above group depth";
+        assert (groupLevel > -1) : "Cannot get weighting for level below 0. Level: " + groupLevel;
+        assert (groupLevel <= groupDepth) : "Cannot get weighting for level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
         return agentInitialWeightings.get(groupLevel);
     }
 
