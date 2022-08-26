@@ -81,30 +81,30 @@ public class Settings {
     // ===ENTITIES===
 
     public static void setInitialMutability(int level, int mutability) {
-        assert (level >= 0) : "Cannot set initial mutability for level below 0";
-        assert (level <= groupDepth) : "Cannot set initial mutability for level above max level";
-        assert (mutability >= 0) : "Cannot set initial mutability below 0";
-        assert (mutability <= maxMutability) : "Cannot set initial mutability greater than max mutability";
+        assert (level >= 0) : "Cannot set initial mutability for level below 0. Level: " + level;
+        assert (level <= groupDepth) : "Cannot set initial mutability for level above max level. Level: " + level + ". Max level: " + groupDepth;
+        assert (mutability >= 0) : "Cannot set initial mutability below 0. Mutability: " + mutability;
+        assert (mutability <= maxMutability) : "Cannot set initial mutability above max mutability. Mutability: " + mutability + ". Max mutability: " + maxMutability;
         initialMutabilities.set(level, mutability);
     }
 
     public static void setMutableMutability(int level, boolean bool) {
-        assert (level >= 0) : "Cannot set mutable mutability for level below 0";
-        assert (level <= groupDepth) : "Cannot set mutable mutability for level above max level";
+        assert (level >= 0) : "Cannot set mutable mutability for level below 0. Level: " + level;
+        assert (level <= groupDepth) : "Cannot set mutable mutability for level above max level. Level: " + level + ". Max level: " + groupDepth;
         mutableMutabilities.set(level, bool);
     }
 
     public static void toggleMutableMutability(int level) {
-        assert (level >= 0) : "Cannot toggle mutable mutability for level below 0";
-        assert (level <= groupDepth) : "Cannot toggle mutable mutability for level above max level";
+        assert (level >= 0) : "Cannot toggle mutable mutability for level below 0. Level: " + level;
+        assert (level <= groupDepth) : "Cannot toggle mutable mutability for level above max level. Level: " + level + ". Max level: " + groupDepth;
         mutableMutabilities.set(level, !mutableMutabilities.get(level));
     }
 
     // ===GROUPS===
 
     public static void setGroupDepth(int newDepth) {
-        assert (newDepth > 0) : "Cannot set group depth less than 1";
-        assert (newDepth <= maxDepth) : "Cannot set group depth greater than max depth";
+        assert (newDepth > 0) : "Cannot set group depth below 1. Depth: " + newDepth;
+        assert (newDepth <= maxDepth) : "Cannot set group depth above max depth. Depth: " + maxDepth + ". Max depth: " + maxDepth;
         if (newDepth != groupDepth) {
             if (newDepth < groupDepth) {
                 for (int i = 0; i < groupDepth - newDepth; i++) {
@@ -129,16 +129,16 @@ public class Settings {
     }
 
     public static void setGroupSize(int groupLevel, int newSize) {
-        assert (groupLevel > 0) : "Cannot set group size for group level below 0";
-        assert (groupLevel <= groupDepth) : "Cannot set group size for group level above max";
-        assert (newSize >= getGroupCapacity(groupLevel)) : "Cannot set group size lower than group capacity";
-        assert (newSize <= maxGroupSize) : "Cannot set group size above max group size";
+        assert (groupLevel > 0) : "Cannot set group size for group level below 0. Level: " + groupLevel;
+        assert (groupLevel <= groupDepth) : "Cannot set group size for group level above max. Level: " + groupLevel + ". Max level: " + groupDepth;
+        assert (newSize >= getGroupCapacity(groupLevel)) : "Cannot set group size below group capacity. Level: " + groupLevel + ". Size: " + newSize + ". Capacity: " + getGroupCapacity(groupLevel);
+        assert (newSize <= maxGroupSize) : "Cannot set group size above max group size. Level: " + groupLevel + ". Size: " + newSize + ". Max size: " + maxGroupSize;
         groupInitialSizes.set(groupLevel - 1, newSize); 
     }
 
     public static void setAllGroupSizes(int newSize) {
-        assert (newSize >= getMinGroupSize()) : "Cannot set group size below group capacity";
-        assert (newSize <= maxGroupSize) : "Group size cannot exceed max group size";
+        assert (newSize >= getMinGroupSize()) : "Cannot set group sizes below any group capacity. Size: " + newSize + ". Capacity: " + getMinGroupSize();
+        assert (newSize <= maxGroupSize) : "Cannot set group size above max group size. Size: " + newSize + ". Max: " + maxGroupSize;
         for (int i = 0; i < groupInitialSizes.size(); i++) {
             groupInitialSizes.set(i, newSize);
         }
@@ -146,17 +146,17 @@ public class Settings {
     }
 
     public static void setGroupCapacity(int groupLevel, int newCapacity) {
-        assert (newCapacity > 0) : "Capacity cannot be less than 1";
-        assert (newCapacity <= getGroupSize(groupLevel)) : "Capacity cannot exceed group size";
-        assert (groupLevel > 0) : "Group level cannot be less than 1";
-        assert (groupLevel <= groupDepth) : "Group level cannot exceed group depth";
+        assert (newCapacity > 0) : "Cannot set capacity below 1. Capacity: " + newCapacity;
+        assert (newCapacity <= getGroupSize(groupLevel)) : "Cannot set capacity above group size. Capacity: " + newCapacity + ". Size: " + getGroupSize(groupLevel);
+        assert (groupLevel > 0) : "Cannot set capacity for group level below 1. Level: " + groupLevel;
+        assert (groupLevel <= groupDepth) : "Cannot set capacity for group level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
         groupInitialCapacities.set(groupLevel - 1, newCapacity);
         defaultGroupCapacity = newCapacity; 
     }
 
     public static void setAllGroupCapacities(int newCapacity) {
-        assert (newCapacity <= getMaxCapacity()) : "Capacity cannot exceed size of any group";
-        assert (newCapacity > 0) : "Capacity must be greater than 0";
+        assert (newCapacity <= getMaxCapacity()) : "Cannot set capacities above the size of any group. Capacity: " + newCapacity + ". Max: " + getMaxCapacity();
+        assert (newCapacity > 0) : "Cannot set capacity below 1. Capacity: " + newCapacity;
         for (int i = 0; i <groupInitialCapacities.size(); i++) {
             groupInitialCapacities.set(i, newCapacity);
         }
@@ -164,8 +164,8 @@ public class Settings {
     }
 
     public static void setAllGroupMutabilities(int newMutability) {
-        assert (newMutability >= 0) : "Mutability cannot be less than 0";
-        assert (newMutability <= maxMutability) : "Mutability cannot exceed max mutability";
+        assert (newMutability >= 0) : "Cannot set mutabilities below 0. Mutability: " + newMutability;
+        assert (newMutability <= maxMutability) : "Cannot set mutabilities above max mutability. Mutability: " + newMutability + ". Max: " + maxMutability;
         if (newMutability >= 0 && newMutability <= 100) {
             for (int i = 1; i < initialMutabilities.size(); i++) {
                 initialMutabilities.set(i, newMutability);
@@ -184,16 +184,16 @@ public class Settings {
     // ===AGENTS===
 
     public static void setAgentInitialWeighting(int groupLevel, int newWeighting) {
-        assert (groupLevel >= 0) : "Group level cannot be less than 0";
-        assert (groupLevel <= groupDepth) : "Group level cannot exceed group depth";
-        assert (newWeighting >= minAgentWeighting) : "Weighting cannot be less than minimum agent weighting";
-        assert (newWeighting <= maxAgentWeighting) : "Weighting cannot exceed maximum agent weighting";
+        assert (groupLevel >= 0) : "Cannot set weighting for group level below 0";
+        assert (groupLevel <= groupDepth) : "Cannot set weighting for group level above group depth";
+        assert (newWeighting >= minAgentWeighting) : "Cannot set weighting below minimum agent weighting";
+        assert (newWeighting <= maxAgentWeighting) : "Cannot set weighting above maximum agent weighting";
         agentInitialWeightings.set(groupLevel, newWeighting);
     }
 
     public static void setAllAgentWeightings(int newWeighting) {
-        assert (newWeighting >= minAgentWeighting) : "Weighting cannot be less than minimum agent weighting";
-        assert (newWeighting <= maxAgentWeighting) : "Weighting cannot exceed maximum agent weighting";
+        assert (newWeighting >= minAgentWeighting) : "Cannot set weightings below minimum agent weighting";
+        assert (newWeighting <= maxAgentWeighting) : "Cannot set weightings above maximum agent weighting";
         for (int i = 0; i < agentInitialWeightings.size(); i++) {
             agentInitialWeightings.set(i, newWeighting);
         }
@@ -203,14 +203,14 @@ public class Settings {
     // ===SIMULATION===
 
     public static void setIterations(int n) {
-        assert (n > 0) : "Iterations must be greater than 0";
-        assert (n <= maxIterations) : "Iterations cannot exceed max iterations";
+        assert (n > 0) : "Cannot set iterations below 1";
+        assert (n <= maxIterations) : "Cannot set iterations above max iterations";
         iterationsPerRound = n;
     }
 
     public static void setRounds(int n) {
-        assert (n > 0) : "Rounds must be greater than 0";
-        assert (n <= maxRounds) : "Rounds cannot exceed max rounds";
+        assert (n > 0) : "Cannot set rounds below 1";
+        assert (n <= maxRounds) : "Cannot set rounds above max rounds";
         rounds = n;
     }
 
@@ -221,14 +221,14 @@ public class Settings {
     // ===ENTITIES===
 
     public static int getInitialMutability(int level) {
-        assert (level > 0) : "Level cannot be less than 0";
-        assert (level <= groupDepth) : "Level cannot exceed group depth";
+        assert (level >= 0) : "Cannot get mutability for Level below 0";
+        assert (level <= groupDepth) : "Cannot get mutability for Level above group depth";
         return initialMutabilities.get(level);
     }
 
     public static boolean getMutableMutability(int level) {
-        assert (level >= 0) : "Level cannot be less than 0";
-        assert (level <= groupDepth) : "Level cannot exceed group depth";
+        assert (level >= 0) : "Cannot get mutable mutability for Level below 0";
+        assert (level <= groupDepth) : "Cannot get mutable mutability for Level above group depth";
         return mutableMutabilities.get(level);
     }
 
@@ -251,8 +251,8 @@ public class Settings {
     }
 
     public static int getGroupSize(int groupLevel) {
-        assert (groupLevel > 0) : "Group level cannot be less than 1";
-        assert (groupLevel <= groupDepth) : "Group level cannot exceed group depth";
+        assert (groupLevel > 0) : "Cannot get group size for level below 1";
+        assert (groupLevel <= groupDepth) : "Cannot get group size for level above group depth";
         return groupInitialSizes.get(groupLevel - 1);
     }
 
@@ -261,8 +261,8 @@ public class Settings {
     }
 
     public static int getGroupCapacity(int groupLevel) {
-        assert (groupLevel > 0) : "Group level cannot be less than 1";
-        assert (groupLevel <= groupDepth) : "Group level cannot be greater than group depth";
+        assert (groupLevel > 0) : "Cannot get capacity for level below 1";
+        assert (groupLevel <= groupDepth) : "Cannot get capacity for level above group depth";
         return groupInitialCapacities.get(groupLevel - 1);
     }
 
@@ -297,8 +297,8 @@ public class Settings {
     }
 
     public static int getAgentInitialWeighting(int groupLevel) {
-        assert (groupLevel > -1) : "Group level cannot be less than 0";
-        assert (groupLevel <= groupDepth) : "Group level cannot exceed group depth";
+        assert (groupLevel > -1) : "Cannot get weighting for level below 0";
+        assert (groupLevel <= groupDepth) : "Cannot get weighting for level above group depth";
         return agentInitialWeightings.get(groupLevel);
     }
 

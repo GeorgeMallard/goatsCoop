@@ -38,11 +38,11 @@ public class Group extends Entity {
     public Group(int level, int size, boolean populate, Group parentGroup, int mutability, int capacity) {
         super(level, parentGroup, mutability);
         
-        assert (mutability >= 0) : "Cannot create group with mutability below 0";
-        assert (mutability <= Settings.getMaxMutability()) : "Cannot create group with mutability above max mutability";
-        assert (size > 0) : "Cannot create group with size below 1";
-        assert (size <= Settings.getMaxGroupSize()) : "Group size cannot exceed max group size";
-        assert (capacity <= size) : "Capacity cannot exceed size";
+        assert (mutability >= 0) : "Cannot create Group with mutability below 0. Mutability: " + mutability;
+        assert (mutability <= Settings.getMaxMutability()) : "Cannot create Group with mutability above max mutability. Mutability: " + mutability + ". Max mutability: " + Settings.getMaxMutability();
+        assert (size > 0) : "Cannot create Group with size below 1. Size: " + size;
+        assert (size <= Settings.getMaxGroupSize()) : "Cannot create Group with size above max group size. Size: " + size + ". Max group size: " + Settings.getMaxGroupSize();
+        assert (capacity <= size) : "Cannot create Group with capacity above size. Capacity: " + capacity + ". Size: " + size;
         
         this.setSize(size);
         this.children = new ArrayList<Entity>();
@@ -65,8 +65,8 @@ public class Group extends Entity {
      * @param size as an int
      */
     public void setSize(int size) {
-        assert (size > 0) : "Cannot set size to below 0";
-        assert (size <= Settings.getMaxGroupSize()) : "Size cannot exceed max group size";
+        assert (size > 0) : "Cannot set Group size below 0. Size: " + size;
+        assert (size <= Settings.getMaxGroupSize()) : "Cannot set Group size above max group size. Size: " + size + ". Max group size: " + Settings.getMaxGroupSize();
         this.size = size;
     }
 
@@ -75,7 +75,7 @@ public class Group extends Entity {
      * @param child as an Entity
      */
     public void addChild(Entity newChild) {
-        assert (this.children.size() < this.size) : "Number of children cannot exceed group size";
+        assert (this.children.size() < this.size) : "Cannot add child in excess of Group size. Children: " + this.children.size() + ". Group size: " + this.size;
         this.children.add(newChild);
     }
 
@@ -84,7 +84,7 @@ public class Group extends Entity {
      * @param capacity as an int
      */
     public void setCapacity(int capacity) {
-        assert (capacity > 0) : "Capacity cannot be less than 1";
+        assert (capacity > 0) : "Cannot set Group capacity below 1. Capacity: " + capacity;
         this.capacity = capacity;     
     }
 
@@ -105,7 +105,7 @@ public class Group extends Entity {
      * @return int
      */
     public int getSubGroupSize() {
-        assert (this.getLevel() > 1) : "Cannot get sub groups for levels 1 and below";
+        assert (this.getLevel() > 1) : "Cannot get sub groups for levels below 2. Group level: " + this.getLevel();
         return Settings.getGroupSize(this.getLevel() - 1);
     }
 

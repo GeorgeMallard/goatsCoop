@@ -255,8 +255,8 @@ public class GUI {
 	}
 
 	public static void groupSettingsMenu(int level) {
-		assert (level > 0) : "Level must be greater than 0";
-		assert (level <= Settings.getGroupDepth()) : "Level cannot exceed group depth";
+		assert (level > 0) : "GUI selected level must be greater than 0. Level: " + level;
+		assert (level <= Settings.getGroupDepth()) : "GUI seleceted level cannot exceed group depth. Level: " + level + ". Group depth: " + Settings.getGroupDepth();
 		boolean cont = true;
 		int value = -1;
 		while (cont) {

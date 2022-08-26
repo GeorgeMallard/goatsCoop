@@ -33,7 +33,7 @@ public class Agent extends Entity {
 	public Agent(int mutability, int[] weightings, Group parentGroup) {
 		super(0, parentGroup, mutability);
 		assert (weightings.length > 1) : "Cannot create Agent with fewer than 2 weightings. Current weightings: " + weightings.length;
-		assert (weightings.length == Settings.getGroupDepth()) : "Incorrect number of weightings. Current weightings: " + weightings.length + ". Group depth: " + Settings.getGroupDepth();
+		assert (weightings.length == Settings.getGroupDepth()) : "Cannot create Agent with incorrect number of weightings. Current weightings: " + weightings.length + ". Group depth: " + Settings.getGroupDepth();
 		this.setWeightings(weightings);
 		calculateContributions(weightings);	
 	}
@@ -48,13 +48,13 @@ public class Agent extends Entity {
 	 */
 	private void setWeightings(int[] weightings) {
 
-		assert (weightings.length > 1) : "Cannot create Agent with fewer than 2 weightings. Current weightings: " + weightings.length;
-		assert (weightings.length == Settings.getGroupDepth()) : "Incorrect number of weightings. Current weightings: " + weightings.length + ". Group depth: " + Settings.getGroupDepth();
+		assert (weightings.length > 1) : "Cannot set Agent with fewer than 2 weightings. Current weightings: " + weightings.length;
+		assert (weightings.length == Settings.getGroupDepth()) : "Cannot set Agent with incorrect number of weightings. Current weightings: " + weightings.length + ". Group depth: " + Settings.getGroupDepth();
 
 		this.weightings = new int[weightings.length];
 		for (int i = 0; i < weightings.length; i++) {
-			assert (weightings[i] >= Settings.getMinAgentWeighting()) : "Weighting below minimum weighting value. Weighting: " + weightings[i] + ". Min weighting: " + Settings.getMinAgentWeighting();
-			assert (weightings[i] <= Settings.getMaxAgentWeighting()) : "Weighting above maximum weighting value. Weighting: " + weightings[i] + ". Max weighting: " + Settings.getMaxAgentWeighting();
+			assert (weightings[i] >= Settings.getMinAgentWeighting()) : "Cannot set weighting below minimum weighting value. Weighting: " + weightings[i] + ". Min weighting: " + Settings.getMinAgentWeighting();
+			assert (weightings[i] <= Settings.getMaxAgentWeighting()) : "Cannot set weighting above maximum weighting value. Weighting: " + weightings[i] + ". Max weighting: " + Settings.getMaxAgentWeighting();
 			this.weightings[i] = weightings[i];
 		}
 	}
@@ -65,8 +65,8 @@ public class Agent extends Entity {
 	 */
 	private void calculateContributions(int[] weightings) {
 
-		assert (weightings.length > 1) : "Agent cannot have fewer than 2 weightings. Current weightings: " + weightings.length;
-		assert (this.getWeightings().length == this.getContributions().length) : "Weightings length and contributions length do not match. Weightings length: " + weightings.length + ". Contributions length: " + this.getContributions().length;
+		assert (weightings.length > 1) : "Cannot calculate contributions for fewer than 2 weightings. Current weightings: " + weightings.length;
+		assert (this.getWeightings().length == this.getContributions().length) : "Cannot calculate contributions when weightings length and contributions length do not match. Weightings length: " + weightings.length + ". Contributions length: " + this.getContributions().length;
 
 		int total = 0;
 		for (int x : weightings) {
@@ -83,8 +83,8 @@ public class Agent extends Entity {
 	}
 
 	public void setWeighting(int level, int value) {
-		assert (level >= 0) : "Cannot access weighting for level below zero. Level: " + level;
-		assert (level < this.getWeightings().length) : "Cannot access weighting for level exceeding highest available level. Level: " + level + ". Highest available level: " + this.getWeightings().length;
+		assert (level >= 0) : "Cannot set weighting for level below 0. Level: " + level;
+		assert (level < this.getWeightings().length) : "Cannot set weighting for level above highest available level. Level: " + level + ". Highest available level: " + this.getWeightings().length;
 		assert (value >= Settings.getMinAgentWeighting()) : "Cannot set weighting below minimum weighting value. Weighting: " + value + ". Min weighting: " + Settings.getMinAgentWeighting();
 		assert (value <= Settings.getMaxAgentWeighting()) : "Cannot set weighting above maximum weighting value. Weighting: " + value + ". Max weighting: " + Settings.getMaxAgentWeighting();
 		this.weightings[level] = value;
@@ -107,8 +107,8 @@ public class Agent extends Entity {
 	 * @return weighting as an int
 	 */
 	public int getWeighting(int level) {
-		assert (level >= 0) : "Cannot access weighting for level below zero. Level: " + level;
-		assert (level < this.getWeightings().length) : "Cannot access weighting for level exceeding highest available level. Level: " + level + ". Highest available level: " + this.getWeightings().length;
+		assert (level >= 0) : "Cannot get weighting for level below 0. Level: " + level;
+		assert (level < this.getWeightings().length) : "Cannot get weighting for level above highest available level. Level: " + level + ". Highest available level: " + this.getWeightings().length;
 		
 		return this.weightings[level];
 		
@@ -178,7 +178,7 @@ public class Agent extends Entity {
      * @return boolean
      */
     public boolean equals(Agent agent) {
-		assert (this.getWeightings().length == agent.getWeightings().length) : "Cannot compare agents with different weighting lengths. This agent weightings length: " + this.getWeightings().length + ". Comparison agent weightings length: " + agent.getWeightings().length;
+		assert (this.getWeightings().length == agent.getWeightings().length) : "Cannot compare Agents with different weighting lengths. This Agent weightings length: " + this.getWeightings().length + ". Comparison Agent weightings length: " + agent.getWeightings().length;
         for (int i = 0; i < this.getWeightings().length; i++) {
             if (this.getWeighting(i) != agent.getWeighting(i)) {
                 return false;

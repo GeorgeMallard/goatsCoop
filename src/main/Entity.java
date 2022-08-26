@@ -33,10 +33,10 @@ public abstract class Entity implements Comparable<Entity> {
      * @param parentGroup as a Group (null if Entity is top level Group)
      */
     public Entity(int level, Group parentGroup, int mutability) {
-        assert (level >= 0) : "Cannot create entity with level below 0 (level is " + level + ")";
-        assert (level <= Settings.getGroupDepth()) : "Cannot create entity with level above group depth";
-        assert (mutability >= 0) : "Cannot create entity with mutability below 0";
-        assert (mutability <= Settings.getMaxMutability()) : "Cannot create entity with mutability greater than max mutability";
+        assert (level >= 0) : "Cannot create Entity with level below 0. Level: " + level;
+        assert (level <= Settings.getGroupDepth()) : "Cannot create Entity with level above group depth. Level: " + level + ". Group depth: " + Settings.getGroupDepth();
+        assert (mutability >= 0) : "Cannot create Entity with mutability below 0. Mutability: " + mutability;
+        assert (mutability <= Settings.getMaxMutability()) : "Cannot create Entity with mutability above max mutability. Mutability: " + mutability + ". Max mutability: " + Settings.getMaxMutability();
 
         this.setLevel(level);
         this.setParentGroup(parentGroup);
@@ -53,8 +53,8 @@ public abstract class Entity implements Comparable<Entity> {
      * @param level as an int (Agent is considered level 0, groups begin at 1)
      */
     public void setLevel(int level) {
-        assert (level >= 0) : "Cannot set entity level below 0";
-        assert (level <= Settings.getGroupDepth()) : "Cannot set entity level above group depth";
+        assert (level >= 0) : "Cannot set Entity level below 0. Level: " + level;
+        assert (level <= Settings.getGroupDepth()) : "Cannot set Entity level above group depth. Level: " + level + ". Group depth: " + Settings.getGroupDepth();
         this.level = level;
     }
 
@@ -72,8 +72,8 @@ public abstract class Entity implements Comparable<Entity> {
      * @param n as a double
      */
     public void setContribution(int index, double n) {
-        assert (index < this.contributions.length) : "Contributions index is too high";
-        assert (index >= 0) : "Contributions index is below 0";
+        assert (index < this.contributions.length) : "Cannot set contribution with index above contributions length. Index: " + index + ". Contributions length: " + this.contributions.length;
+        assert (index >= 0) : "Cannot set contribution with index below 0. Index: " + index;
         this.contributions[index] = n;
     }
 
@@ -83,8 +83,8 @@ public abstract class Entity implements Comparable<Entity> {
      * @param n as a double
      */
     public void incrementContribution(int index, double n) {
-        assert (index < this.contributions.length) : "Contributions index is too high";
-        assert (index >= 0) : "Contributions index is below 0";
+        assert (index < this.contributions.length) : "Cannot increment contribution with index above contributions length. Index: " + index + ". Contributions length: " + this.contributions.length;
+        assert (index >= 0) : "Cannot increment contribution with index below 0. Index: " + index;
         this.contributions[index] += n;   
     }
 
@@ -93,8 +93,8 @@ public abstract class Entity implements Comparable<Entity> {
      * @param mutability as an int
      */
     public void setMutability(int mutability) {
-        assert (mutability >= 0) : "Mutability cannot be below 0";
-        assert (mutability <= Settings.getMaxMutability()) : "Mutability cannot be above max mutability";
+        assert (mutability >= 0) : "Cannot set mutability below 0. Mutability: " + mutability;
+        assert (mutability <= Settings.getMaxMutability()) : "Cannot set mutability above max mutability. Mutability: " + mutability + ". Max mutability: " + Settings.getMaxMutability();
         this.mutability = mutability;
     }
 
@@ -124,8 +124,8 @@ public abstract class Entity implements Comparable<Entity> {
      * @return double
      */
     public double getContribution(int index) {
-        assert (index < this.contributions.length) : "Contributions index is too high";
-        assert (index >= 0) : "Contributions index is below 0";
+        assert (index < this.contributions.length) : "Cannot get contribution with index above contributions length. Index: " + index + ". Contributions length: " + this.contributions.length;
+        assert (index >= 0) : "Cannot get contribution with index below 0. Index: " + index;
         return this.contributions[index];
     }
 
@@ -177,19 +177,19 @@ public abstract class Entity implements Comparable<Entity> {
     // ==============
 
     /**
-	 * Mutates a value up or down based on mutationFactor (mutationFactor = % chance of mutation occurring)
+	 * Mutates a value up or down based on mutationFactor (mutationFactor = chance of mutation occurring)
 	 * @param value as an int
-	 * @param mutationFactor as an int between 0 and 100
+	 * @param mutationFactor as an int between 0 and max mutability
 	 * @return int
 	 */
 	public static int mutate(int value, int mutationFactor, int min, int max) {
-        assert (max >= min) : "max is less than min";
-        assert (value >= min) : "value is less than min";
-        assert (value <= max) : "value is greater than max";
-        assert (mutationFactor >= 0) : "mutation factor is less than 0";
-        assert (mutationFactor <= 100) : "mutation factor is greater than 100";
+        assert (max >= min) : "Cannot mutate when max is below min. Max: " + max + ". Min: " + min;
+        assert (value >= min) : "Cannot mutate when value is below min. Value: " + value + ". Min: " + min;
+        assert (value <= max) : "Cannot mutate when value is above max. Value: " + value + ". Max: " + max;
+        assert (mutationFactor >= 0) : "Cannot mutate when mutation factor is below 0. Mutation factor: " + mutationFactor;
+        assert (mutationFactor <= Settings.getMaxMutability()) : "Cannot mutate when mutation factor is above max mutability. Mutation factor: " + mutationFactor + ". Max mutability: " + Settings.getMaxMutability();
         
-        int x = random.nextInt(101);
+        int x = random.nextInt(Settings.getMaxMutability() + 1);
 		if (x < mutationFactor) {
             value = random.nextInt(2) > 0 ? value + 1 : value - 1;
             if (value < min) {

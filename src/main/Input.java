@@ -32,7 +32,7 @@ public class Input {
      * @return int
      */
     public static int readIntBetween(String prompt, int min, int max) {
-        assert (max >= min) : "min is greater than max";
+        assert (max >= min) : "Cannot read int where min is greater than max. Min: " + min + ". Max: " + max;
         System.out.print(prompt.equals("") ? ">" : prompt);
         Scanner in = new Scanner(System.in);
         boolean inputError = false;
