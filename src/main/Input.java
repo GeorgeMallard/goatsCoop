@@ -93,6 +93,14 @@ public class Input {
         Settings.setGroupDepth(args[counter]);
         counter++;
 
+        //ENHANCED MUTATION
+        if (args[counter] == 1) {
+            Settings.setEnhancedMutation(true);
+        } else {
+            Settings.setEnhancedMutation(false);
+        }
+        counter++;
+
         //MUTABILITIES
         for (int i = 0; i <= Settings.getGroupDepth(); i++) {
             Settings.setInitialMutability(i, args[counter]);

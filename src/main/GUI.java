@@ -26,6 +26,7 @@ public class GUI {
 	// ===SETTINGS MENU===
 	private static final String SETTINGS_MENU_TITLE = "SETTINGS\n========";
 	private static final String GROUP_DEPTH = "Group Depth: ";
+	private static final String ENHANCED_MUTATION = "Enhanced Mutation: ";
 	private static final String ENTER_GROUP_DEPTH = "Enter new group depth (1 - " + Settings.getMaxGroupDepth() + "): ";
 	private static final String GROUP_DEFAULT_SETTINGS = "General Group Settings";
 	private static final String GROUP_OPTION = "Level %d Group [Size: %d | Capacity %d | Mutability: %d | Mutable Mutability: %s]";
@@ -106,13 +107,14 @@ public class GUI {
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
-			String[] options = new String[Settings.getGroupDepth() + 4];
+			String[] options = new String[Settings.getGroupDepth() + 5];
 			options[0] = SIMULATION_SETTINGS;
 			options[1] = GROUP_DEPTH + Settings.getGroupDepth();
-			options[2] = AGENT_SETTINGS;
-			options[3] = GROUP_DEFAULT_SETTINGS;
+			options[2] = ENHANCED_MUTATION + Settings.getEnhancedMutationString();
+			options[3] = AGENT_SETTINGS;
+			options[4] = GROUP_DEFAULT_SETTINGS;
 			for (int i = 1; i <= Settings.getGroupDepth(); i++) {
-				options[i + 3] = String.format(
+				options[i + 4] = String.format(
 					GROUP_OPTION, 
 					i, 
 					Settings.getGroupSize(i), 
@@ -136,16 +138,19 @@ public class GUI {
 					Settings.setGroupDepth(Input.readIntBetween(ENTER_GROUP_DEPTH, 1, Settings.getMaxGroupDepth()));
 					break;
 				case 3:
-					agentSettingsMenu();
+					Settings.toggleEnhancedMutation();
 					break;
 				case 4:
+					agentSettingsMenu();
+					break;
+				case 5:
 					groupDefaultSettingsMenu();
 					break;
 				case 0:
 					cont = false;
 					break;
 				default:
-					groupSettingsMenu(value - 4);	//group select
+					groupSettingsMenu(value - 5);	//group select
 					break;
 			}
 		}

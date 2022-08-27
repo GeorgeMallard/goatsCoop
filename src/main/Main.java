@@ -4,12 +4,7 @@ package src.main;
 // data output
 // --gather data (mutabilities / group capacities)
 // --output as .txt file
-// --additional unit testing for output
 // TEST
-
-// if there's extra time
-// --make asserts more specific
-// --advanced mutation option
 
 /**
  * Main class

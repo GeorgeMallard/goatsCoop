@@ -19,6 +19,7 @@ public class Settings {
     private static int defaultMutability = 50;                  // change this number to alter default mutability for all Entities
     private static boolean defaultMutableMutability = false;    // change this value to alter whether mutabilities are mutable by default
     private static int maxMutability = 100;                     // change this number to alter maximum mutability (increase for greater granularity)
+    private static boolean enhancedMutation = false;            // change this value to turn advanced mutation on or off
     // ===GROUPS===
     private static final int defaultGroupDepth = 3;             // change this number to alter default group depth (number of group levels)
     private static final int maxDepth = 5;                      // change this number to alter max group depth (number of group levels)
@@ -78,7 +79,7 @@ public class Settings {
     // SETTERS
     // =======
 
-    // ===ENTITIES===
+    // ===ENTITY SETTERS===
 
     public static void setInitialMutability(int level, int mutability) {
         assert (level >= 0) : "Cannot set initial mutability for level below 0. Level: " + level;
@@ -100,7 +101,15 @@ public class Settings {
         mutableMutabilities.set(level, !mutableMutabilities.get(level));
     }
 
-    // ===GROUPS===
+    public static void setEnhancedMutation(boolean bool) {
+        enhancedMutation = bool;
+    }
+
+    public static void toggleEnhancedMutation() {
+        enhancedMutation = !enhancedMutation;
+    }
+
+    // ===GROUP SETTERS===
 
     public static void setGroupDepth(int newDepth) {
         assert (newDepth > 0) : "Cannot set group depth below 1. Depth: " + newDepth;
@@ -181,7 +190,7 @@ public class Settings {
         }
     }
 
-    // ===AGENTS===
+    // ===AGENT SETTERS===
 
     public static void setAgentInitialWeighting(int groupLevel, int newWeighting) {
         assert (groupLevel >= 0) : "Cannot set weighting for group level below 0. Level: " + groupLevel;
@@ -200,7 +209,7 @@ public class Settings {
         defaultAgentWeighting = newWeighting;
     }
 
-    // ===SIMULATION===
+    // ===SIMULATION SETTERS===
 
     public static void setIterations(int n) {
         assert (n > 0) : "Cannot set iterations below 1. Iterations: " + n;
@@ -218,7 +227,7 @@ public class Settings {
     // GETTERS
     // =======
 
-    // ===ENTITIES===
+    // ===ENTITY GETTERS===
 
     public static int getInitialMutability(int level) {
         assert (level >= 0) : "Cannot get mutability for Level below 0. Level: " + level;
@@ -240,7 +249,15 @@ public class Settings {
         return maxMutability;
     }
 
-    // ===GROUPS===
+    public static boolean getEnhancedMutation() {
+        return enhancedMutation;
+    }
+
+    public static String getEnhancedMutationString() {
+        return enhancedMutation ? "ON" : "OFF";
+    }
+
+    // ===GROUP GETTERS===
 
     public static int getGroupDepth() {
         return groupDepth;
@@ -286,7 +303,7 @@ public class Settings {
         return max;
     }
 
-    // ===AGENTS===
+    // ===AGENT GETTERS===
 
     public static int[] getAgentInitialWeightings() {
         int[] weightings = new int[agentInitialWeightings.size()];
@@ -310,7 +327,7 @@ public class Settings {
         return maxAgentWeighting;
     }
 
-    // ===SIMULATION===
+    // ===SIMULATION GETTERS===
 
     public static int getIterations() {
         return iterationsPerRound;
