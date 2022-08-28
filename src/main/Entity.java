@@ -219,5 +219,7 @@ public abstract class Entity implements Comparable<Entity> {
     public abstract void mutateEntity();
     public abstract void resetContributions();
     public abstract void report();
+    public abstract double getAverageMutability(int level);
+    public abstract double getAverageCapacity(int level);
 
 }

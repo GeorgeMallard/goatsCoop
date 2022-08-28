@@ -21,9 +21,8 @@ public class Group extends Entity {
     private int size;                       //number of child Agents or Groups this Group can contain
     private int capacity;                   //number of child Agents or Groups that will survive each iteration
     private ArrayList<Entity> children;     //contains child Agents or Groups, depending on level
-    //private double[] averageContributions;  //contains average contributions data from Agents
-    //private double[] averageMutabilities;   //contains average mutabilities data from Agents and Groups
-    //private double[] averageCapacities;     //contains average capacities data from Groups
+    private double[] averageMutabilities;   //contains average mutabilities data from Agents and Groups
+    private double[] averageCapacities;     //contains average capacities data from Groups
 
     // ===========
     // CONSTRUCTOR
@@ -46,6 +45,8 @@ public class Group extends Entity {
         
         this.setSize(size);
         this.children = new ArrayList<Entity>();
+        this.averageMutabilities = new double[Settings.getGroupDepth() + 1];
+        this.averageCapacities = new double[Settings.getGroupDepth()];
         if (populate) {
             this.populate();
         }
@@ -88,6 +89,22 @@ public class Group extends Entity {
         this.capacity = capacity;     
     }
 
+    public void setAverageMutability(int level, double value) {
+        this.averageMutabilities[level] = value;
+    }
+
+    public void incrementAverageMutability(int level, double value) {
+        this.averageMutabilities[level] += value;
+    }
+
+    public void setAverageCapacity(int level, double value) {
+        this.averageCapacities[level - 1] = value;
+    }
+
+    public void incrementAverageCapacity(int level, double value) {
+        this.averageCapacities[level - 1] += value;
+    }
+
     // =======
     // GETTERS
     // =======
@@ -115,6 +132,24 @@ public class Group extends Entity {
      */
     public int getCapacity() {
         return this.capacity;
+    }
+
+    /**
+     * Returns average mutability for a given level
+     * @param level as an int
+     * @return average mutability as a double
+     */
+    public double getAverageMutability(int level) {
+        return this.averageMutabilities[level];
+    }
+
+    /**
+     * Returns average capacity for a given level
+     * @param level as an int
+     * @return average capacity as a double
+     */
+    public double getAverageCapacity(int level) {
+        return this.averageCapacities[level - 1];
     }
 
     // =======
@@ -160,6 +195,7 @@ public class Group extends Entity {
             }
         }
         // Function part
+        // Contributions
         for (int i = 0; i < children.size(); i++) {
             for (int j = 0; j < Settings.getGroupDepth(); j++) {
                 this.incrementContribution(j, children.get(i).getContribution(j));
@@ -168,6 +204,28 @@ public class Group extends Entity {
         for (int j = 0; j < Settings.getGroupDepth(); j++) {
             this.setContribution(j, this.getContribution(j) / this.children.size());
         }
+
+        //Mutabilities
+        for (int i = 0; i < children.size(); i++) {
+            this.incrementAverageMutability(this.getLevel() - 1, this.children.get(i).getMutability());
+            for (int j = 0; j < this.getLevel() - 1; j++) {
+                this.incrementAverageMutability(j, this.children.get(j).getAverageMutability(j));
+            }
+        }
+        for (int j = 0; j < this.getLevel(); j++) {
+            this.setAverageMutability(j, this.getAverageMutability(j) / this.children.size());
+        }
+        this.setAverageMutability(this.getLevel(), this.getMutability());
+
+        //Capacities
+        for (int i = 1; i < this.getLevel(); i++) {
+            for (int j = 0; j < this.children.size(); j++) {
+                this.incrementAverageCapacity(i, this.children.get(j).getAverageCapacity(i));
+            }
+            this.setAverageCapacity(i, this.getAverageCapacity(i) / this.children.size());
+        }
+        this.setAverageCapacity(this.getLevel(), this.getCapacity());
+
     }
 
     /**
@@ -277,6 +335,12 @@ public class Group extends Entity {
         for (int i = 0; i < this.getContributions().length; i++) {
             this.setContribution(i, 0.0);
         }
+        for (int i = 0; i < this.averageMutabilities.length; i++) {
+            this.setAverageMutability(i, 0);
+        }
+        for (int i = 0; i < this.averageCapacities.length; i++) {
+            this.setAverageCapacity(i + 1, 0);
+        }
     }
 
     /**
@@ -284,7 +348,7 @@ public class Group extends Entity {
      */
     public void report() {
         
-        System.out.println(convert(this.getContributions()));
+        System.out.println(this.toString());
 
         
     }
@@ -306,6 +370,21 @@ public class Group extends Entity {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        String str = "";
+
+        str += doubleArrayToString(this.getContributions());
+        
+        str += doubleArrayToString(this.averageMutabilities);
+        
+        str += doubleArrayToString(this.averageCapacities);
+
+        return str;
+    }
+
+
 
     // ===============
     // UTILITY METHODS
@@ -383,11 +462,15 @@ public class Group extends Entity {
 		return B;
 	}
 
-    //USED FOR TESTING PURPOSES - DELETE LATER
-    public String convert(double[] d) {
+    /**
+     * 
+     * @param d
+     * @return
+     */
+    public String doubleArrayToString(double[] d) {
         String str = "";
         for (double x : d) {
-            str += Double.toString(x) + ", ";
+            str += String.format("%.2f", x);
         }
         return str;
     }

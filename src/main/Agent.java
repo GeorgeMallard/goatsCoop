@@ -172,6 +172,9 @@ public class Agent extends Entity {
 		//intentionally left blank
 	}
 
+	public double getAverageMutability(int level) {return 0.0;}
+	public double getAverageCapacity(int level) {return 0.0;}
+
 	/**
      * Checks if this Agent is identical to another, in all aspects except parentGroup
      * @param agent as an Agent

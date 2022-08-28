@@ -2,7 +2,7 @@ package src.main;
 // TO DO
 
 // data output
-// --gather data (mutabilities / group capacities)
+// --add alterable variable
 // --output as .txt file
 // TEST
 
