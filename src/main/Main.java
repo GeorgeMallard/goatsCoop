@@ -2,7 +2,6 @@ package src.main;
 // TO DO
 
 // data output
-// --update GUI for variable (GUI class)
 // --output as .txt file (Group class, I/O class)
 // TEST
 

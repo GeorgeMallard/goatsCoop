@@ -39,6 +39,16 @@ public class GUI {
 	private static final String ROUNDS = "Rounds: %d";
 	private static final String ENTER_ITERATIONS = "Enter number of iterations per round (1 - " + Settings.getMaxIterations() + "): ";
 	private static final String ENTER_ROUNDS = "Enter number of rounds (1 - " + Settings.getMaxRounds() + "): ";
+	private static final String RUNS = "Runs: %d";
+	private static final String ENTER_RUNS = "Enter number of runs: ";
+	private static final String STEPS = "Steps: %d";
+	private static final String ENTER_STEPS = "Enter number of steps: ";
+	private static final String VARIABLE_LEVEL = "Variable Level: %d";
+	private static final String ENTER_VARIABLE_LEVEL = "Enter variable level: ";
+	private static final String SIZE_INCREMENT = "Size Increment: %d";
+	private static final String ENTER_SIZE_INCREMENT = "Enter size increment: ";
+	private static final String CAPACITY_INCREMENT = "Capacity Increment: %d";
+	private static final String ENTER_CAPACITY_INCREMENT = "Enter capacity increment: ";
 	// ===AGENT SETTINGS MENU===
 	private static final String AGENT_SETTINGS_MENU_TITLE = "AGENT SETTINGS\n==============";
 	private static final String INITIAL_MUTABILITY = "Initial Mutability: ";
@@ -162,7 +172,12 @@ public class GUI {
 		while (cont) {
 			String[] options = {
 				String.format(ITERATIONS, Settings.getIterations()),
-				String.format(ROUNDS, Settings.getRounds())
+				String.format(ROUNDS, Settings.getRounds()),
+				String.format(RUNS, Settings.getRuns()),
+				String.format(STEPS, Settings.getSteps()),
+				String.format(VARIABLE_LEVEL, Settings.getVariableLevel()),
+				String.format(SIZE_INCREMENT, Settings.getSizeIncrement()),
+				String.format(CAPACITY_INCREMENT, Settings.getCapacityIncrmeent())
 			};
 			value = Menu.create(
 				SIMULATION_SETTINGS_MENU_TITLE,
@@ -176,6 +191,33 @@ public class GUI {
 					break;
 				case 2:
 					Settings.setRounds(Input.readIntBetween(ENTER_ROUNDS, 1, Settings.getMaxRounds()));
+					break;
+				case 3:
+					Settings.setRuns(Input.readIntBetween(ENTER_RUNS, 1, Settings.getMaxRuns()));
+					break;
+				case 4:
+					Settings.setSteps(Input.readIntBetween(ENTER_STEPS, 1, Settings.getMaxSteps()));
+					break;
+				case 5:
+					Settings.setVariableLevel(Input.readIntBetween(ENTER_VARIABLE_LEVEL, 1, Settings.getGroupDepth()));
+					break;
+				case 6:
+					Settings.setSizeIncrement(
+						Input.readIntBetween(
+							ENTER_SIZE_INCREMENT, 
+							0, 
+							(Settings.getMaxGroupSize() - Settings.getGroupSize(Settings.getVariableLevel())) / Settings.getSteps()
+						)
+					);
+					break;
+				case 7:
+					Settings.setCapacityIncrement(
+						Input.readIntBetween(
+							ENTER_CAPACITY_INCREMENT, 
+							0, 
+							((Settings.getGroupSize(Settings.getVariableLevel()) * Settings.getSteps()) - Settings.getGroupCapacity(Settings.getVariableLevel())) / Settings.getSteps()
+						)
+					);
 					break;
 				case 0:
 				default:
