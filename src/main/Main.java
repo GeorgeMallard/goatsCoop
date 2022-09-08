@@ -2,12 +2,8 @@ package src.main;
 // TO DO
 
 // data output
-// --add alterable variable
-// ----add runs
-// ----add alter variable
-// ----update GUI
-// ----update args
-// --output as .txt file
+// --update GUI for variable (GUI class)
+// --output as .txt file (Group class, I/O class)
 // TEST
 
 /**
