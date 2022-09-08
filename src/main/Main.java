@@ -3,6 +3,10 @@ package src.main;
 
 // data output
 // --add alterable variable
+// ----add runs
+// ----add alter variable
+// ----update GUI
+// ----update args
 // --output as .txt file
 // TEST
 

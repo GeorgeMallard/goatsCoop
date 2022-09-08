@@ -26,6 +26,9 @@ public class Settings {
     private static int defaultGroupSize = 6;                    // change this number to alter default group size (min 2)
     private static int defaultGroupCapacity = defaultGroupSize / 2;
     private static final int maxGroupSize = 100;                // change this number to alter max group size
+    private static final int defaultVariableLevel = 1;          // change this number to alter default variable level
+    private static final int defaultSizeIncrement = 0;          // change this number to alter default size increment of variable level
+    private static final int defaultCapacityIncrement = 0;      // change this number to alter default capacity increment of variable level
     // ===AGENTS===
     private static int defaultAgentWeighting = 50;              // change this number to alter default agent weighting
     private static final int minAgentWeighting = 0;             // change this number to alter minimum agent weighting
@@ -35,6 +38,10 @@ public class Settings {
     private static final int maxIterations = 1000000;           // change this number to alter max number of iterations per round
     private static final int defaultRounds = 1;                 // change this number to alter default number of rounds
     private static final int maxRounds = 100;                   // change this number to alter max number of rounds
+    private static final int defaultRuns = 1;                   // change this number to alter default number of runs
+    private static final int maxRuns = 1000;                    // change this number to alter max number of runs
+    private static final int defaultSteps = 1;                  // change this number to alter default number of steps
+    private static final int maxSteps = 1000;                   // change this number to alter max number of steps
 
     // =========
     // VARIABLES
@@ -74,6 +81,11 @@ public class Settings {
     // ===SIMULATION===
 	private static int iterationsPerRound = defaultIterations;
 	private static int rounds = defaultRounds;
+    private static int runs = defaultRuns;
+    private static int steps = defaultSteps;
+    private static int variableLevel = defaultVariableLevel;
+    private static int sizeIncrement = defaultSizeIncrement;
+    private static int capacityIncrement = defaultCapacityIncrement;
 
     // =======
     // SETTERS
@@ -223,6 +235,34 @@ public class Settings {
         rounds = n;
     }
 
+    public static void setRuns(int n) {
+        assert (n > 0) : "Cannot set runs below 1. Runs: " + n;
+        assert (n <= maxRuns) : "Cannot set runs above max runs. Runs: " + n + "Max: " + maxRuns;
+        runs = n;
+    }
+
+    public static void setSteps(int n) {
+        assert (n > 0) : "Cannot set steps below 1. Steps: " + n;
+        assert (n <= maxSteps) : "Cannot set steps above max steps. Steps: " + n + "Max: " + maxSteps;
+        steps = n;
+    }
+
+    public static void setVariableLevel(int n) {
+        assert (n > 0) : "Cannot set variable level below 1. Level: " + n;
+        assert (n <= groupDepth) : "Cannot set variable level above group depth. Level: " + n + "Depth: " + groupDepth;
+        variableLevel = n;
+    }
+
+    public static void setSizeIncrement(int n) {
+        assert (n >= 0) : "Cannot set size increment below 0. Increment: " + n;
+        sizeIncrement = n;
+    }
+
+    public static void setCapacityIncrement(int n) {
+        assert (n >= 0) : "Cannot set capacity increment below 0. Increment: " + n;
+        capacityIncrement = n;
+    }
+
     // =======
     // GETTERS
     // =======
@@ -344,4 +384,45 @@ public class Settings {
     public static int getMaxRounds() {
         return maxRounds;
     }
+
+    public static int getRuns() {
+        return runs;
+    }
+
+    public static int getMaxRuns() {
+        return maxRuns;
+    }
+
+    public static int getSteps() {
+        return steps;
+    }
+
+    public static int getMaxSteps() {
+        return maxSteps;
+    }
+
+    public static int getVariableLevel() {
+        return variableLevel;
+    }
+
+    public static int getSizeIncrement() {
+        return sizeIncrement;
+    }
+
+    public static int getCapacityIncrmeent() {
+        return capacityIncrement;
+    }
+
+    // ===============
+    // UTILITY METHODS
+    // ===============
+
+    public static void incrementVariableSize() {
+        setGroupSize(variableLevel, getGroupSize(variableLevel) + sizeIncrement);
+    }
+
+    public static void incrementVariableCapacity() {
+        setGroupCapacity(variableLevel, getGroupCapacity(variableLevel) + capacityIncrement);
+    }
+    
 }
