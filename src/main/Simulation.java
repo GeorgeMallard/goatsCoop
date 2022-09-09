@@ -66,11 +66,18 @@ public class Simulation {
 		}
 	}
 
+	/**
+	 * Updates the variable level group size and capacity between steps
+	 */
 	public static void updateVariable() {
 		Settings.incrementVariableSize();
 		Settings.incrementVariableCapacity();
 	}
 
+	/**
+	 * Generates title row for output
+	 * @return String
+	 */
 	public static String writeTitleRow() {
 		String str = "";
 		str += VARIABLE_LEVEL;
@@ -85,10 +92,13 @@ public class Simulation {
 		for (int i = 1; i <= Settings.getGroupDepth(); i++) {
 			str += (CAPACITY + i);
 		}
-
 		return str;
 	}
 
+	/**
+	 * Generates row for output at the end of a round
+	 * @return String
+	 */
 	public static String writeRow() {
 		String str = "";
 		str += Settings.getVariableLevel();
