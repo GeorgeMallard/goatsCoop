@@ -467,7 +467,7 @@ public class Group extends Entity {
     public String doubleArrayToString(double[] d) {
         String str = "";
         for (double x : d) {
-            str += String.format("%.2f", x);
+            str += String.format("%.2f ", x);
         }
         return str;
     }

@@ -37,8 +37,8 @@ public class Output {
      */
     public static void writeToFile(String filename, String text) {
         try {
-            FileWriter writer = new FileWriter(filename + ".txt");
-            writer.write(text);
+            FileWriter writer = new FileWriter(filename + ".txt", true);
+            writer.write(text + "\n");
             writer.close();
             //System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {

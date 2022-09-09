@@ -1,4 +1,8 @@
 package src.main;
+
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+
 /**
  * Simulation class
  * Runs simulation according to current settings
@@ -18,6 +22,7 @@ public class Simulation {
 	public static final String MUTABILITY = "Mutability_";
 	public static final String CAPACITY = "Capacity_";
 	public static String TITLE_ROW;
+	public static final String DATE_FORMAT_NOW = "yyyyMMddHHmmss";
 
 	// ======
 	// FIELDS
@@ -36,8 +41,10 @@ public class Simulation {
 
 		TITLE_ROW = writeTitleRow();
 
-		Output.createFile("results");
-		Output.writeToFile("results", TITLE_ROW);
+		String now = now();
+
+		Output.createFile(now);
+		Output.writeToFile(now, TITLE_ROW);
 		
 		for (int l = 0; l < Settings.getSteps(); l++) {
 			for (int i = 0; i < Settings.getRuns(); i++) {
@@ -59,7 +66,7 @@ public class Simulation {
 						topLevelGroup.repopulate();
 						topLevelGroup.mutateEntity();	
 					}
-					Output.writeToFile("results", writeRow());
+					Output.writeToFile(now, writeRow());
 				}
 			}
 			updateVariable();
@@ -81,16 +88,22 @@ public class Simulation {
 	public static String writeTitleRow() {
 		String str = "";
 		str += VARIABLE_LEVEL;
+		str += " ";
 		str += VARIABLE_SIZE;
+		str += " ";
 		str += VARIABLE_CAPACITY;
+		str += " ";
 		for (int i = 0; i < Settings.getGroupDepth(); i++) {
 			str += (CONTRIBUTION + i);
+			str += " ";
 		}
 		for (int i = 0; i <= Settings.getGroupDepth(); i++) {
 			str += (MUTABILITY + i);
+			str += " ";
 		}
 		for (int i = 1; i <= Settings.getGroupDepth(); i++) {
 			str += (CAPACITY + i);
+			str += " ";
 		}
 		return str;
 	}
@@ -102,11 +115,19 @@ public class Simulation {
 	public static String writeRow() {
 		String str = "";
 		str += Settings.getVariableLevel();
+		str += " ";
 		str += Settings.getGroupSize(Settings.getVariableLevel());
+		str += " ";
 		str += Settings.getGroupCapacity(Settings.getVariableLevel());
 		str += " ";
 		str += topLevelGroup.report();
 		return str;
+	}
+
+	public static String now() {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+		return sdf.format(cal.getTime());
 	}
 
 
