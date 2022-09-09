@@ -144,10 +144,6 @@ public class Agent extends Entity {
 		this.calculateContributions(this.getWeightings());
 	}
 
-	public void report() {
-		//intentionally left blank
-	}
-
 	public void gatherContributions() {
 		//intentionally left blank
 	}

@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 /**
  * Input class
- * Contains methods for taking different kinds of input from the user
+ * Contains methods for input from the user
  * @author Chris Litting
  * @version 1.0
  */

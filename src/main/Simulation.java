@@ -7,6 +7,18 @@ package src.main;
  */
 public class Simulation {
     
+	// =========
+	// CONSTANTS
+	// =========
+
+	public static final String VARIABLE_LEVEL = "Variable_Level";
+	public static final String VARIABLE_SIZE = "Variable_Size";
+	public static final String VARIABLE_CAPACITY = "Variable_Capacity";
+	public static final String CONTRIBUTION = "Contribution_";
+	public static final String MUTABILITY = "Mutability_";
+	public static final String CAPACITY = "Capacity_";
+	public static String TITLE_ROW;
+
 	// ======
 	// FIELDS
 	// ======
@@ -22,6 +34,11 @@ public class Simulation {
 	 */
     public static void run() {
 
+		TITLE_ROW = writeTitleRow();
+
+		Output.createFile("results");
+		Output.writeToFile("results", TITLE_ROW);
+		
 		for (int l = 0; l < Settings.getSteps(); l++) {
 			for (int i = 0; i < Settings.getRuns(); i++) {
 				topLevelGroup = new Group(
@@ -40,10 +57,9 @@ public class Simulation {
 						topLevelGroup.sortChildren();
 						topLevelGroup.cullChildren();
 						topLevelGroup.repopulate();
-						topLevelGroup.mutateEntity();
-						
+						topLevelGroup.mutateEntity();	
 					}
-					topLevelGroup.report();
+					Output.writeToFile("results", writeRow());
 				}
 			}
 			updateVariable();
@@ -54,5 +70,34 @@ public class Simulation {
 		Settings.incrementVariableSize();
 		Settings.incrementVariableCapacity();
 	}
+
+	public static String writeTitleRow() {
+		String str = "";
+		str += VARIABLE_LEVEL;
+		str += VARIABLE_SIZE;
+		str += VARIABLE_CAPACITY;
+		for (int i = 0; i < Settings.getGroupDepth(); i++) {
+			str += (CONTRIBUTION + i);
+		}
+		for (int i = 0; i <= Settings.getGroupDepth(); i++) {
+			str += (MUTABILITY + i);
+		}
+		for (int i = 1; i <= Settings.getGroupDepth(); i++) {
+			str += (CAPACITY + i);
+		}
+
+		return str;
+	}
+
+	public static String writeRow() {
+		String str = "";
+		str += Settings.getVariableLevel();
+		str += Settings.getGroupSize(Settings.getVariableLevel());
+		str += Settings.getGroupCapacity(Settings.getVariableLevel());
+		str += " ";
+		str += topLevelGroup.report();
+		return str;
+	}
+
 
 }

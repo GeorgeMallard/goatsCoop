@@ -346,11 +346,8 @@ public class Group extends Entity {
     /**
      * REPORT
      */
-    public void report() {
-        
-        System.out.println(this.toString());
-
-        
+    public String report() {
+        return this.toString(); 
     }
 
     /**

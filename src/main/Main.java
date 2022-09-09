@@ -1,9 +1,4 @@
 package src.main;
-// TO DO
-
-// data output
-// --output as .txt file (Group class, I/O class)
-// TEST
 
 /**
  * Main class
