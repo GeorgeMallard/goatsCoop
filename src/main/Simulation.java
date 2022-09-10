@@ -58,20 +58,26 @@ public class Simulation {
 				);
 				// =====================
 			
-				for (int j = 0; j < Settings.getRounds(); j++) { 			// ROUND BEGIN
-					for (int k = 0; k < Settings.getIterations(); k++) { 	// ITERATION BEGIN
-						topLevelGroup.resetData();
-						topLevelGroup.gatherData();
-						topLevelGroup.sortChildren();
-						topLevelGroup.cullChildren();
-						topLevelGroup.repopulate();
-						topLevelGroup.mutateEntity();	
-					} 														// ITERATION END
+				for (int j = 0; j < Settings.getRounds(); j++) { 			 // ROUND BEGIN
+					iteration(true, false);
+					for (int k = 1; k < Settings.getIterations() - 1; k++) { // ITERATION BEGIN
+						iteration(false, false);
+					} 
+					iteration(false, true);					 // ITERATION END
 					Output.writeToFile(now, writeRow());					// row output
 				} 															// ROUND END
 			} 																// RUN END
 			updateVariable();												// variable update
 		} 																	// STEP END
+	}
+
+	public static void iteration(boolean reset, boolean gather) {
+		topLevelGroup.resetData(reset);
+		topLevelGroup.gatherData(gather);
+		topLevelGroup.sortChildren();
+		topLevelGroup.cullChildren();
+		topLevelGroup.repopulate();
+		topLevelGroup.mutateEntity();	
 	}
 
 	/**

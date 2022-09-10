@@ -6,7 +6,7 @@ import java.util.Collections;
 /**
  * Creates Groups that contain either Agents or other Groups
  * @author  Chris Litting
- * @version 1.1
+ * @version 1.2
  */
 public class Group extends Entity {
     
@@ -214,16 +214,27 @@ public class Group extends Entity {
 
     /**
      * Gathers data from lower level Entities (recursive method)
+     * @param fullGather as a boolean
      */
-    public void gatherData() {
+    public void gatherData(boolean fullGather) {
         // Recursive part
         if (this.getLevel() > 1) {
             for (Entity x : children) {
-                x.gatherData();
+                x.gatherData(fullGather);
             }
         }
         // Function part
-        // Contributions
+        gatherContributions();
+        if (fullGather) {
+            gatherMutabilities();
+            gatherCapacities();
+        }
+    }
+
+    /**
+     * Gathers average contributions from lower level Entities
+     */
+    private void gatherContributions() {
         for (int i = 0; i < children.size(); i++) {
             for (int j = 0; j < Settings.getGroupDepth(); j++) {
                 this.incrementContribution(j, children.get(i).getContribution(j));
@@ -232,9 +243,13 @@ public class Group extends Entity {
         for (int j = 0; j < Settings.getGroupDepth(); j++) {
             this.setContribution(j, this.getContribution(j) / this.children.size());
         }
+    }
 
-        //Mutabilities
-        for (int i = 0; i < children.size(); i++) {
+    /**
+     * Gathers average mutabilities from lower level Entities
+     */
+    private void gatherMutabilities() {
+         for (int i = 0; i < children.size(); i++) {
             this.incrementAverageMutability(this.getLevel() - 1, this.children.get(i).getMutability());
             for (int j = 0; j < this.getLevel() - 1; j++) {
                 this.incrementAverageMutability(j, this.children.get(j).getAverageMutability(j));
@@ -244,8 +259,12 @@ public class Group extends Entity {
             this.setAverageMutability(j, this.getAverageMutability(j) / this.children.size());
         }
         this.setAverageMutability(this.getLevel(), this.getMutability());
+    }
 
-        //Capacities
+    /**
+     * Gathers average capacities from lower level Entities
+     */
+    private void gatherCapacities() {
         for (int i = 1; i < this.getLevel(); i++) {
             for (int j = 0; j < this.children.size(); j++) {
                 this.incrementAverageCapacity(i, this.children.get(j).getAverageCapacity(i));
@@ -253,7 +272,6 @@ public class Group extends Entity {
             this.setAverageCapacity(i, this.getAverageCapacity(i) / this.children.size());
         }
         this.setAverageCapacity(this.getLevel(), this.getCapacity());
-
     }
 
     /**
@@ -342,12 +360,13 @@ public class Group extends Entity {
 
     /**
      * Sets all data points back to zero (recursve method)
+     * @param fullReset as a boolean
      */
-    public void resetData() {
+    public void resetData(boolean fullReset) {
         // Recursive part
         if (this.getLevel() > 1){
             for (Entity x : children) {
-                x.resetData();
+                x.resetData(fullReset);
             }
         }
         // Function part
@@ -355,13 +374,15 @@ public class Group extends Entity {
         for (int i = 0; i < this.getContributions().length; i++) {
             this.setContribution(i, 0.0);
         }
-        // Mutabilities
-        for (int i = 0; i < this.averageMutabilities.length; i++) {
-            this.setAverageMutability(i, 0);
-        }
-        // Capacities
-        for (int i = 0; i < this.averageCapacities.length; i++) {
-            this.setAverageCapacity(i + 1, 0);
+        if (fullReset) {
+            // Mutabilities
+            for (int i = 0; i < this.averageMutabilities.length; i++) {
+                this.setAverageMutability(i, 0);
+            }
+            // Capacities
+            for (int i = 0; i < this.averageCapacities.length; i++) {
+                this.setAverageCapacity(i + 1, 0);
+            }
         }
     }
 

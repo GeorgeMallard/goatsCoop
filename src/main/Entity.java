@@ -174,14 +174,14 @@ public abstract class Entity implements Comparable<Entity> {
     // ABSTRACT METHODS
     // ================
 
-    public abstract void gatherData();
+    public abstract void gatherData(boolean fullGather);
     public abstract void sortChildren();
     public abstract void cullChildren();
     public abstract void repopulate();
     public abstract Entity clone(Group parentGroup);
     public abstract void addChild(Entity newChild);
     public abstract void mutateEntity();
-    public abstract void resetData();
+    public abstract void resetData(boolean fullReset);
     public abstract double getAverageMutability(int level);
     public abstract double getAverageCapacity(int level);
 

@@ -167,11 +167,11 @@ public class Agent extends Entity {
 		this.calculateContributions(this.getWeightings());
 	}
 
-	public void gatherData() {}
+	public void gatherData(boolean fullGather) {}
 	public void sortChildren() {}
 	public void cullChildren() {}
 	public void repopulate() {}
 	public void addChild(Entity newChild) {}
-	public void resetData() {}
+	public void resetData(boolean fullReset) {}
 
 }
