@@ -8,12 +8,12 @@ import java.io.FileWriter;
  * Output class
  * Contains methods for outputting data
  * @author Chris Litting
- * @version 1.0
+ * @version 1.1
  */
 public class Output {
     
     /**
-     * Creates text file in local directory
+     * Creates a text file in the local directory
      * @param filename as a String
      */
     public static void createFile(String filename) {
@@ -46,7 +46,5 @@ public class Output {
             e.printStackTrace();
         }
     }
-
-
 
 }

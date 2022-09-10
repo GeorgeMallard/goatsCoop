@@ -3,7 +3,7 @@ package src.main;
  * GUI class
  * Creates interactive interface for users to change settings and run simulation
  * @author Chris Litting
- * @version 1.0
+ * @version 1.1
  */
 public class GUI {
 	
@@ -61,7 +61,7 @@ public class GUI {
 	// ===GROUP DEFAULT SETTINGS MENU===
 	private static final String GROUP_DEFAULT_SETTINGS_TITLE = "GROUP SETTINGS\n==============";
 	private static final String CHANGE_ALL_GROUP_SIZES = "Change size for all groups";
-	private static final String ENTER_GROUP_SIZES = "Enter new size for all groups: ";
+	private static final String ENTER_GROUP_SIZES = "Enter new size for all groups (%d - " + Settings.getMaxGroupSize() + "): ";
 	private static final String CHANGE_ALL_GROUP_CAPACITIES = "Change capacity for all groups";
 	private static final String ENTER_GROUP_CAPACITIES = "Enter new capacity for all groups (1 - %d): ";
 	private static final String CHANGE_ALL_GROUP_MUTABILITIES = "Change mutability for all groups";
@@ -81,6 +81,9 @@ public class GUI {
 	// MENU METHODS
 	// ============
 
+	/**
+	 * Displays main menu
+	 */
 	public static void mainMenu() {
 		boolean cont = true;
 		int value = -1;
@@ -113,6 +116,9 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * Displays settings menu
+	 */
 	public static void settingsMenu() {
 		boolean cont = true;
 		int value = -1;
@@ -120,7 +126,7 @@ public class GUI {
 			String[] options = new String[Settings.getGroupDepth() + 5];
 			options[0] = SIMULATION_SETTINGS;
 			options[1] = GROUP_DEPTH + Settings.getGroupDepth();
-			options[2] = ENHANCED_MUTATION + Settings.getEnhancedMutationString();
+			options[2] = ENHANCED_MUTATION + Settings.getEnhancedMutationString(ON, OFF);
 			options[3] = AGENT_SETTINGS;
 			options[4] = GROUP_DEFAULT_SETTINGS;
 			for (int i = 1; i <= Settings.getGroupDepth(); i++) {
@@ -130,7 +136,7 @@ public class GUI {
 					Settings.getGroupSize(i), 
 					Settings.getGroupCapacity(i), 
 					Settings.getInitialMutability(i), 
-					Settings.getMutableMutabilityString(i)
+					Settings.getMutableMutabilityString(i, ON, OFF)
 				);
 			}			
 	
@@ -166,6 +172,9 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * Displays simulation settings menu
+	 */
 	public static void simulationSettingsMenu() {
 		boolean cont = true;
 		int value = -1;
@@ -227,6 +236,9 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * Displays agent settings menu
+	 */
 	public static void agentSettingsMenu() {
 		boolean cont = true;
 		int value = -1;
@@ -264,6 +276,9 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * Displays group default settings menu
+	 */
 	public static void groupDefaultSettingsMenu() {
 		boolean cont = true;
 		int value = -1;
@@ -282,10 +297,10 @@ public class GUI {
 			);
 			switch (value) {
 				case 1:
-					Settings.setAllGroupSizes(Input.readIntBetween(ENTER_GROUP_SIZES, 1, Settings.getMaxGroupSize()));
+					Settings.setAllGroupSizes(Input.readIntBetween(String.format(ENTER_GROUP_SIZES, Settings.getHighestGroupCapacity()), Settings.getHighestGroupCapacity(), Settings.getMaxGroupSize()));
 					break;
 				case 2:
-					Settings.setAllGroupCapacities(Input.readIntBetween(String.format(ENTER_GROUP_CAPACITIES, Settings.getMaxCapacity()), 1, Settings.getMaxCapacity()));
+					Settings.setAllGroupCapacities(Input.readIntBetween(String.format(ENTER_GROUP_CAPACITIES, Settings.getLowestGroupSize()), 1, Settings.getLowestGroupSize()));
 					break;
 				case 3:
 					Settings.setAllGroupMutabilities(Input.readIntBetween(ENTER_GROUP_MUTABILITIES, 0, 100));
@@ -301,6 +316,10 @@ public class GUI {
 		}
 	}
 
+	/**
+	 * Displays group settings menu for given group level
+	 * @param level as an int
+	 */
 	public static void groupSettingsMenu(int level) {
 		assert (level > 0) : "GUI selected level must be greater than 0. Level: " + level;
 		assert (level <= Settings.getGroupDepth()) : "GUI seleceted level cannot exceed group depth. Level: " + level + ". Group depth: " + Settings.getGroupDepth();
@@ -339,32 +358,5 @@ public class GUI {
 			}
 		}
 	}
-
-	
-
-	
-	/*
-	public static void menuTemplate() {
-		boolean cont = true;
-		int value = -1;
-		while (cont) {
-			String[] options = {
-				//options here
-			};
-			value = Menu.create(
-				MAIN_MENU_TITLE,
-				SELECT_OPTION, 
-				BACK,
-				options
-			);
-			switch (value) {
-				case 0:
-				default:
-					cont = false;
-					break;
-			}
-		}
-	}
-	 */
 	
 }

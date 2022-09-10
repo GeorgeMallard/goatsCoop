@@ -6,7 +6,7 @@ import java.util.Scanner;
  * Input class
  * Contains methods for input from the user
  * @author Chris Litting
- * @version 1.0
+ * @version 1.1
  */
 public class Input {
     
@@ -20,9 +20,9 @@ public class Input {
     private static final String NO = "n";
     private static final String YES_OR_NO = "Please enter $s or $s: ";
 
-    // =======
-    // METHODS
-    // =======
+    // ==============
+    // STATIC METHODS
+    // ==============
 
     /**
      * Read an integer input by the user between two values (inclusive)
@@ -213,13 +213,17 @@ public class Input {
         Settings.setCapacityIncrement(args[counter]);
 
     }
+
+    // ===============
+    // UTILITY METHODS
+    // ===============
     
     /**
      * Converts a string array into an int array
      * @param strArr as a string array
      * @return int array
      */
-    public static int[] strArrayToIntArray(String[] strArr) {
+    private static int[] strArrayToIntArray(String[] strArr) {
         int[] intArr = new int[strArr.length];
         for (int i = 0; i < strArr.length; i++) {
             intArr[i] = tryParseInt(strArr[i]);
@@ -232,7 +236,7 @@ public class Input {
      * @param str as a string
      * @return int
      */
-    public static int tryParseInt(String str) {
+    private static int tryParseInt(String str) {
         int n = -1;
         try {
             n = Integer.parseInt(str);
@@ -242,6 +246,5 @@ public class Input {
         }
         return n;
     }
-
 
 }

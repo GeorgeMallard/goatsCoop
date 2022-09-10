@@ -3,13 +3,9 @@ package src.main;
  * Agent class
  * Creates Agents
  * @author  Chris Litting
- * @version 3.0
+ * @version 3.1
  */
 public class Agent extends Entity {
-	
-	// =========
-	// VARIABLES
-	// =========
 	
 	// ======
 	// FIELDS
@@ -50,7 +46,6 @@ public class Agent extends Entity {
 
 		assert (weightings.length > 1) : "Cannot set Agent with fewer than 2 weightings. Current weightings: " + weightings.length;
 		assert (weightings.length == Settings.getGroupDepth()) : "Cannot set Agent with incorrect number of weightings. Current weightings: " + weightings.length + ". Group depth: " + Settings.getGroupDepth();
-
 		this.weightings = new int[weightings.length];
 		for (int i = 0; i < weightings.length; i++) {
 			assert (weightings[i] >= Settings.getMinAgentWeighting()) : "Cannot set weighting below minimum weighting value. Weighting: " + weightings[i] + ". Min weighting: " + Settings.getMinAgentWeighting();
@@ -82,7 +77,12 @@ public class Agent extends Entity {
 		}
 	}
 
-	public void setWeighting(int level, int value) {
+	/**
+	 * Sets Agent weighting for a given level
+	 * @param level as an int
+	 * @param value as an int
+	 */
+	private void setWeighting(int level, int value) {
 		assert (level >= 0) : "Cannot set weighting for level below 0. Level: " + level;
 		assert (level < this.getWeightings().length) : "Cannot set weighting for level above highest available level. Level: " + level + ". Highest available level: " + this.getWeightings().length;
 		assert (value >= Settings.getMinAgentWeighting()) : "Cannot set weighting below minimum weighting value. Weighting: " + value + ". Min weighting: " + Settings.getMinAgentWeighting();
@@ -90,9 +90,9 @@ public class Agent extends Entity {
 		this.weightings[level] = value;
 	}
 
-	// =======
-	// GETTERS
-	// =======
+	// =============
+	// CLASS GETTERS
+	// =============
 
 	/**
 	 * Get weightings
@@ -103,20 +103,44 @@ public class Agent extends Entity {
 	}
 
 	/**
-	 * Get the weighting for a particular group level
+	 * Get the weighting for a given group level
 	 * @return weighting as an int
 	 */
 	public int getWeighting(int level) {
 		assert (level >= 0) : "Cannot get weighting for level below 0. Level: " + level;
 		assert (level < this.getWeightings().length) : "Cannot get weighting for level above highest available level. Level: " + level + ". Highest available level: " + this.getWeightings().length;
-		
-		return this.weightings[level];
-		
+		return this.weightings[level];	
 	}
 
-	// =======
-	// METHODS
-	// =======
+	// =================
+	// INHERITED GETTERS
+	// =================
+
+	public double getAverageMutability(int level) {return 0.0;}
+	public double getAverageCapacity(int level) {return 0.0;}
+
+	// =============
+	// CLASS METHODS
+	// =============
+
+	/**
+     * Checks if this Agent is identical to another, in all aspects except parentGroup
+     * @param agent as an Agent
+     * @return boolean
+     */
+    public boolean equals(Agent agent) {
+		assert (this.getWeightings().length == agent.getWeightings().length) : "Cannot compare Agents with different weighting lengths. This Agent weightings length: " + this.getWeightings().length + ". Comparison Agent weightings length: " + agent.getWeightings().length;
+        for (int i = 0; i < this.getWeightings().length; i++) {
+            if (this.getWeighting(i) != agent.getWeighting(i)) {
+                return false;
+            }
+        }      
+        return (this.getMutability() == agent.getMutability()) ? true : false;
+    }
+
+	// =================
+	// INHERITED METHODS
+	// =================
 
 	/**
 	 * Returns a clone of an existing Agent
@@ -136,55 +160,19 @@ public class Agent extends Entity {
 	 */
 	public void mutateEntity() {
 		if (Settings.getMutableMutability(this.getLevel())) {
-            this.setMutability(mutate(this.getMutability(), this.getMutability(), 0, Settings.getMaxMutability()));
+            this.setMutability(mutateValue(this.getMutability(), this.getMutability(), 0, Settings.getMaxMutability()));
         }
 		for (int i = 0; i < this.getWeightings().length; i++) {
-			this.setWeighting(i, mutate(this.getWeighting(i), this.getMutability(), 0, Settings.getMaxMutability()));
+			this.setWeighting(i, mutateValue(this.getWeighting(i), this.getMutability(), 0, Settings.getMaxMutability()));
 		}
 		this.calculateContributions(this.getWeightings());
 	}
 
-	public void gatherContributions() {
-		//intentionally left blank
-	}
+	public void gatherData() {}
+	public void sortChildren() {}
+	public void cullChildren() {}
+	public void repopulate() {}
+	public void addChild(Entity newChild) {}
+	public void resetData() {}
 
-	public void sortChildren() {
-		//intentionally left blank
-	}
-
-	public void cullChildren() {
-		//intentionally left blank
-	}
-
-	public void repopulate() {
-		//intentionally left blank
-	}
-
-	public void addChild(Entity newChild) {
-		//intentionally left blank
-	}
-
-	public void resetContributions() {
-		//intentionally left blank
-	}
-
-	public double getAverageMutability(int level) {return 0.0;}
-	public double getAverageCapacity(int level) {return 0.0;}
-
-	/**
-     * Checks if this Agent is identical to another, in all aspects except parentGroup
-     * @param agent as an Agent
-     * @return boolean
-     */
-    public boolean equals(Agent agent) {
-		assert (this.getWeightings().length == agent.getWeightings().length) : "Cannot compare Agents with different weighting lengths. This Agent weightings length: " + this.getWeightings().length + ". Comparison Agent weightings length: " + agent.getWeightings().length;
-        for (int i = 0; i < this.getWeightings().length; i++) {
-            if (this.getWeighting(i) != agent.getWeighting(i)) {
-                return false;
-            }
-        }      
-        return (this.getMutability() == agent.getMutability()) ? true : false;
-    }
-
-	
 }

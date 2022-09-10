@@ -39,15 +39,16 @@ public class Simulation {
 	 */
     public static void run() {
 
-		TITLE_ROW = writeTitleRow();
-
-		String now = now();
-
+		String now = now(DATE_FORMAT_NOW);
 		Output.createFile(now);
+		TITLE_ROW = writeTitleRow();
 		Output.writeToFile(now, TITLE_ROW);
 		
-		for (int l = 0; l < Settings.getSteps(); l++) {
-			for (int i = 0; i < Settings.getRuns(); i++) {
+		for (int l = 0; l < Settings.getSteps(); l++) { 					// STEP BEGIN
+			for (int i = 0; i < Settings.getRuns(); i++) { 					// RUN BEGIN
+
+				// ======================
+				// Create top level group
 				topLevelGroup = new Group(
 					Settings.getGroupDepth(), 
 					Settings.getGroupSize(Settings.getGroupDepth()), 
@@ -56,21 +57,22 @@ public class Simulation {
 					Settings.getInitialMutability(Settings.getGroupDepth()),
 					Settings.getGroupCapacity(Settings.getGroupDepth())
 				);
+				// =====================
 			
-				for (int j = 0; j < Settings.getRounds(); j++) {
-					for (int k = 0; k < Settings.getIterations(); k++) {
-						topLevelGroup.resetContributions();
-						topLevelGroup.gatherContributions();
+				for (int j = 0; j < Settings.getRounds(); j++) { 			// ROUND BEGIN
+					for (int k = 0; k < Settings.getIterations(); k++) { 	// ITERATION BEGIN
+						topLevelGroup.resetData();
+						topLevelGroup.gatherData();
 						topLevelGroup.sortChildren();
 						topLevelGroup.cullChildren();
 						topLevelGroup.repopulate();
 						topLevelGroup.mutateEntity();	
-					}
-					Output.writeToFile(now, writeRow());
-				}
-			}
-			updateVariable();
-		}
+					} 														// ITERATION END
+					Output.writeToFile(now, writeRow());					// row output
+				} 															// ROUND END
+			} 																// RUN END
+			updateVariable();												// variable update
+		} 																	// STEP END
 	}
 
 	/**
@@ -105,7 +107,9 @@ public class Simulation {
 			str += (CAPACITY + i);
 			str += " ";
 		}
-		return str;
+		return (str == null || str.length() == 0)
+        ? null 
+        : (str.substring(0, str.length() - 1));
 	}
 
 	/**
@@ -120,15 +124,18 @@ public class Simulation {
 		str += " ";
 		str += Settings.getGroupCapacity(Settings.getVariableLevel());
 		str += " ";
-		str += topLevelGroup.report();
+		str += topLevelGroup.toString();
 		return str;
 	}
 
-	public static String now() {
+	/**
+	 * Returns current date and time
+	 * @return String
+	 */
+	public static String now(String format) {
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(cal.getTime());
 	}
-
 
 }

@@ -7,7 +7,7 @@ import java.util.Arrays;
  * Settings class
  * Provides default settings and keeps track of changes to settings
  * @author Chris Litting
- * @version 1.0
+ * @version 1.2
  */
 public class Settings {
     
@@ -93,6 +93,11 @@ public class Settings {
 
     // ===ENTITY SETTERS===
 
+    /**
+     * Sets mutability for a given Entity level
+     * @param level as an int
+     * @param mutability as an int
+     */
     public static void setInitialMutability(int level, int mutability) {
         assert (level >= 0) : "Cannot set initial mutability for level below 0. Level: " + level;
         assert (level <= groupDepth) : "Cannot set initial mutability for level above max level. Level: " + level + ". Max level: " + groupDepth;
@@ -101,28 +106,48 @@ public class Settings {
         initialMutabilities.set(level, mutability);
     }
 
+    /**
+     * Sets whether mutability is mutable for a given Entity level
+     * @param level as an int
+     * @param bool as a boolean
+     */
     public static void setMutableMutability(int level, boolean bool) {
         assert (level >= 0) : "Cannot set mutable mutability for level below 0. Level: " + level;
         assert (level <= groupDepth) : "Cannot set mutable mutability for level above max level. Level: " + level + ". Max level: " + groupDepth;
         mutableMutabilities.set(level, bool);
     }
 
+    /**
+     * Toggles mutable mutability on/off for a given Entity level
+     * @param level as an int
+     */
     public static void toggleMutableMutability(int level) {
         assert (level >= 0) : "Cannot toggle mutable mutability for level below 0. Level: " + level;
         assert (level <= groupDepth) : "Cannot toggle mutable mutability for level above max level. Level: " + level + ". Max level: " + groupDepth;
         mutableMutabilities.set(level, !mutableMutabilities.get(level));
     }
 
+    /**
+     * Sets enhacend mutation on/off for all Entities (enhanced mutation is an experimental extra feature)
+     * @param bool as a boolean
+     */
     public static void setEnhancedMutation(boolean bool) {
         enhancedMutation = bool;
     }
 
+    /**
+     * Toggles enhanced mutation on/off for all Entities (enhanced mutation is an experimental extra feature)
+     */
     public static void toggleEnhancedMutation() {
         enhancedMutation = !enhancedMutation;
     }
 
     // ===GROUP SETTERS===
 
+    /**
+     * Sets group depth (number of group levels)
+     * @param newDepth as an int
+     */
     public static void setGroupDepth(int newDepth) {
         assert (newDepth > 0) : "Cannot set group depth below 1. Depth: " + newDepth;
         assert (newDepth <= maxDepth) : "Cannot set group depth above max depth. Depth: " + maxDepth + ". Max depth: " + maxDepth;
@@ -149,6 +174,11 @@ public class Settings {
         }
     }
 
+    /**
+     * Sets the size for groups of a given level
+     * @param groupLevel as an int
+     * @param newSize as an int
+     */
     public static void setGroupSize(int groupLevel, int newSize) {
         assert (groupLevel > 0) : "Cannot set group size for group level below 0. Level: " + groupLevel;
         assert (groupLevel <= groupDepth) : "Cannot set group size for group level above max. Level: " + groupLevel + ". Max level: " + groupDepth;
@@ -157,8 +187,12 @@ public class Settings {
         groupInitialSizes.set(groupLevel - 1, newSize); 
     }
 
+    /**
+     * Sets size for groups of all levels
+     * @param newSize as an int
+     */
     public static void setAllGroupSizes(int newSize) {
-        assert (newSize >= getMinGroupSize()) : "Cannot set group sizes below any group capacity. Size: " + newSize + ". Capacity: " + getMinGroupSize();
+        assert (newSize >= getHighestGroupCapacity()) : "Cannot set group sizes below any group capacity. Size: " + newSize + ". Capacity: " + getHighestGroupCapacity();
         assert (newSize <= maxGroupSize) : "Cannot set group size above max group size. Size: " + newSize + ". Max: " + maxGroupSize;
         for (int i = 0; i < groupInitialSizes.size(); i++) {
             groupInitialSizes.set(i, newSize);
@@ -166,6 +200,11 @@ public class Settings {
         defaultGroupSize = newSize;
     }
 
+    /**
+     * Sets capacity for groups of a given level
+     * @param groupLevel as an int
+     * @param newCapacity as an int
+     */
     public static void setGroupCapacity(int groupLevel, int newCapacity) {
         assert (newCapacity > 0) : "Cannot set capacity below 1. Capacity: " + newCapacity;
         assert (newCapacity <= getGroupSize(groupLevel)) : "Cannot set capacity above group size. Capacity: " + newCapacity + ". Size: " + getGroupSize(groupLevel);
@@ -175,8 +214,12 @@ public class Settings {
         defaultGroupCapacity = newCapacity; 
     }
 
+    /**
+     * Sets capacity for groups of all levels
+     * @param newCapacity as an int
+     */
     public static void setAllGroupCapacities(int newCapacity) {
-        assert (newCapacity <= getMaxCapacity()) : "Cannot set capacities above the size of any group. Capacity: " + newCapacity + ". Max: " + getMaxCapacity();
+        assert (newCapacity <= getLowestGroupSize()) : "Cannot set capacities above the size of any group. Capacity: " + newCapacity + ". Max: " + getLowestGroupSize();
         assert (newCapacity > 0) : "Cannot set capacity below 1. Capacity: " + newCapacity;
         for (int i = 0; i <groupInitialCapacities.size(); i++) {
             groupInitialCapacities.set(i, newCapacity);
@@ -184,6 +227,10 @@ public class Settings {
         defaultGroupCapacity = newCapacity;
     }
 
+    /**
+     * Sets mutability for all groups (but not agents)
+     * @param newMutability as an int
+     */
     public static void setAllGroupMutabilities(int newMutability) {
         assert (newMutability >= 0) : "Cannot set mutabilities below 0. Mutability: " + newMutability;
         assert (newMutability <= maxMutability) : "Cannot set mutabilities above max mutability. Mutability: " + newMutability + ". Max: " + maxMutability;
@@ -195,6 +242,9 @@ public class Settings {
         }
     }
 
+    /**
+     * Toggles default mutable mutability on/off, and sets all groups to that setting (but not agents)
+     */
     public static void toggleGroupMutableMutabilities() {
         defaultMutableMutability = !defaultMutableMutability;
         for (int i = 1; i < initialMutabilities.size(); i++) {
@@ -202,8 +252,27 @@ public class Settings {
         }
     }
 
+    /**
+     * Increments group size for variable level
+     */
+    public static void incrementVariableSize() {
+        setGroupSize(variableLevel, getGroupSize(variableLevel) + sizeIncrement);
+    }
+
+    /**
+     * Increments group capacity for variable level
+     */
+    public static void incrementVariableCapacity() {
+        setGroupCapacity(variableLevel, getGroupCapacity(variableLevel) + capacityIncrement);
+    }
+
     // ===AGENT SETTERS===
 
+    /**
+     * Sets agent weighting for a given group level
+     * @param groupLevel as an int
+     * @param newWeighting as an int
+     */
     public static void setAgentInitialWeighting(int groupLevel, int newWeighting) {
         assert (groupLevel >= 0) : "Cannot set weighting for group level below 0. Level: " + groupLevel;
         assert (groupLevel <= groupDepth) : "Cannot set weighting for group level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
@@ -212,6 +281,10 @@ public class Settings {
         agentInitialWeightings.set(groupLevel, newWeighting);
     }
 
+    /**
+     * Sets agent weightings for all group levels
+     * @param newWeighting as an int
+     */
     public static void setAllAgentWeightings(int newWeighting) {
         assert (newWeighting >= minAgentWeighting) : "Cannot set weightings below minimum agent weighting. Weighting: " + newWeighting + ". Min: " + minAgentWeighting;
         assert (newWeighting <= maxAgentWeighting) : "Cannot set weightings above maximum agent weighting. Weighting: " + newWeighting + ". Max: " + maxAgentWeighting;
@@ -223,41 +296,69 @@ public class Settings {
 
     // ===SIMULATION SETTERS===
 
+    /**
+     * Sets number of iterations per round
+     * @param n as an int
+     */
     public static void setIterations(int n) {
         assert (n > 0) : "Cannot set iterations below 1. Iterations: " + n;
         assert (n <= maxIterations) : "Cannot set iterations above max iterations. Iterations: " + n + ". Max: " + maxIterations;
         iterationsPerRound = n;
     }
 
+    /**
+     * Sets number of rounds per run
+     * @param n as an int
+     */
     public static void setRounds(int n) {
         assert (n > 0) : "Cannot set rounds below 1. Rounds: " + n;
         assert (n <= maxRounds) : "Cannot set rounds above max rounds. Rounds: " + n + "Max: " + maxRounds;
         rounds = n;
     }
 
+    /**
+     * Sets number of runs per step
+     * @param n as an int
+     */
     public static void setRuns(int n) {
         assert (n > 0) : "Cannot set runs below 1. Runs: " + n;
         assert (n <= maxRuns) : "Cannot set runs above max runs. Runs: " + n + "Max: " + maxRuns;
         runs = n;
     }
 
+    /**
+     * Sets number of steps per simulation
+     * @param n as an int
+     */
     public static void setSteps(int n) {
         assert (n > 0) : "Cannot set steps below 1. Steps: " + n;
         assert (n <= maxSteps) : "Cannot set steps above max steps. Steps: " + n + "Max: " + maxSteps;
         steps = n;
     }
 
+    /**
+     * Sets the group level to be altered after each step
+     * @param n as an int
+     */
     public static void setVariableLevel(int n) {
         assert (n > 0) : "Cannot set variable level below 1. Level: " + n;
         assert (n <= groupDepth) : "Cannot set variable level above group depth. Level: " + n + "Depth: " + groupDepth;
         variableLevel = n;
     }
 
+    /**
+     * Sets the amount to increment the size of the variable group level after each step
+     * @param n
+     */
     public static void setSizeIncrement(int n) {
         assert (n >= 0) : "Cannot set size increment below 0. Increment: " + n;
         sizeIncrement = n;
     }
 
+    /**
+     * Sets the amount to increment the capacity of the variable group level after each step
+     * @param n
+     */
     public static void setCapacityIncrement(int n) {
         assert (n >= 0) : "Cannot set capacity increment below 0. Increment: " + n;
         capacityIncrement = n;
@@ -269,61 +370,118 @@ public class Settings {
 
     // ===ENTITY GETTERS===
 
+    /**
+     * Returns the mutability for a given Entity level
+     * @param level as an int
+     * @return int
+     */
     public static int getInitialMutability(int level) {
         assert (level >= 0) : "Cannot get mutability for Level below 0. Level: " + level;
         assert (level <= groupDepth) : "Cannot get mutability for Level above group depth. Level: " + level + ". Depth: " + groupDepth;
         return initialMutabilities.get(level);
     }
 
+    /**
+     * Returns whether mutability is mutable for a given level
+     * @param level as an int
+     * @return boolean
+     */
     public static boolean getMutableMutability(int level) {
         assert (level >= 0) : "Cannot get mutable mutability for Level below 0. Level: " + level;
         assert (level <= groupDepth) : "Cannot get mutable mutability for Level above group depth. Level: " + level + ". Depth: " + groupDepth;
         return mutableMutabilities.get(level);
     }
 
-    public static String getMutableMutabilityString(int level) {
-        return mutableMutabilities.get(level) ? "ON" : "OFF";
+    /**
+     * Returns whether mutability is mutable for a given level as a String **used in conjunction with GUI**
+     * @param level as an int
+     * @param on as a String
+     * @param off as a String
+     * @return String
+     */
+    public static String getMutableMutabilityString(int level, String on, String off) {
+        return mutableMutabilities.get(level) ? on : off;
     }
 
+    /**
+     * Returns value for max mutability
+     * @return int
+     */
     public static int getMaxMutability() {
         return maxMutability;
     }
 
+    /**
+     * Returns whether enhanced mutation is active
+     * @return boolean
+     */
     public static boolean getEnhancedMutation() {
         return enhancedMutation;
     }
 
-    public static String getEnhancedMutationString() {
-        return enhancedMutation ? "ON" : "OFF";
+    /**
+     * Returns whether enhanced mutation is active as a String **used in conjunction with GUI**
+     * @param on as a String
+     * @param off as a String
+     * @return String
+     */
+    public static String getEnhancedMutationString(String on, String off) {
+        return enhancedMutation ? on : off;
     }
 
     // ===GROUP GETTERS===
 
+    /**
+     * Returns group depth (number of group levels)
+     * @return int
+     */
     public static int getGroupDepth() {
         return groupDepth;
     }
 
+    /**
+     * Returns the maximum group depth
+     * @return int
+     */
     public static int getMaxGroupDepth() {
         return maxDepth;
     }
 
+    /**
+     * Returns the group size for a given level
+     * @param groupLevel as an int
+     * @return int
+     */
     public static int getGroupSize(int groupLevel) {
         assert (groupLevel > 0) : "Cannot get group size for level below 1. Level: " + groupLevel;
         assert (groupLevel <= groupDepth) : "Cannot get group size for level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
         return groupInitialSizes.get(groupLevel - 1);
     }
 
+    /**
+     * Returns the maximum group size
+     * @return int
+     */
     public static int getMaxGroupSize() {
         return maxGroupSize;
     }
 
+    /**
+     * Returns the group capacity for a given level
+     * @param groupLevel as an int
+     * @return int
+     */
     public static int getGroupCapacity(int groupLevel) {
         assert (groupLevel > 0) : "Cannot get capacity for level below 1. Level: " + groupLevel;
         assert (groupLevel <= groupDepth) : "Cannot get capacity for level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
         return groupInitialCapacities.get(groupLevel - 1);
     }
 
-    public static int getMaxCapacity() {
+    /**
+     * Returns the lowest group size of all groups **used for limiting max capacity in GUI**
+     * @return int
+     */
+    public static int getLowestGroupSize() {
         int min = maxGroupSize;
         for (Integer x : groupInitialSizes) {
             if (x < min) {
@@ -333,7 +491,11 @@ public class Settings {
         return min;
     }
 
-    public static int getMinGroupSize() {
+    /**
+     * Returns the highest group capacity of all levels **used for limiting min group size in GUI**
+     * @return int
+     */
+    public static int getHighestGroupCapacity() {
         int max = 0;
         for (Integer x : groupInitialCapacities) {
             if (x > max) {
@@ -345,6 +507,10 @@ public class Settings {
 
     // ===AGENT GETTERS===
 
+    /**
+     * Returns all agent initial weightings
+     * @return int array
+     */
     public static int[] getAgentInitialWeightings() {
         int[] weightings = new int[agentInitialWeightings.size()];
         for (int i = 0; i < agentInitialWeightings.size(); i++) {
@@ -353,76 +519,121 @@ public class Settings {
         return weightings;
     }
 
+    /**
+     * Returns agent initial weighting for a given level
+     * @param groupLevel as an int
+     * @return int
+     */
     public static int getAgentInitialWeighting(int groupLevel) {
         assert (groupLevel > -1) : "Cannot get weighting for level below 0. Level: " + groupLevel;
         assert (groupLevel <= groupDepth) : "Cannot get weighting for level above group depth. Level: " + groupLevel + ". Depth: " + groupDepth;
         return agentInitialWeightings.get(groupLevel);
     }
 
+    /**
+     * Returns the minimum allowed agent weighting
+     * @return int
+     */
     public static int getMinAgentWeighting() {
         return minAgentWeighting;
     }
 
+    /**
+     * Returns the maximum allowed agent weighting
+     * @return int
+     */
     public static int getMaxAgentWeighting() {
         return maxAgentWeighting;
     }
 
     // ===SIMULATION GETTERS===
 
+    /**
+     * Returns number of iterations
+     * @return int
+     */
     public static int getIterations() {
         return iterationsPerRound;
     }
 
+    /**
+     * Returns maximum allowed number of iterations
+     * @return int
+     */
     public static int getMaxIterations() {
         return maxIterations;
     }
 
+    /**
+     * Returns number of rounds
+     * @return int
+     */
     public static int getRounds() {
         return rounds;
     }
 
+    /**
+     * Returns maximum allowed number of rounds
+     * @return int
+     */
     public static int getMaxRounds() {
         return maxRounds;
     }
 
+    /**
+     * Returns number of runs
+     * @return int
+     */
     public static int getRuns() {
         return runs;
     }
 
+    /**
+     * Returns maximum allowed number of runs
+     * @return int
+     */
     public static int getMaxRuns() {
         return maxRuns;
     }
 
+    /**
+     * Returns steps
+     * @return int
+     */
     public static int getSteps() {
         return steps;
     }
 
+    /**
+     * Returns maximum allowed number of steps
+     * @return int
+     */
     public static int getMaxSteps() {
         return maxSteps;
     }
 
+    /**
+     * Returns group level to be altered after each step
+     * @return int
+     */
     public static int getVariableLevel() {
         return variableLevel;
     }
 
+    /**
+     * Returns amount variable level size is incremented after each step
+     * @return
+     */
     public static int getSizeIncrement() {
         return sizeIncrement;
     }
 
+    /**
+     * Returns amount variable level capacity is incremented after each step
+     * @return
+     */
     public static int getCapacityIncrmeent() {
         return capacityIncrement;
-    }
-
-    // ===============
-    // UTILITY METHODS
-    // ===============
-
-    public static void incrementVariableSize() {
-        setGroupSize(variableLevel, getGroupSize(variableLevel) + sizeIncrement);
-    }
-
-    public static void incrementVariableCapacity() {
-        setGroupCapacity(variableLevel, getGroupCapacity(variableLevel) + capacityIncrement);
     }
     
 }

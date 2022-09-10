@@ -1,4 +1,5 @@
 package src.main;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -6,7 +7,7 @@ import java.util.Collections;
  * Group class
  * Groups contain either Agents or other Groups
  * @author  Chris Litting
- * @version 1.0
+ * @version 1.1
  */
 public class Group extends Entity {
     
@@ -65,7 +66,7 @@ public class Group extends Entity {
      * Sets group size
      * @param size as an int
      */
-    public void setSize(int size) {
+    private void setSize(int size) {
         assert (size > 0) : "Cannot set Group size below 0. Size: " + size;
         assert (size <= Settings.getMaxGroupSize()) : "Cannot set Group size above max group size. Size: " + size + ". Max group size: " + Settings.getMaxGroupSize();
         this.size = size;
@@ -84,24 +85,52 @@ public class Group extends Entity {
      * Sets Group capacity (number of children that survive each iteration)
      * @param capacity as an int
      */
-    public void setCapacity(int capacity) {
+    private void setCapacity(int capacity) {
         assert (capacity > 0) : "Cannot set Group capacity below 1. Capacity: " + capacity;
         this.capacity = capacity;     
     }
 
-    public void setAverageMutability(int level, double value) {
+    /**
+     * Sets the average mutability for a given level
+     * @param level as an int
+     * @param value as a double
+     */
+    private void setAverageMutability(int level, double value) {
+        assert (level >=0) : "Cannot set average mutability for group level below 0. Level: " + level;
+        assert (level <= Settings.getGroupDepth()) : "Cannot set average mutability for group level above group depth. Level: " + level + ". Group depth " + Settings.getGroupDepth();
         this.averageMutabilities[level] = value;
     }
 
-    public void incrementAverageMutability(int level, double value) {
+    /**
+     * Increments the average mutability for a given level
+     * @param level as an int
+     * @param value as a double
+     */
+    private void incrementAverageMutability(int level, double value) {
+        assert (level >=0) : "Cannot increment average mutability for group level below 0. Level: " + level;
+        assert (level <= Settings.getGroupDepth()) : "Cannot increment average mutability for group level above group depth. Level: " + level + ". Group depth " + Settings.getGroupDepth();
         this.averageMutabilities[level] += value;
     }
 
-    public void setAverageCapacity(int level, double value) {
+    /**
+     * Sets the average capacity for a given level
+     * @param level as an int
+     * @param value as a double
+     */
+    private void setAverageCapacity(int level, double value) {
+        assert (level >=0) : "Cannot set average capacity for group level below 0. Level: " + level;
+        assert (level <= Settings.getGroupDepth()) : "Cannot set average capacity for group level above group depth. Level: " + level + ". Group depth " + Settings.getGroupDepth();
         this.averageCapacities[level - 1] = value;
     }
 
-    public void incrementAverageCapacity(int level, double value) {
+    /**
+     * Increments the average capacity for a given level
+     * @param level as an int
+     * @param value as a double
+     */
+    private void incrementAverageCapacity(int level, double value) {
+        assert (level >=0) : "Cannot increment average capacity for group level below 0. Level: " + level;
+        assert (level <= Settings.getGroupDepth()) : "Cannot increment average capacity for group level above group depth. Level: " + level + ". Group depth " + Settings.getGroupDepth();
         this.averageCapacities[level - 1] += value;
     }
 
@@ -159,7 +188,7 @@ public class Group extends Entity {
     /**
      * Auto-populates a Group with sub-Groups or Agents (used in simulation setup)
      */
-    public void populate() {
+    private void populate() {
         if (this.getLevel() > 1) {
             // New Groups
             for (int i = 0; i < this.getSize(); i++) {
@@ -185,13 +214,13 @@ public class Group extends Entity {
     }
 
     /**
-     * Counts tokens assigned by Agents to this and higher level Groups (recursive method)
+     * Gathers data from lower level Entities (recursive method)
      */
-    public void gatherContributions() {
+    public void gatherData() {
         // Recursive part
         if (this.getLevel() > 1) {
             for (Entity x : children) {
-                x.gatherContributions();
+                x.gatherData();
             }
         }
         // Function part
@@ -239,15 +268,6 @@ public class Group extends Entity {
             }
         }
         // Function part
-        /*
-		Entity[] arr = children.toArray(new Entity[children.size()]);
-        mergeSort(arr);
-        children.clear();
-        for (Entity x : arr) {
-            children.add(x);
-        }
-        */
-        //System.out.println("level " + this.getLevel()+ " group sorting children");
         Collections.sort(children);
 	}
 
@@ -287,7 +307,7 @@ public class Group extends Entity {
     }
 
     /**
-     * Creates clone of existing Entity, used with repopulate method (recursive method)
+     * Creates clone of existing Entity **used with repopulate method** (recursive method)
      */
     public Entity clone(Group parentGroup) {
         // Function part
@@ -316,42 +336,38 @@ public class Group extends Entity {
         }
         // Function part
         if (Settings.getMutableMutability(this.getLevel())) {
-            this.setMutability(mutate(this.getMutability(), this.getMutability(), 0, Settings.getMaxMutability()));
+            this.setMutability(mutateValue(this.getMutability(), this.getMutability(), 0, Settings.getMaxMutability()));
         }
-        this.setCapacity(mutate(this.getCapacity(), this.getMutability(), 1, this.getSize()));
+        this.setCapacity(mutateValue(this.getCapacity(), this.getMutability(), 1, this.getSize()));
     }
 
     /**
-     * Sets all contributions back to zero (recursve method)
+     * Sets all data points back to zero (recursve method)
      */
-    public void resetContributions() {
+    public void resetData() {
         // Recursive part
         if (this.getLevel() > 1){
             for (Entity x : children) {
-                x.resetContributions();
+                x.resetData();
             }
         }
         // Function part
+        // Contributions
         for (int i = 0; i < this.getContributions().length; i++) {
             this.setContribution(i, 0.0);
         }
+        // Mutabilities
         for (int i = 0; i < this.averageMutabilities.length; i++) {
             this.setAverageMutability(i, 0);
         }
+        // Capacities
         for (int i = 0; i < this.averageCapacities.length; i++) {
             this.setAverageCapacity(i + 1, 0);
         }
     }
 
     /**
-     * REPORT
-     */
-    public String report() {
-        return this.toString(); 
-    }
-
-    /**
-     * Checks if this Group is identical to another, in all aspects except parentGroup and children
+     * Checks if this Group is identical to another **used in unit testing**
      * @param group as a Group
      * @return boolean
      */
@@ -368,103 +384,31 @@ public class Group extends Entity {
         }
     }
 
+    /**
+     * Returns Group data in String format
+     * @return String
+     */
     @Override
     public String toString() {
         String str = "";
-
         str += doubleArrayToString(this.getContributions());
-        
         str += doubleArrayToString(this.averageMutabilities);
-        
         str += doubleArrayToString(this.averageCapacities);
-
-        return str;
+        return (str == null || str.length() == 0)
+        ? null 
+        : (str.substring(0, str.length() - 1));
     }
-
-
 
     // ===============
     // UTILITY METHODS
     // ===============
 
     /**
-	 * Merge Sort algorithm
-	 * @param  A as an array of Entities
-	 * @return array of Entities (sorted by self contribution)
-	 */
-	public Entity[] mergeSort(Entity[] A){
-		int n = A.length;
-		if (n <= 1){
-			return A;
-		} else {
-			int m = n/2;
-			Entity[] B = copyArray(A, 0, m-1);
-			Entity[] C = copyArray(A, m, n-1);
-			mergeSort(B);
-			mergeSort(C);
-			merge(B, C, A);
-			return A;
-		}
-	}
-	
-	/**
-	 * Merge two subarrays into a third, longer array 
-	 * (used in mergeSort)
-	 * @param  sub1 as an array of Agents
-	 * @param  sub2 as an array of Agents
-	 * @param  A as an array of Agents
-	 * @return array of Agents (sorted by self contribution)
-	 */
-	public static Entity[] merge(Entity[] sub1, Entity[] sub2, Entity[] A){
-		int ptr1 = 0;
-		int ptr2 = 0;
-		int ptrA = 0;
-		int nA = A.length;
-		int n1 = sub1.length;
-		int n2 = sub2.length;
-		
-		while (ptrA < nA){
-			if (ptr1 < n1 && ptr2 >= n2){
-				A[ptrA] = sub1[ptr1];
-				ptr1++;
-			} else if (ptr2 < n2 && ptr1 >= n1){
-				A[ptrA] = sub2[ptr2];
-				ptr2++;
-			} else if (sub1[ptr1].getSelfContribution() > sub2[ptr2].getSelfContribution()){
-				A[ptrA] = sub1[ptr1];
-				ptr1++;
-			} else {
-				A[ptrA] = sub2[ptr2];
-				ptr2++;
-			}
-			ptrA++;
-		}
-		return A;		
-	}
-
-	/**
-	 * Copy part of an array 
-	 * (used in mergeSort)
-	 * @param  A as an array of Agents
-	 * @param  start index as an int
-	 * @param  end index as an int
-	 * @return array of Agents
-	 */
-	public static Entity[] copyArray(Entity[] A, int start, int end){
-		int n = end - start + 1;
-		Entity[] B = new Entity[n];
-		for (int i = 0; i < n; i++){
-			B[i] = A[i + start];
-		}
-		return B;
-	}
-
-    /**
-     * 
-     * @param d
-     * @return
+     * Converts a double array to a string, doubles rounded to 2 decimal places, separated by spaces
+     * @param d as a double array
+     * @return String
      */
-    public String doubleArrayToString(double[] d) {
+    private String doubleArrayToString(double[] d) {
         String str = "";
         for (double x : d) {
             str += String.format("%.2f ", x);

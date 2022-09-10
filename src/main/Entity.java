@@ -5,7 +5,7 @@ import java.util.Random;
  * Entity class
  * Abstract superclass for Group and Agent
  * @author Chris Litting
- * @version 1.0
+ * @version 1.1
  */
 public abstract class Entity implements Comparable<Entity> {
     
@@ -37,7 +37,6 @@ public abstract class Entity implements Comparable<Entity> {
         assert (level <= Settings.getGroupDepth()) : "Cannot create Entity with level above group depth. Level: " + level + ". Group depth: " + Settings.getGroupDepth();
         assert (mutability >= 0) : "Cannot create Entity with mutability below 0. Mutability: " + mutability;
         assert (mutability <= Settings.getMaxMutability()) : "Cannot create Entity with mutability above max mutability. Mutability: " + mutability + ". Max mutability: " + Settings.getMaxMutability();
-
         this.setLevel(level);
         this.setParentGroup(parentGroup);
         this.contributions = new double[Settings.getGroupDepth()];
@@ -157,9 +156,9 @@ public abstract class Entity implements Comparable<Entity> {
         return this.mutability;
     }
 
-    // =======
-    // METHODS
-    // =======
+    // ==============
+    // OBJECT METHODS
+    // ==============
 
     @Override
     public int compareTo(Entity otherEntity) {
@@ -172,6 +171,21 @@ public abstract class Entity implements Comparable<Entity> {
         }
     }
 
+    // ================
+    // ABSTRACT METHODS
+    // ================
+
+    public abstract void gatherData();
+    public abstract void sortChildren();
+    public abstract void cullChildren();
+    public abstract void repopulate();
+    public abstract Entity clone(Group parentGroup);
+    public abstract void addChild(Entity newChild);
+    public abstract void mutateEntity();
+    public abstract void resetData();
+    public abstract double getAverageMutability(int level);
+    public abstract double getAverageCapacity(int level);
+
     // ==============
     // STATIC METHODS
     // ==============
@@ -182,7 +196,7 @@ public abstract class Entity implements Comparable<Entity> {
 	 * @param mutationFactor as an int between 0 and max mutability
 	 * @return int
 	 */
-	public static int mutate(int value, int mutationFactor, int min, int max) {
+	public static int mutateValue(int value, int mutationFactor, int min, int max) {
         assert (max >= min) : "Cannot mutate when max is below min. Max: " + max + ". Min: " + min;
         assert (value >= min) : "Cannot mutate when value is below min. Value: " + value + ". Min: " + min;
         assert (value <= max) : "Cannot mutate when value is above max. Value: " + value + ". Max: " + max;
@@ -204,21 +218,6 @@ public abstract class Entity implements Comparable<Entity> {
 			} 
 		}
 		return value;
-	}  
-
-    // ================
-    // ABSTRACT METHODS
-    // ================
-
-    public abstract void gatherContributions();
-    public abstract void sortChildren();
-    public abstract void cullChildren();
-    public abstract void repopulate();
-    public abstract Entity clone(Group parentGroup);
-    public abstract void addChild(Entity newChild);
-    public abstract void mutateEntity();
-    public abstract void resetContributions();
-    public abstract double getAverageMutability(int level);
-    public abstract double getAverageCapacity(int level);
+	}      
 
 }
