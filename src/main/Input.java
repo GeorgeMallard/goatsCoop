@@ -3,13 +3,12 @@ package src.main;
 import java.util.Scanner;
 
 /**
- * Input class
- * Contains methods for input from the user
+ * Contains methods for reading input from the user
  * @author Chris Litting
  * @version 1.1
  */
 public class Input {
-    
+
     // =========
     // CONSTANTS
     // =========

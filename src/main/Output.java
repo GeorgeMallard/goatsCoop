@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.io.FileWriter;
 
 /**
- * Output class
- * Contains methods for outputting data
+ * Contains methods for outputting data to text files
  * @author Chris Litting
  * @version 1.1
  */

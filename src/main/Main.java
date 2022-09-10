@@ -1,7 +1,6 @@
 package src.main;
 
 /**
- * Main class
  * Contains main method
  * @author Chris Litting
  * @version 1.0

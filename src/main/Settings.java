@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Settings class
- * Provides default settings and keeps track of changes to settings
+ * Provides default settings and allows changes to settings
  * @author Chris Litting
  * @version 1.2
  */

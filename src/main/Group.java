@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Group class
- * Groups contain either Agents or other Groups
+ * Creates Groups that contain either Agents or other Groups
  * @author  Chris Litting
  * @version 1.1
  */

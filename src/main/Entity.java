@@ -2,7 +2,6 @@ package src.main;
 import java.util.Random;
 
 /**
- * Entity class
  * Abstract superclass for Group and Agent
  * @author Chris Litting
  * @version 1.1

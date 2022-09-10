@@ -1,6 +1,5 @@
 package src.main;
 /**
- * Agent class
  * Creates Agents
  * @author  Chris Litting
  * @version 3.1

@@ -5,6 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+/**
+ * Contains unit tests for Group class
+ * @author Chris Litting
+ * @version 1.0
+ */
 public class GroupTest {
    
     // =========

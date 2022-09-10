@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
 /**
- * Simulation class
  * Runs simulation according to current settings
  * @author Chris Litting
  * @version 1.0

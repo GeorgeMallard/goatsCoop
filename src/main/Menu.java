@@ -1,7 +1,6 @@
 package src.main;
 
 /**
- * Menu class
  * Used for creating menus in the GUI
  * @author Chris Litting
  * @version 1.0
