@@ -428,6 +428,16 @@ public class Settings {
         return enhancedMutation ? on : off;
     }
 
+    /**
+     * Return whether default mutable mutability is on as a String **used in conjunction with GUI**
+     * @param on as a String
+     * @param off as a String
+     * @return String
+     */
+    public static String getDefaultMutableMutabilityString(String on, String off) {
+        return defaultMutableMutability ? on : off;
+    }
+
     // ===GROUP GETTERS===
 
     /**
