@@ -1,6 +1,0 @@
-Variable_Level Variable_Size Variable_Capacity Contribution_0 Contribution_1 Mutability_0 Mutability_1 Mutability_2 Capacity_1 Capacity_2 
-1 6 3 0.52 0.48 51.50 0.00 0.00 3.00 2.00 
-1 6 3 0.56 0.44 49.33 0.00 0.00 3.00 2.00 
-1 6 3 0.62 0.38 51.83 0.00 0.00 3.00 2.00 
-1 6 3 0.66 0.34 50.00 0.00 0.00 3.00 2.00 
-1 6 3 0.71 0.29 53.17 0.00 0.00 3.00 2.00 

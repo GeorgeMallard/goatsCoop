@@ -1,8 +1,5 @@
 package src.main;
 
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
-
 /**
  * Runs simulation according to current settings
  * @author Chris Litting
@@ -21,8 +18,7 @@ public class Simulation {
 	public static final String MUTABILITY = "Mutability_";
 	public static final String CAPACITY = "Capacity_";
 	public static String TITLE_ROW;
-	public static final String DATE_FORMAT_NOW = "yyyyMMddHHmmss";
-
+	
 	// ======
 	// FIELDS
 	// ======
@@ -38,10 +34,9 @@ public class Simulation {
 	 */
     public static void run() {
 
-		String now = now(DATE_FORMAT_NOW);
-		Output.createFile(now);
+		String filename = Output.createDateTimeFile("results");
 		TITLE_ROW = writeTitleRow();
-		Output.writeToFile(now, TITLE_ROW);
+		Output.writeToFile(filename, TITLE_ROW);
 		
 		for (int l = 0; l < Settings.getSteps(); l++) { 					// STEP BEGIN
 			for (int i = 0; i < Settings.getRuns(); i++) { 					// RUN BEGIN
@@ -64,7 +59,7 @@ public class Simulation {
 						iteration(false, false);
 					} 
 					iteration(false, true);					 // ITERATION END
-					Output.writeToFile(now, writeRow());					// row output
+					Output.writeToFile(filename, writeRow());					// row output
 				} 															// ROUND END
 			} 																// RUN END
 			updateVariable();												// variable update
@@ -131,16 +126,6 @@ public class Simulation {
 		str += " ";
 		str += topLevelGroup.toString();
 		return str;
-	}
-
-	/**
-	 * Returns current date and time
-	 * @return String
-	 */
-	public static String now(String format) {
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		return sdf.format(cal.getTime());
 	}
 
 }

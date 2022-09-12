@@ -78,7 +78,7 @@ public class Settings {
         defaultAgentWeighting
     ));
     // ===SIMULATION===
-	private static int iterationsPerRound = defaultIterations;
+	private static int iterations = defaultIterations;
 	private static int rounds = defaultRounds;
     private static int runs = defaultRuns;
     private static int steps = defaultSteps;
@@ -302,7 +302,7 @@ public class Settings {
     public static void setIterations(int n) {
         assert (n > 0) : "Cannot set iterations below 1. Iterations: " + n;
         assert (n <= maxIterations) : "Cannot set iterations above max iterations. Iterations: " + n + ". Max: " + maxIterations;
-        iterationsPerRound = n;
+        iterations = n;
     }
 
     /**
@@ -562,7 +562,7 @@ public class Settings {
      * @return int
      */
     public static int getIterations() {
-        return iterationsPerRound;
+        return iterations;
     }
 
     /**
@@ -641,8 +641,44 @@ public class Settings {
      * Returns amount variable level capacity is incremented after each step
      * @return
      */
-    public static int getCapacityIncrmeent() {
+    public static int getCapacityIncrement() {
         return capacityIncrement;
+    }
+
+    // =======
+    // METHODS
+    // =======
+
+    /**
+     * Generates a set of space-delimited arguments based on current settings
+     * @return String
+     */
+    public static String generateArgs() {
+        String str = "";
+
+        str += groupDepth + " ";
+        str += (enhancedMutation ? 1 : 0) + " ";
+        for (int i = 0; i <= groupDepth; i++) {
+            str += initialMutabilities.get(i) + " ";
+        }
+        for (int i = 0; i <= groupDepth; i++) {
+            str += (mutableMutabilities.get(i) ? 1 : 0) + " ";
+        }
+        for (int i = 0; i < groupDepth; i++) {
+            str += groupInitialSizes.get(i) + " ";
+            str += groupInitialCapacities.get(i) + " ";
+        }
+        for (int i = 0; i < groupDepth; i++) {
+            str += agentInitialWeightings.get(i) + " ";
+        }
+        str += iterations + " ";
+        str += rounds + " ";
+        str += runs + " ";
+        str += steps + " ";
+        str += variableLevel + " ";
+        str += sizeIncrement + " ";
+        str += capacityIncrement + " ";
+        return str;
     }
     
 }

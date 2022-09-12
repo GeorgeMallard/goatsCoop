@@ -16,11 +16,12 @@ public class Main {
    * @param args as a String array
    */
   public static void main(String[] args) {
+    GUI.mainTitle("Chris Litting", "1.0");
     if (args.length == 0) {
       GUI.mainMenu();
     }	else {
       Input.parseArgs(args);
-      Simulation.run();
+      GUI.autoRun();
     }
   }
 
