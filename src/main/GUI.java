@@ -487,7 +487,7 @@ public class GUI {
 	 * Auto-runs simulation, bypassing menus
 	 */
 	public static void autoRun() {
-		System.out.println(SIMULATION_START);
+		System.out.println("\n" + SIMULATION_START);
 		Simulation.run();
 		System.out.println(SIMULATION_COMPLETE);
 		System.out.println(GOODBYE_MSG);
