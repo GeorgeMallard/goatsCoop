@@ -175,7 +175,6 @@ public abstract class Entity implements Comparable<Entity> {
     // ================
 
     public abstract void gatherData(boolean fullGather);
-    public abstract void sortChildren();
     public abstract void cullChildren();
     public abstract void repopulate();
     public abstract Entity clone(Group parentGroup);

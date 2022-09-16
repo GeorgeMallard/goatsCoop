@@ -277,33 +277,22 @@ public class Group extends Entity {
     /**
 	 * Sorts Entities in descending order of self contribution (recursive method)
 	 */
-	public void sortChildren() {
-        // Recursive part
-        if (this.getLevel() > 1) {
-            for (Entity y : children) {
-                y.sortChildren();
-            }
-        }
+	public void cullChildren() {
+        
         // Function part
         Collections.sort(children);
-	}
-
-    /**
-     * Removes Entities from children until a set number remain (recursive method)
-     */
-    public void cullChildren() {
-        // Function part
         while (children.size() > this.capacity) {
             children.remove(this.capacity);
         }
-
+        
         // Recursive part
         if (this.getLevel() > 1) {
-            for (Entity x : children) {
-                x.cullChildren();
+            for (Entity y : children) {
+                y.cullChildren();
             }
         }
-    }
+        
+	}
 
     /**
      * Repopulates children from survivors (recursive method)

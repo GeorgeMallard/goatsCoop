@@ -90,126 +90,131 @@ public class Input {
      */
     public static void parseArgs(String[] strArgs) {
         int counter = 0;
-        int[] args = strArrayToIntArray(strArgs);
+        try {
+            int[] args = strArrayToIntArray(strArgs);
         
-        //GROUP DEPTH
-        if (args[counter] < 1 || args[counter] > Settings.getMaxGroupDepth()) {
-            throw new IllegalArgumentException("Group depth must be between 1 and max group depth.");
-        }
-        Settings.setGroupDepth(args[counter]);
-        counter++;
-
-        //ENHANCED MUTATION
-        if (args[counter] == 1) {
-            Settings.setEnhancedMutation(true);
-        } else {
-            Settings.setEnhancedMutation(false);
-        }
-        counter++;
-
-        //MUTABILITIES
-        for (int i = 0; i <= Settings.getGroupDepth(); i++) {
-            if (args[counter] < 0 || args[counter] > Settings.getMaxMutability()) {
-                throw new IllegalArgumentException("Mutability must be between 0 and max mutability.");
+            //GROUP DEPTH
+            if (args[counter] < 1 || args[counter] > Settings.getMaxGroupDepth()) {
+                throw new IllegalArgumentException("Group depth must be between 1 and max group depth.");
             }
-            Settings.setInitialMutability(i, args[counter]);
+            Settings.setGroupDepth(args[counter]);
             counter++;
-        }
 
-        //MUTABLE MUTABILITIES
-        for (int i = 0; i <= Settings.getGroupDepth(); i++) {
+            //ENHANCED MUTATION
             if (args[counter] == 1) {
-                Settings.setMutableMutability(i, true);
+                Settings.setEnhancedMutation(true);
             } else {
-                Settings.setMutableMutability(i, false);
+                Settings.setEnhancedMutation(false);
             }
             counter++;
-        }
 
-        //GROUP SIZES AND CAPACITIES (size first then capacity)
-        for (int i = 0; i < Settings.getGroupDepth(); i++) {
-            if (args[counter] < args[counter + 1]) {
-                throw new IllegalArgumentException("Group size cannot be less than group capacity.");
+            //MUTABILITIES
+            for (int i = 0; i <= Settings.getGroupDepth(); i++) {
+                if (args[counter] < 0 || args[counter] > Settings.getMaxMutability()) {
+                    throw new IllegalArgumentException("Mutability must be between 0 and max mutability.");
+                }
+                Settings.setInitialMutability(i, args[counter]);
+                counter++;
             }
-            if (args[counter] < 2 || args[counter] > Settings.getMaxGroupSize()) {
-                throw new IllegalArgumentException("Group size cannot be less than 2 or greater than max size.");
-            }
-            if (args[counter + 1] < 1) {
-                throw new IllegalArgumentException("Group capacity cannot be less than 1.");
-            }
-            //check if capacity is greater than current group size and alter order of operations if needed
-            if (args[counter] < Settings.getGroupSize(i + 1)) {     
-                Settings.setGroupCapacity(i + 1, args[counter + 1]);
-                Settings.setGroupSize(i + 1, args[counter]);
-            } else {
-                Settings.setGroupSize(i + 1, args[counter]);
-                Settings.setGroupCapacity(i + 1, args[counter + 1]);
-            }
-            counter += 2;
-        }     
 
-        //AGENT WEIGHTINGS
-        for (int i = 0; i < Settings.getGroupDepth(); i++) {
-            if (args[counter] < 0 || args[counter] > Settings.getMaxAgentWeighting()) {
-                throw new IllegalArgumentException("Weighting must be between 0 and max weighting.");
+            //MUTABLE MUTABILITIES
+            for (int i = 0; i <= Settings.getGroupDepth(); i++) {
+                if (args[counter] == 1) {
+                    Settings.setMutableMutability(i, true);
+                } else {
+                    Settings.setMutableMutability(i, false);
+                }
+                counter++;
             }
-            Settings.setAgentInitialWeighting(i, args[counter]);
+
+            //GROUP SIZES AND CAPACITIES (size first then capacity)
+            for (int i = 0; i < Settings.getGroupDepth(); i++) {
+                if (args[counter] < args[counter + 1]) {
+                    throw new IllegalArgumentException("Group size cannot be less than group capacity.");
+                }
+                if (args[counter] < 2 || args[counter] > Settings.getMaxGroupSize()) {
+                    throw new IllegalArgumentException("Group size cannot be less than 2 or greater than max size.");
+                }
+                if (args[counter + 1] < 1) {
+                    throw new IllegalArgumentException("Group capacity cannot be less than 1.");
+                }
+                //check if capacity is greater than current group size and alter order of operations if needed
+                if (args[counter] < Settings.getGroupSize(i + 1)) {     
+                    Settings.setGroupCapacity(i + 1, args[counter + 1]);
+                    Settings.setGroupSize(i + 1, args[counter]);
+                } else {
+                    Settings.setGroupSize(i + 1, args[counter]);
+                    Settings.setGroupCapacity(i + 1, args[counter + 1]);
+                }
+                counter += 2;
+            }     
+
+            //AGENT WEIGHTINGS
+            for (int i = 0; i < Settings.getGroupDepth(); i++) {
+                if (args[counter] < 0 || args[counter] > Settings.getMaxAgentWeighting()) {
+                    throw new IllegalArgumentException("Weighting must be between 0 and max weighting.");
+                }
+                Settings.setAgentInitialWeighting(i, args[counter]);
+                counter++;
+            }
+
+            //SIM ITERATIONS
+            if (args[counter] < 1 || args[counter] > Settings.getMaxIterations()) {
+                throw new IllegalArgumentException("Iterations must be between 1 and max iterations.");
+            }
+            Settings.setIterations(args[counter]);
             counter++;
-        }
 
-        //SIM ITERATIONS
-        if (args[counter] < 1 || args[counter] > Settings.getMaxIterations()) {
-            throw new IllegalArgumentException("Iterations must be between 1 and max iterations.");
-        }
-        Settings.setIterations(args[counter]);
-        counter++;
+            //SIM ROUNDS
+            if (args[counter] < 1 || args[counter] > Settings.getMaxRounds()) {
+                throw new IllegalArgumentException("Rounds must be between 1 and max rounds.");
+            }
+            Settings.setRounds(args[counter]);
+            counter++;
 
-        //SIM ROUNDS
-        if (args[counter] < 1 || args[counter] > Settings.getMaxRounds()) {
-            throw new IllegalArgumentException("Rounds must be between 1 and max rounds.");
-        }
-        Settings.setRounds(args[counter]);
-        counter++;
+            //SIM RUNS
+            if (args[counter] < 1 || args[counter] > Settings.getMaxRuns()) {
+                throw new IllegalArgumentException("Runs must be between 1 and max runs.");
+            }
+            Settings.setRuns(args[counter]);
+            counter++;
 
-        //SIM RUNS
-        if (args[counter] < 1 || args[counter] > Settings.getMaxRuns()) {
-            throw new IllegalArgumentException("Runs must be between 1 and max runs.");
-        }
-        Settings.setRuns(args[counter]);
-        counter++;
+            //SIM STEPS
+            if (args[counter] < 1 || args[counter] > Settings.getMaxSteps()) {
+                throw new IllegalArgumentException("Steps must be between 1 and max steps.");
+            }
+            Settings.setSteps(args[counter]);
+            counter++;
 
-        //SIM STEPS
-        if (args[counter] < 1 || args[counter] > Settings.getMaxSteps()) {
-            throw new IllegalArgumentException("Steps must be between 1 and max steps.");
-        }
-        Settings.setSteps(args[counter]);
-        counter++;
+            //VARIABLE LEVEL
+            if (args[counter] < 1 || args[counter] > Settings.getGroupDepth()) {
+                throw new IllegalArgumentException("Variable level must be between 1 and group depth.");
+            }
+            Settings.setVariableLevel(args[counter]);
+            counter++;
 
-        //VARIABLE LEVEL
-        if (args[counter] < 1 || args[counter] > Settings.getGroupDepth()) {
-            throw new IllegalArgumentException("Variable level must be between 1 and group depth.");
-        }
-        Settings.setVariableLevel(args[counter]);
-        counter++;
+            //SIZE INCREMENT
+            if (Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps()) > Settings.getMaxGroupSize()) {
+                throw new IllegalArgumentException("Group size cannot exceed max group size after increments.");
+            }
+            if (args[counter] < 0) {
+                throw new IllegalArgumentException("Size increment must be greater than or equal to 0.");
+            }
+            Settings.setSizeIncrement(args[counter]);
+            counter++;
 
-        //SIZE INCREMENT
-        if (Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps()) > Settings.getMaxGroupSize()) {
-            throw new IllegalArgumentException("Group size cannot exceed max group size after increments.");
-        }
-        if (args[counter] < 0) {
-            throw new IllegalArgumentException("Size increment must be greater than or equal to 0.");
-        }
-        Settings.setSizeIncrement(args[counter]);
-        counter++;
+            //CAPACITY INCREMENT
+            if (Settings.getGroupCapacity(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps()) > Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps())) {
+                throw new IllegalArgumentException("Group capacity cannot exceed group size after increments.");
+            }
+            if (args[counter] < 0) {
+                throw new IllegalArgumentException("Capacity increment must be greater than or equal to 0.");
+            }
+            Settings.setCapacityIncrement(args[counter]);
 
-        //CAPACITY INCREMENT
-        if (Settings.getGroupCapacity(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps()) > Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps())) {
-            throw new IllegalArgumentException("Group capacity cannot exceed group size after increments.");
-        }
-        if (args[counter] < 0) {
-            throw new IllegalArgumentException("Capacity increment must be greater than or equal to 0.");
-        }
-        Settings.setCapacityIncrement(args[counter]);
+        } catch (Exception e) {
+            throw e;
+        } 
 
     }
 
@@ -240,8 +245,7 @@ public class Input {
         try {
             n = Integer.parseInt(str);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
+            throw new IllegalArgumentException("Unable to read non-integer argument");
         }
         return n;
     }

@@ -168,7 +168,6 @@ public class Agent extends Entity {
 	}
 
 	public void gatherData(boolean fullGather) {}
-	public void sortChildren() {}
 	public void cullChildren() {}
 	public void repopulate() {}
 	public void addChild(Entity newChild) {}

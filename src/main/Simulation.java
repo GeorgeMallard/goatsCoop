@@ -11,13 +11,12 @@ public class Simulation {
 	// CONSTANTS
 	// =========
 
-	public static final String VARIABLE_LEVEL = "Variable_Level";
-	public static final String VARIABLE_SIZE = "Variable_Size";
-	public static final String VARIABLE_CAPACITY = "Variable_Capacity";
-	public static final String CONTRIBUTION = "Contribution_";
-	public static final String MUTABILITY = "Mutability_";
-	public static final String CAPACITY = "Capacity_";
-	public static String TITLE_ROW;
+	private static final String VARIABLE_LEVEL = "Variable_Level";
+	private static final String VARIABLE_SIZE = "Variable_Size";
+	private static final String VARIABLE_CAPACITY = "Variable_Capacity";
+	private static final String CONTRIBUTION = "Contribution_";
+	private static final String MUTABILITY = "Mutability_";
+	private static final String CAPACITY = "Capacity_";
 	
 	// ======
 	// FIELDS
@@ -35,11 +34,11 @@ public class Simulation {
     public static void run() {
 
 		String filename = Output.createDateTimeFile("results");
-		TITLE_ROW = writeTitleRow();
-		Output.writeToFile(filename, TITLE_ROW);
+		String titleRow = writeTitleRow();
+		Output.writeToFile(filename, titleRow);
 		
-		for (int l = 0; l < Settings.getSteps(); l++) { 					// STEP BEGIN
-			for (int i = 0; i < Settings.getRuns(); i++) { 					// RUN BEGIN
+		for (int l = 0; l < Settings.getSteps(); l++) { 						// STEP BEGIN
+			for (int i = 0; i < Settings.getRuns(); i++) { 						// RUN BEGIN
 
 				// ======================
 				// Create top level group
@@ -53,23 +52,28 @@ public class Simulation {
 				);
 				// =====================
 			
-				for (int j = 0; j < Settings.getRounds(); j++) { 			 // ROUND BEGIN
-					iteration(true, false);
-					for (int k = 1; k < Settings.getIterations() - 1; k++) { // ITERATION BEGIN
-						iteration(false, false);
+				for (int j = 0; j < Settings.getRounds(); j++) { 			 	// ROUND BEGIN
+					iteration(topLevelGroup, true, false);
+					for (int k = 1; k < Settings.getIterations() - 1; k++) { 	// ITERATION BEGIN
+						iteration(topLevelGroup, false, false);
 					} 
-					iteration(false, true);					 // ITERATION END
+					iteration(topLevelGroup, false, true);	 	 // ITERATION END
 					Output.writeToFile(filename, writeRow());					// row output
-				} 															// ROUND END
-			} 																// RUN END
-			updateVariable();												// variable update
-		} 																	// STEP END
+				} 																// ROUND END
+			} 																	// RUN END
+			updateVariable();													// variable update
+		} 																		// STEP END
 	}
 
-	public static void iteration(boolean reset, boolean gather) {
+	/**
+	 * Carries out one iteration of the tree (one generation of Groups and Agents)
+	 * @param topLevelGroup as a Group
+	 * @param reset as a boolean
+	 * @param gather as a boolean
+	 */
+	public static void iteration(Group topLevelGroup, boolean reset, boolean gather) {
 		topLevelGroup.resetData(reset);
 		topLevelGroup.gatherData(gather);
-		topLevelGroup.sortChildren();
 		topLevelGroup.cullChildren();
 		topLevelGroup.repopulate();
 		topLevelGroup.mutateEntity();	

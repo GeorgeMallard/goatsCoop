@@ -171,6 +171,9 @@ public class Settings {
             }
             groupDepth = newDepth;
         }
+        if (newDepth < getVariableLevel()) {
+            setVariableLevel(newDepth);
+        }
     }
 
     /**
@@ -197,6 +200,9 @@ public class Settings {
             groupInitialSizes.set(i, newSize);
         }
         defaultGroupSize = newSize;
+        if (defaultGroupCapacity > newSize) {
+            defaultGroupCapacity = newSize;
+        }
     }
 
     /**
@@ -224,6 +230,9 @@ public class Settings {
             groupInitialCapacities.set(i, newCapacity);
         }
         defaultGroupCapacity = newCapacity;
+        if (defaultGroupSize < newCapacity) {
+            defaultGroupSize = newCapacity;
+        }
     }
 
     /**
@@ -619,6 +628,32 @@ public class Settings {
      */
     public static int getMaxSteps() {
         return maxSteps;
+    }
+
+    /**
+     * Returns the maximum number of steps allowed under current settings
+     * @return int
+     */
+    public static int getCurrentMaxSteps() {
+        int max = getMaxSteps();
+        int n = (getMaxGroupSize() - getGroupSize(getVariableLevel())) / getSizeIncrement();
+        if (n < max) {
+            max = n;
+        } 
+        if (getCapacityIncrement() > getSizeIncrement()) {
+            n = 0;
+            int s = getGroupSize(getVariableLevel());
+            int c = getGroupCapacity(getVariableLevel());
+            while (c <= s) {
+                s += getSizeIncrement();
+                c += getCapacityIncrement();
+                n++;
+            }
+            if (n < max) {
+                max = n;
+            }
+        }
+        return max;
     }
 
     /**

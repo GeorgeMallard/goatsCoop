@@ -20,8 +20,14 @@ public class Main {
     if (args.length == 0) {
       GUI.mainMenu();
     }	else {
-      Input.parseArgs(args);
-      GUI.autoRun();
+      try {
+        Input.parseArgs(args);
+        GUI.autoRun();
+      } catch (Exception e) {
+        System.out.println("\n" + e.getMessage());
+      }
+      GUI.closeProgram();
+     
     }
   }
 

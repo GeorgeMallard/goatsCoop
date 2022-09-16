@@ -11,7 +11,7 @@ public class GUI {
 	// =========
 	
 	// ===MAIN TITLE===
-	private static final String MAIN_TITLE = "\nMULTI-LEVEL SELECTION\nUSING EVOLVING AGENTS\nAuthor: %s\nVersion: %s";
+	private static final String MAIN_TITLE = "\n=====================\nMULTI-LEVEL SELECTION\nusing EVOLVING AGENTS\n=====================\nAuthor: %s\nVersion: %s";
 	// ===GENERAL MENUS===
 	private static final String ON = "ON";
 	private static final String OFF = "OFF";
@@ -31,12 +31,12 @@ public class GUI {
 	private static final String SIMULATION_HEADING = "Simulation Length\n-----------------";
 	private static final String SIMULATION_PREVIEW = "[Steps: %d | Runs: %d | Rounds: %d | Iterations: %d]";
 	private static final String VARIABLE_HEADING = "Variable\n--------";
-	private static final String VARIABLE_PREVIEW = "[Variable level: %d | Size increment: %d | Capacity increment: %d]";
-	private static final String RUN_SIMULATION = "Run simulation";
-	private static final String SIMULATION_RUN_CONFIRM = "Confirm run simulation (y/n): ";
-	private static final String SIMULATION_START = "Starting simulation...";
-	private static final String SIMULATION_COMPLETE = "...Simulation complete";
-	private static final String EXPORT_ARGS = "Export code";
+	private static final String VARIABLE_PREVIEW = "[Variable Level: %d | Size Increment: %d | Capacity Increment: %d]";
+	private static final String RUN_SIMULATION = "Run Simulation";
+	private static final String SIMULATION_RUN_CONFIRM = "Confirm Run Simulation (y/n): ";
+	private static final String SIMULATION_START = "Starting Simulation...";
+	private static final String SIMULATION_COMPLETE = "...Simulation Complete";
+	private static final String EXPORT_ARGS = "Export Code";
 	// ===SETTINGS MENU===
 	private static final String SETTINGS_MENU_TITLE = "SETTINGS\n========";
 	private static final String GROUP_SETTINGS = "Group Settings";
@@ -58,13 +58,13 @@ public class GUI {
 	private static final String ENTER_SIZE_INCREMENT = "Enter size increment: ";
 	private static final String CAPACITY_INCREMENT = "Capacity Increment: %d";
 	private static final String ENTER_CAPACITY_INCREMENT = "Enter capacity increment: ";
-	private static final String ENHANCED_MUTATION = "Enhanced Mutation: ";
+	private static final String ENHANCED_MUTATION = "Enhanced Mutation: %s";
 	// ===AGENT SETTINGS MENU===
 	private static final String AGENT_SETTINGS_MENU_TITLE = "AGENT SETTINGS\n==============";
-	private static final String INITIAL_MUTABILITY = "Initial Mutability: ";
-	private static final String MUTABLE_MUTABILITY = "Mutable Mutability: ";
+	private static final String INITIAL_MUTABILITY = "Initial Mutability: %d";
+	private static final String MUTABLE_MUTABILITY = "Mutable Mutability: %s";
 	private static final String ENTER_MUTABILITY = "Enter Agent Mutability (0 - 100): ";
-	private static final String CHANGE_ALL_AGENT_WEIGHTINGS = "Change all Agent weightings";
+	private static final String CHANGE_ALL_AGENT_WEIGHTINGS = "Change All Agent Weightings";
 	private static final String ENTER_WEIGHTINGS = "Enter new weighting for all levels (0 - 100): ";
 	private static final String AGENT_WEIGHTING = "[Level: %d | Initial Weighting: %d]";
 	private static final String ENTER_WEIGHTING = "Enter weighting for Level %d: ";
@@ -72,13 +72,13 @@ public class GUI {
 	private static final String GROUP_SETTINGS_TITLE = "GROUP SETTINGS\n==============";
 	private static final String GROUP_DEPTH = "Group Depth: %d";
 	private static final String ENTER_GROUP_DEPTH = "Enter new group depth (1 - " + Settings.getMaxGroupDepth() + "): ";
-	private static final String CHANGE_ALL_GROUP_SIZES = "Change size for all groups";
+	private static final String CHANGE_ALL_GROUP_SIZES = "Change All Group Sizes";
 	private static final String ENTER_GROUP_SIZES = "Enter new size for all groups (%d - " + Settings.getMaxGroupSize() + "): ";
-	private static final String CHANGE_ALL_GROUP_CAPACITIES = "Change capacity for all groups";
+	private static final String CHANGE_ALL_GROUP_CAPACITIES = "Change All Group Capacities";
 	private static final String ENTER_GROUP_CAPACITIES = "Enter new capacity for all groups (1 - %d): ";
-	private static final String CHANGE_ALL_GROUP_MUTABILITIES = "Change mutability for all groups";
+	private static final String CHANGE_ALL_GROUP_MUTABILITIES = "Change All Group Mutabilities";
 	private static final String ENTER_GROUP_MUTABILITIES = "Enter mutability for all groups (0 - 100): ";
-	private static final String CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES = "Toggle mutable mutability for all groups. Default: %s";
+	private static final String CHANGE_ALL_GROUP_MUTABLE_MUTABILITIES = "Toggle All Group Mutable Mutability. Default: %s";
 	private static final String GROUP_OPTION = "[Level: %d | Size: %d | Capacity %d | Mutability: %d | Mutable Mutability: %s]";
 	// ===GROUP EDIT MENU===
 	private static final String GROUP_EDIT_MENU_TITLE = "LEVEL %d GROUP SETTINGS\n======================";
@@ -105,7 +105,7 @@ public class GUI {
 				SIMULATION,
 				SETTINGS
 			};
-			value = Menu.create(
+			value = createMenu(
 				MAIN_MENU_TITLE,
 				SELECT_OPTION,
 				QUIT,
@@ -121,7 +121,7 @@ public class GUI {
 				case 0:
 				default:
 					if (Input.readBoolean(QUIT_CONFIRM)) {
-						System.out.println(GOODBYE_MSG);
+						closeProgram();
 						cont = false;
 					}
 					break;
@@ -140,7 +140,7 @@ public class GUI {
 				RUN_SIMULATION,
 				EXPORT_ARGS
 			};
-			value = Menu.create(
+			value = createMenu(
 				SIMULATION_MENU_TITLE + generatePreview(),
 				SELECT_OPTION,
 				BACK,
@@ -177,7 +177,7 @@ public class GUI {
 				AGENT_SETTINGS,
 				GROUP_SETTINGS	
 			};
-			value = Menu.create(
+			value = createMenu(
 				SETTINGS_MENU_TITLE,
 				SELECT_OPTION,
 				BACK,
@@ -216,9 +216,9 @@ public class GUI {
 				String.format(VARIABLE_LEVEL, Settings.getVariableLevel()),
 				String.format(SIZE_INCREMENT, Settings.getSizeIncrement()),
 				String.format(CAPACITY_INCREMENT, Settings.getCapacityIncrement()),
-				ENHANCED_MUTATION + Settings.getEnhancedMutationString(ON, OFF)
+				String.format(ENHANCED_MUTATION, Settings.getEnhancedMutationString(ON, OFF))
 			};
-			value = Menu.create(
+			value = createMenu(
 				SIMULATION_SETTINGS_MENU_TITLE,
 				SELECT_OPTION,
 				BACK, 
@@ -235,7 +235,7 @@ public class GUI {
 					Settings.setRuns(Input.readIntBetween(ENTER_RUNS, 1, Settings.getMaxRuns()));
 					break;
 				case 4:
-					Settings.setSteps(Input.readIntBetween(ENTER_STEPS, 1, Settings.getMaxSteps()));
+					Settings.setSteps(Input.readIntBetween(ENTER_STEPS, 1, Settings.getCurrentMaxSteps()));
 					break;
 				case 5:
 					Settings.setVariableLevel(Input.readIntBetween(ENTER_VARIABLE_LEVEL, 1, Settings.getGroupDepth()));
@@ -277,13 +277,13 @@ public class GUI {
 		int value = -1;
 		while (cont) {
 			String[] options = new String[3 + Settings.getGroupDepth()];
-			options[0] = INITIAL_MUTABILITY + Settings.getInitialMutability(0);
-			options[1] = MUTABLE_MUTABILITY + (Settings.getMutableMutability(0) ? ON : OFF);
+			options[0] = String.format(INITIAL_MUTABILITY, Settings.getInitialMutability(0));
+			options[1] = String.format(MUTABLE_MUTABILITY, (Settings.getMutableMutability(0) ? ON : OFF));
 			options[2] = CHANGE_ALL_AGENT_WEIGHTINGS;
 			for (int i = 0; i < Settings.getGroupDepth(); i++) {
 				options[i + 3] = String.format(String.format(AGENT_WEIGHTING, i, Settings.getAgentInitialWeighting(i)));
 			}				
-			value = Menu.create(
+			value = createMenu(
 				AGENT_SETTINGS_MENU_TITLE,
 				SELECT_OPTION, 
 				BACK,
@@ -332,7 +332,7 @@ public class GUI {
 					Settings.getMutableMutabilityString(i, ON, OFF)
 				);
 			}	
-			value = Menu.create(
+			value = createMenu(
 				GROUP_SETTINGS_TITLE,
 				SELECT_OPTION, 
 				BACK,
@@ -380,7 +380,7 @@ public class GUI {
 				String.format(GROUP_MUTABILITY, Settings.getInitialMutability(level)),
 				String.format(GROUP_MUTABLE_MUTABILITY, (Settings.getMutableMutability(level) ? ON : OFF))
 			};
-			value = Menu.create(
+			value = createMenu(
 				String.format(GROUP_EDIT_MENU_TITLE, level),
 				SELECT_OPTION,
 				BACK,
@@ -410,6 +410,26 @@ public class GUI {
 	// =============
 	// OTHER METHODS
 	// =============
+
+	/**
+     * Creates and displays a bespoke number-based menu, and takes input from the user
+     * @param title as a String (displayed at top of menu)
+     * @param prompt as a String (displayed on input line)
+     * @param zeroOption as a String (provides text for option 0, usually 'Back', 'Quit' etc.)
+     * @param options as a String array 
+     * @return int
+     */
+    private static int createMenu(String title, String prompt, String zeroOption, String[] options) {
+        System.out.println("\n" + title);
+        for (int i = 0; i < options.length; i++) {
+            System.out.println(String.format("%d. %s", i + 1, options[i]));
+        }
+        if (zeroOption == "") {
+            zeroOption = "<-";
+        }
+        System.out.println(String.format("%d. %s", 0, zeroOption));
+        return Input.readIntBetween(prompt, 0, options.length);
+    }
 
 	/**
 	 * Displays main program title
@@ -490,6 +510,12 @@ public class GUI {
 		System.out.println("\n" + SIMULATION_START);
 		Simulation.run();
 		System.out.println(SIMULATION_COMPLETE);
+	}
+
+	/**
+	 * Displays goodbye message
+	 */
+	public static void closeProgram() {
 		System.out.println(GOODBYE_MSG);
 	}
 	
