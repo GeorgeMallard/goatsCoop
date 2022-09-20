@@ -194,8 +194,8 @@ public class Input {
             counter++;
 
             //SIZE INCREMENT
-            if (Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps()) > Settings.getMaxGroupSize()) {
-                throw new IllegalArgumentException("Group size cannot exceed max group size after increments.");
+            if (Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * (Settings.getSteps() - 1)) > Settings.getMaxGroupSize()) {
+                throw new IllegalArgumentException("Group size cannot exceed max group size after increments. Group size: " + (Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * (Settings.getSteps() - 1))) + ". Max group size: " + Settings.getMaxGroupSize());
             }
             if (args[counter] < 0) {
                 throw new IllegalArgumentException("Size increment must be greater than or equal to 0.");
@@ -204,7 +204,7 @@ public class Input {
             counter++;
 
             //CAPACITY INCREMENT
-            if (Settings.getGroupCapacity(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps()) > Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps())) {
+            if (Settings.getGroupCapacity(Settings.getVariableLevel()) + ((args[counter] * Settings.getSteps() - 1)) > Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps())) {
                 throw new IllegalArgumentException("Group capacity cannot exceed group size after increments.");
             }
             if (args[counter] < 0) {

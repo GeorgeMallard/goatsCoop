@@ -57,4 +57,33 @@ public class AgentTest {
         assertFalse(testAgent1.equals(testAgent2));
     }
 
+    // ==========
+    // COMPARE TO
+    // ==========
+
+    @Test
+    public void compareToLowerRankedAgentReturnsMinusOne() {
+        src.main.Agent testAgent1 = new src.main.Agent(mutability, weightings, parentGroup);
+        src.main.Agent testAgent2 = new src.main.Agent(mutability, weightings, parentGroup);
+        testAgent1.setContribution(0, 1);
+        testAgent2.setContribution(0, 0);
+        assertTrue(testAgent1.compareTo(testAgent2) == -1);
+    }
+
+    @Test
+    public void compareToHigherRankedAgentReturnsOne() {
+        src.main.Agent testAgent1 = new src.main.Agent(mutability, weightings, parentGroup);
+        src.main.Agent testAgent2 = new src.main.Agent(mutability, weightings, parentGroup);
+        testAgent1.setContribution(0, 1);
+        testAgent2.setContribution(0, 0);
+        assertTrue(testAgent2.compareTo(testAgent1) == 1);
+    }
+
+    @Test
+    public void compareToEqualRankedAgentReturnsZero() {
+        src.main.Agent testAgent1 = new src.main.Agent(mutability, weightings, parentGroup);
+        src.main.Agent testAgent2 = new src.main.Agent(mutability, weightings, parentGroup);
+        assertTrue(testAgent1.compareTo(testAgent2) == 0);
+    }
+
 }

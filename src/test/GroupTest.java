@@ -60,4 +60,33 @@ public class GroupTest {
         assertFalse(testGroup1.equals(testGroup2));
     }
 
+    // ==========
+    // COMPARE TO
+    // ==========
+
+    @Test
+    public void compareToLowerRankedGroupReturnsMinusOne() {
+        src.main.Group testGroup1 = new src.main.Group(level, size, populate, parentGroup, 100, capacity);
+        src.main.Group testGroup2 = new src.main.Group(level, size, populate, parentGroup, 100, capacity);
+        testGroup1.setContribution(testGroup1.getLevel() -1, 1);
+        testGroup2.setContribution(testGroup2.getLevel() -1, 0);
+        assertTrue(testGroup1.compareTo(testGroup2) == -1);
+    }
+
+    @Test
+    public void compareToHigherRankedGroupReturnsOne() {
+        src.main.Group testGroup1 = new src.main.Group(level, size, populate, parentGroup, 100, capacity);
+        src.main.Group testGroup2 = new src.main.Group(level, size, populate, parentGroup, 100, capacity);
+        testGroup1.setContribution(testGroup1.getLevel() -1, 1);
+        testGroup2.setContribution(testGroup2.getLevel() -1, 0);
+        assertTrue(testGroup2.compareTo(testGroup1) == 1);
+    }
+
+    @Test
+    public void compareToEqualRankedGroupReturnsZero() {
+        src.main.Group testGroup1 = new src.main.Group(level, size, populate, parentGroup, 100, capacity);
+        src.main.Group testGroup2 = new src.main.Group(level, size, populate, parentGroup, 100, capacity);
+        assertTrue(testGroup1.compareTo(testGroup2) == 0);
+    }
+
 }

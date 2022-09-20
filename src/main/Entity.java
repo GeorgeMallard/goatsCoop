@@ -135,7 +135,7 @@ public abstract class Entity implements Comparable<Entity> {
         if (this.level != Settings.getGroupDepth()) {
             return this.contributions[this.getLevel()];
         } else {
-            return 0.0;
+            return this.contributions[this.getLevel() - 1];
         }
     }
 

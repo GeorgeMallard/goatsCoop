@@ -11,6 +11,7 @@ public class Simulation {
 	// CONSTANTS
 	// =========
 
+	private static final String SIMULATION_IN_PROGRESS = "Simulation Running...";
 	private static final String VARIABLE_LEVEL = "Variable_Level";
 	private static final String VARIABLE_SIZE = "Variable_Size";
 	private static final String VARIABLE_CAPACITY = "Variable_Capacity";
@@ -34,6 +35,7 @@ public class Simulation {
     public static void run() {
 
 		String filename = Output.createDateTimeFile("results");
+		System.out.println(SIMULATION_IN_PROGRESS);
 		String titleRow = writeTitleRow();
 		Output.writeToFile(filename, titleRow);
 		

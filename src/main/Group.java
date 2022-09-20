@@ -420,7 +420,7 @@ public class Group extends Entity {
     private String doubleArrayToString(double[] d) {
         String str = "";
         for (double x : d) {
-            str += String.format("%.2f ", x);
+            str += String.format("%.3f ", x);
         }
         return str;
     }
