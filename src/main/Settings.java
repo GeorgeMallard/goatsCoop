@@ -10,6 +10,12 @@ import java.util.Arrays;
  */
 public class Settings {
     
+    // =========
+    // CONSTANTS
+    // =========
+
+    //private static final String
+
     // ==============
     // DEFAULT VALUES
     // ==============

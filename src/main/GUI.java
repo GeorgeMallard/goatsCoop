@@ -17,6 +17,7 @@ public class GUI {
 	private static final String OFF = "OFF";
 	private static final String BACK = "Back";
 	private static final String SELECT_OPTION = "\nSelect an option: ";
+	private static final String GENERIC_ZERO_OPTION = "<-";
 	// ===MAIN MENU===
 	private static final String MAIN_MENU_TITLE = "MAIN MENU\n=========";
 	private static final String SIMULATION = "Simulation";
@@ -89,7 +90,12 @@ public class GUI {
 	private static final String GROUP_MUTABILITY = "Mutability: %d";
 	private static final String ENTER_GROUP_MUTABILITY = "Enter mutability for level %d groups (0 - 100): ";
 	private static final String GROUP_MUTABLE_MUTABILITY = "Mutable mutability: %s";
-	
+	// ===OUTPUT===
+	private static final String CODE = "code";
+	// ===ASSERTS===
+	private static final String LEVEL_BELOW_ZERO_ASSERT = "GUI selected level must be greater than 0. Level: %d";
+	private static final String LEVEL_ABOVE_MAX_ASSERT = "GUI seleceted level cannot exceed group depth. Level: %d. Group depth: %d";
+
 	// ============
 	// MENU METHODS
 	// ============
@@ -343,10 +349,22 @@ public class GUI {
 					Settings.setGroupDepth(Input.readIntBetween(ENTER_GROUP_DEPTH, 1, Settings.getMaxGroupDepth()));
 					break;
 				case 2:
-					Settings.setAllGroupSizes(Input.readIntBetween(String.format(ENTER_GROUP_SIZES, Settings.getHighestGroupCapacity()), Settings.getHighestGroupCapacity(), Settings.getMaxGroupSize()));
+					Settings.setAllGroupSizes(Input.readIntBetween(
+						String.format(
+							ENTER_GROUP_SIZES, 
+							Settings.getHighestGroupCapacity()), 
+							Settings.getHighestGroupCapacity(), 
+							Settings.getMaxGroupSize()
+					));
 					break;
 				case 3:
-					Settings.setAllGroupCapacities(Input.readIntBetween(String.format(ENTER_GROUP_CAPACITIES, Settings.getLowestGroupSize()), 1, Settings.getLowestGroupSize()));
+					Settings.setAllGroupCapacities(Input.readIntBetween(
+						String.format(
+							ENTER_GROUP_CAPACITIES, 
+							Settings.getLowestGroupSize()), 
+							1, 
+							Settings.getLowestGroupSize()
+					));
 					break;
 				case 4:
 					Settings.setAllGroupMutabilities(Input.readIntBetween(ENTER_GROUP_MUTABILITIES, 0, 100));
@@ -369,8 +387,8 @@ public class GUI {
 	 * @param level as an int
 	 */
 	private static void groupEditMenu(int level) {
-		assert (level > 0) : "GUI selected level must be greater than 0. Level: " + level;
-		assert (level <= Settings.getGroupDepth()) : "GUI seleceted level cannot exceed group depth. Level: " + level + ". Group depth: " + Settings.getGroupDepth();
+		assert (level > 0) : String.format(LEVEL_BELOW_ZERO_ASSERT, level);
+		assert (level <= Settings.getGroupDepth()) : String.format(LEVEL_ABOVE_MAX_ASSERT, level, Settings.getGroupDepth());
 		boolean cont = true;
 		int value = -1;
 		while (cont) {
@@ -388,13 +406,25 @@ public class GUI {
 			);
 			switch (value) {
 				case 1:
-					Settings.setGroupSize(level, Input.readIntBetween(String.format(ENTER_GROUP_SIZE, level), 2, Settings.getMaxGroupSize()));
+					Settings.setGroupSize(level, Input.readIntBetween(
+						String.format(ENTER_GROUP_SIZE, level), 
+						2, 
+						Settings.getMaxGroupSize()
+					));
 					break;
 				case 2:
-					Settings.setGroupCapacity(level, Input.readIntBetween(String.format(ENTER_GROUP_CAPACITY, level, Settings.getGroupSize(level)), 1, Settings.getGroupSize(level)));
+					Settings.setGroupCapacity(level, Input.readIntBetween(
+						String.format(ENTER_GROUP_CAPACITY, level, Settings.getGroupSize(level)), 
+						1, 
+						Settings.getGroupSize(level)
+						));
 					break;
 				case 3:
-					Settings.setInitialMutability(level, Input.readIntBetween(String.format(ENTER_GROUP_MUTABILITY, level), 0, 100));
+					Settings.setInitialMutability(level, Input.readIntBetween(
+						String.format(ENTER_GROUP_MUTABILITY, level), 
+						0, 
+						100
+					));
 					break;
 				case 4:
 					Settings.toggleMutableMutability(level);
@@ -425,7 +455,7 @@ public class GUI {
             System.out.println(String.format("%d. %s", i + 1, options[i]));
         }
         if (zeroOption == "") {
-            zeroOption = "<-";
+            zeroOption = GENERIC_ZERO_OPTION;
         }
         System.out.println(String.format("%d. %s", 0, zeroOption));
         return Input.readIntBetween(prompt, 0, options.length);
@@ -499,7 +529,7 @@ public class GUI {
 	 * Creates a text file with args representing current settings
 	 */
 	private static void exportCode() {
-		String filename = Output.createDateTimeFile("code");
+		String filename = Output.createDateTimeFile(CODE);
 		Output.writeToFile(filename, Settings.generateArgs());
 	}
 

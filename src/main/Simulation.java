@@ -11,13 +11,14 @@ public class Simulation {
 	// CONSTANTS
 	// =========
 
-	private static final String SIMULATION_IN_PROGRESS = "Simulation Running...";
+	private static final String SIMULATION_IN_PROGRESS = "Running Simulation...";
 	private static final String VARIABLE_LEVEL = "Variable_Level";
 	private static final String VARIABLE_SIZE = "Variable_Size";
 	private static final String VARIABLE_CAPACITY = "Variable_Capacity";
 	private static final String CONTRIBUTION = "Contribution_";
 	private static final String MUTABILITY = "Mutability_";
 	private static final String CAPACITY = "Capacity_";
+	private static final String RESULTS = "results";
 	
 	// ======
 	// FIELDS
@@ -34,7 +35,7 @@ public class Simulation {
 	 */
     public static void run() {
 
-		String filename = Output.createDateTimeFile("results");
+		String filename = Output.createDateTimeFile(RESULTS);
 		System.out.println(SIMULATION_IN_PROGRESS);
 		String titleRow = writeTitleRow();
 		Output.writeToFile(filename, titleRow);

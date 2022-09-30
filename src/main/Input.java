@@ -18,6 +18,26 @@ public class Input {
     private static final String YES = "y";
     private static final String NO = "n";
     private static final String YES_OR_NO = "Please enter $s or $s: ";
+    private static final String GENERIC_PROMPT = ">";
+
+    // ASSERTS AND EXCEPTIONS
+    private static final String MIN_GREATER_THAN_MAX_ASSERT = "Cannot read int where min is greater than max. Min: %d. Max: %d";
+    private static final String GROUP_DEPTH_EXCEPTION = "Group depth must be between 1 and max group depth. Depth: %d. Max: %d";
+    private static final String MUTABILITY_EXCEPTION = "Mutability must be between 0 and max mutability. Mutability: %d. Max: %d";
+    private static final String GROUP_SIZE_CAPACITY_EXCEPTION = "Group size cannot be less than group capacity. Size: %d. Capacity: %d";
+    private static final String GROUP_SIZE_EXCEPTION = "Group size cannot be less than 2 or greater than max size. Size: %d. Max: %d";
+    private static final String GROUP_CAPACITY_EXCEPTION = "Group capacity cannot be less than 1. Capacity: %d";
+    private static final String WEIGHTING_EXCEPTION = "Weighting must be between 0 and max weighting. Weighting: %d. Max: %d";
+    private static final String ITERATIONS_EXCEPTION = "Iterations must be between 1 and max iterations. Iterations: %d. Max: %d";
+    private static final String ROUNDS_EXCEPTION = "Rounds must be between 1 and max rounds. Rounds: %d. Max: %d";
+    private static final String RUNS_EXCEPTION = "Runs must be between 1 and max runs. Runs: %d. Max: %d";
+    private static final String STEPS_EXCEPTION = "Steps must be between 1 and max steps. Steps: %d. Max: %d";
+    private static final String VARIABLE_LEVEL_EXCEPTION = "Variable level must be between 1 and group depth. Level: %d. Depth: %d";
+    private static final String GROUP_SIZE_INCREMENTS_EXCEPTION = "Group size cannot exceed max group size after increments. Group size: %d. Max group size: %d";
+    private static final String SIZE_INCREMENT_EXCEPTION = "Size increment must be greater than or equal to 0. Increment: %d";
+    private static final String GROUP_CAPACITY_INCREMENTS_EXCEPTION = "Group capacity cannot exceed group size after increments. Capacity: %d. Size: %d";
+    private static final String CAPACITY_INCREMENT_EXCEPTION = "Capacity increment must be greater than or equal to 0. Increment: %d";
+    private static final String NON_INTEGER_ARGUMENT_EXCEPTION = "Unable to read non-integer argument. Argument: %s";
 
     // ==============
     // STATIC METHODS
@@ -31,8 +51,8 @@ public class Input {
      * @return int
      */
     public static int readIntBetween(String prompt, int min, int max) {
-        assert (max >= min) : "Cannot read int where min is greater than max. Min: " + min + ". Max: " + max;
-        System.out.print(prompt.equals("") ? ">" : prompt);
+        assert (max >= min) : String.format(MIN_GREATER_THAN_MAX_ASSERT, min, max);
+        System.out.print(prompt.equals("") ? GENERIC_PROMPT : prompt);
         Scanner in = new Scanner(System.in);
         boolean inputError = false;
         Integer value;
@@ -61,7 +81,7 @@ public class Input {
     * @return boolean
     */
     public static boolean readBoolean(String prompt) {
-        System.out.print(prompt.equals("") ? ">" : prompt);
+        System.out.print(prompt.equals("") ? GENERIC_PROMPT : prompt);
         Scanner in = new Scanner(System.in);
         boolean bool = false;
         boolean inputError = false;
@@ -95,7 +115,7 @@ public class Input {
         
             //GROUP DEPTH
             if (args[counter] < 1 || args[counter] > Settings.getMaxGroupDepth()) {
-                throw new IllegalArgumentException("Group depth must be between 1 and max group depth.");
+                throw new IllegalArgumentException(String.format(GROUP_DEPTH_EXCEPTION, args[counter], Settings.getMaxGroupDepth()));
             }
             Settings.setGroupDepth(args[counter]);
             counter++;
@@ -111,7 +131,7 @@ public class Input {
             //MUTABILITIES
             for (int i = 0; i <= Settings.getGroupDepth(); i++) {
                 if (args[counter] < 0 || args[counter] > Settings.getMaxMutability()) {
-                    throw new IllegalArgumentException("Mutability must be between 0 and max mutability.");
+                    throw new IllegalArgumentException(String.format(MUTABILITY_EXCEPTION, args[counter], Settings.getMaxMutability()));
                 }
                 Settings.setInitialMutability(i, args[counter]);
                 counter++;
@@ -130,13 +150,13 @@ public class Input {
             //GROUP SIZES AND CAPACITIES (size first then capacity)
             for (int i = 0; i < Settings.getGroupDepth(); i++) {
                 if (args[counter] < args[counter + 1]) {
-                    throw new IllegalArgumentException("Group size cannot be less than group capacity.");
+                    throw new IllegalArgumentException(String.format(GROUP_SIZE_CAPACITY_EXCEPTION, args[counter], args[counter + 1]));
                 }
                 if (args[counter] < 2 || args[counter] > Settings.getMaxGroupSize()) {
-                    throw new IllegalArgumentException("Group size cannot be less than 2 or greater than max size.");
+                    throw new IllegalArgumentException(String.format(GROUP_SIZE_EXCEPTION, args[counter], Settings.getMaxGroupSize()));
                 }
                 if (args[counter + 1] < 1) {
-                    throw new IllegalArgumentException("Group capacity cannot be less than 1.");
+                    throw new IllegalArgumentException(String.format(GROUP_CAPACITY_EXCEPTION, args[counter + 1]));
                 }
                 //check if capacity is greater than current group size and alter order of operations if needed
                 if (args[counter] < Settings.getGroupSize(i + 1)) {     
@@ -152,7 +172,7 @@ public class Input {
             //AGENT WEIGHTINGS
             for (int i = 0; i < Settings.getGroupDepth(); i++) {
                 if (args[counter] < 0 || args[counter] > Settings.getMaxAgentWeighting()) {
-                    throw new IllegalArgumentException("Weighting must be between 0 and max weighting.");
+                    throw new IllegalArgumentException(String.format(WEIGHTING_EXCEPTION, args[counter], Settings.getMaxAgentWeighting()));
                 }
                 Settings.setAgentInitialWeighting(i, args[counter]);
                 counter++;
@@ -160,55 +180,73 @@ public class Input {
 
             //SIM ITERATIONS
             if (args[counter] < 1 || args[counter] > Settings.getMaxIterations()) {
-                throw new IllegalArgumentException("Iterations must be between 1 and max iterations.");
+                throw new IllegalArgumentException(String.format(ITERATIONS_EXCEPTION, args[counter], Settings.getMaxIterations()));
             }
             Settings.setIterations(args[counter]);
             counter++;
 
             //SIM ROUNDS
             if (args[counter] < 1 || args[counter] > Settings.getMaxRounds()) {
-                throw new IllegalArgumentException("Rounds must be between 1 and max rounds.");
+                throw new IllegalArgumentException(String.format(ROUNDS_EXCEPTION, args[counter], Settings.getMaxRounds()));
             }
             Settings.setRounds(args[counter]);
             counter++;
 
             //SIM RUNS
             if (args[counter] < 1 || args[counter] > Settings.getMaxRuns()) {
-                throw new IllegalArgumentException("Runs must be between 1 and max runs.");
+                throw new IllegalArgumentException(String.format(RUNS_EXCEPTION, args[counter], Settings.getMaxRuns()));
             }
             Settings.setRuns(args[counter]);
             counter++;
 
             //SIM STEPS
             if (args[counter] < 1 || args[counter] > Settings.getMaxSteps()) {
-                throw new IllegalArgumentException("Steps must be between 1 and max steps.");
+                throw new IllegalArgumentException(String.format(STEPS_EXCEPTION, args[counter],  Settings.getMaxSteps()));
             }
             Settings.setSteps(args[counter]);
             counter++;
 
             //VARIABLE LEVEL
             if (args[counter] < 1 || args[counter] > Settings.getGroupDepth()) {
-                throw new IllegalArgumentException("Variable level must be between 1 and group depth.");
+                throw new IllegalArgumentException(String.format(VARIABLE_LEVEL_EXCEPTION, args[counter], Settings.getGroupDepth()));
             }
             Settings.setVariableLevel(args[counter]);
             counter++;
 
             //SIZE INCREMENT
-            if (Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * (Settings.getSteps() - 1)) > Settings.getMaxGroupSize()) {
-                throw new IllegalArgumentException("Group size cannot exceed max group size after increments. Group size: " + (Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * (Settings.getSteps() - 1))) + ". Max group size: " + Settings.getMaxGroupSize());
+            if (
+                Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * (Settings.getSteps() - 1)) 
+                > Settings.getMaxGroupSize()
+            ) {
+                throw new IllegalArgumentException(
+                    String.format(
+                        GROUP_SIZE_INCREMENTS_EXCEPTION, 
+                        Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * (Settings.getSteps() - 1)), 
+                        Settings.getMaxGroupSize()
+                    )
+                );
             }
             if (args[counter] < 0) {
-                throw new IllegalArgumentException("Size increment must be greater than or equal to 0.");
+                throw new IllegalArgumentException(String.format(SIZE_INCREMENT_EXCEPTION, args[counter]));
             }
             Settings.setSizeIncrement(args[counter]);
             counter++;
 
             //CAPACITY INCREMENT
-            if (Settings.getGroupCapacity(Settings.getVariableLevel()) + ((args[counter] * Settings.getSteps() - 1)) > Settings.getGroupSize(Settings.getVariableLevel()) + (args[counter] * Settings.getSteps())) {
-                throw new IllegalArgumentException("Group capacity cannot exceed group size after increments.");
+            if (
+                Settings.getGroupCapacity(Settings.getVariableLevel()) + (args[counter] * (Settings.getSteps() - 1)) 
+                > Settings.getGroupSize(Settings.getVariableLevel()) + (Settings.getSizeIncrement() * (Settings.getSteps() - 1))
+            ) {
+                throw new IllegalArgumentException(
+                    String.format(
+                        GROUP_CAPACITY_INCREMENTS_EXCEPTION, 
+                        Settings.getGroupCapacity(Settings.getVariableLevel()) + (args[counter] * (Settings.getSteps() - 1)), 
+                        Settings.getGroupSize(Settings.getVariableLevel()) + (Settings.getSizeIncrement() * (Settings.getSteps() - 1))
+                    )
+                );
             }
             if (args[counter] < 0) {
-                throw new IllegalArgumentException("Capacity increment must be greater than or equal to 0.");
+                throw new IllegalArgumentException(String.format(CAPACITY_INCREMENT_EXCEPTION, args[counter]));
             }
             Settings.setCapacityIncrement(args[counter]);
 
@@ -245,7 +283,7 @@ public class Input {
         try {
             n = Integer.parseInt(str);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Unable to read non-integer argument");
+            throw new IllegalArgumentException(String.format(NON_INTEGER_ARGUMENT_EXCEPTION, str));
         }
         return n;
     }

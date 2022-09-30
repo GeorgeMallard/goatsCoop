@@ -201,7 +201,7 @@ public abstract class Entity implements Comparable<Entity> {
         assert (mutationFactor >= 0) : "Cannot mutate when mutation factor is below 0. Mutation factor: " + mutationFactor;
         assert (mutationFactor <= Settings.getMaxMutability()) : "Cannot mutate when mutation factor is above max mutability. Mutation factor: " + mutationFactor + ". Max mutability: " + Settings.getMaxMutability();
         
-        int x = random.nextInt(Settings.getMaxMutability() + 1);
+        int x = random.nextInt(Settings.getMaxMutability() + 1); //value between 0 and mutability (inclusive)
 
         if (x == 0 && Settings.getEnhancedMutation()) {
             return random.nextInt(max - min + 1) + min;

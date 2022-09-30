@@ -6,6 +6,13 @@ package src.main;
  * @version 1.0
  */
 public class Main {
+
+  // =========
+  // CONSTANTS
+  // =========
+
+  private static final String author = "Chris Litting";
+  private static final String version = "1.0";
     
   // ===========
 	// MAIN METHOD
@@ -16,7 +23,7 @@ public class Main {
    * @param args as a String array
    */
   public static void main(String[] args) {
-    GUI.mainTitle("Chris Litting", "1.0");
+    GUI.mainTitle(author, version);
     if (args.length == 0) {
       GUI.mainMenu();
     }	else {
