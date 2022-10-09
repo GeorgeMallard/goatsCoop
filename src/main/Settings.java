@@ -642,7 +642,10 @@ public class Settings {
      */
     public static int getCurrentMaxSteps() {
         int max = getMaxSteps();
-        int n = (getMaxGroupSize() - getGroupSize(getVariableLevel())) / getSizeIncrement();
+        int n = max;
+        if (getSizeIncrement() > 0) {
+            n = (getMaxGroupSize() - getGroupSize(getVariableLevel())) / getSizeIncrement();
+        }
         if (n < max) {
             max = n;
         } 
