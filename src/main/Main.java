@@ -12,7 +12,7 @@ public class Main {
   // =========
 
   private static final String author = "Chris Litting";
-  private static final String version = "1.0";
+  private static final String version = "1.01";
     
   // ===========
 	// MAIN METHOD
