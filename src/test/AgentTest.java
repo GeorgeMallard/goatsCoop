@@ -42,7 +42,7 @@ public class AgentTest {
     // =============
 
     @Test
-    public void groupStillSameAfterMutationIfMutationFactorIsZero() {
+    public void agentStillSameAfterMutationIfMutationFactorIsZero() {
         src.main.Agent testAgent1 = new src.main.Agent(0, weightings, parentGroup);
         src.main.Agent testAgent2 = new src.main.Agent(0, weightings, parentGroup);
         testAgent2.mutateEntity();
@@ -50,7 +50,7 @@ public class AgentTest {
     }
 
     @Test
-    public void groupNotSameAfterMutationIfMutationFactorIsHundred() {
+    public void agentNotSameAfterMutationIfMutationFactorIsHundred() {
         src.main.Agent testAgent1 = new src.main.Agent(100, weightings, parentGroup);
         src.main.Agent testAgent2 = new src.main.Agent(100, weightings, parentGroup);
         testAgent2.mutateEntity();
